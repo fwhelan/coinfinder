@@ -228,8 +228,41 @@ bool Beta::has_edges() const
     return _has_edges;
 }
 
-//define an Edge Class here that has an int count of the gammas and a weight count from read in combined file. have methods to get weight so i can touch it from coincidence
+/**
+ * Constructor
+**/
+Edge::Edge( const std::string& name ) //, int num_gammas, int weight )
+	: _alphas()
+	 , _betas()
+	 , num_gammas()
+	 , weight()
+#ifndef NBEBUG
+	//, _name() //( name )
+#endif
+{
+	// pass
+}
 
+const std::string Edge::get_name() const
+{
+#ifndef NDEBUG
+    	return this->_name;
+#else
+    	std::stringstream ss; 
+    	ss << this;
+    	return ss.str();
+#endif
+}
+
+int Edge::get_num_gammas() const
+{
+	return num_gammas;
+}
+
+int Edge::get_weight() const
+{
+	return weight;
+}
 
 /**
  * Constructor

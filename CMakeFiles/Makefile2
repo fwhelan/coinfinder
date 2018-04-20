@@ -54,10 +54,10 @@ RM = /usr/local/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/s23410fw/Documents/software/coinfinder/coinfinder
+CMAKE_SOURCE_DIR = /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/s23410fw/Documents/software/coinfinder/coinfinder
+CMAKE_BINARY_DIR = /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus
 
 #=============================================================================
 # Target rules for target CMakeFiles/coinfinder.dir
@@ -66,7 +66,7 @@ CMAKE_BINARY_DIR = /Users/s23410fw/Documents/software/coinfinder/coinfinder
 CMakeFiles/coinfinder.dir/all:
 	$(MAKE) -f CMakeFiles/coinfinder.dir/build.make CMakeFiles/coinfinder.dir/depend
 	$(MAKE) -f CMakeFiles/coinfinder.dir/build.make CMakeFiles/coinfinder.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/s23410fw/Documents/software/coinfinder/coinfinder/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11 "Built target coinfinder"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11 "Built target coinfinder"
 .PHONY : CMakeFiles/coinfinder.dir/all
 
 # Include target in all.
@@ -76,9 +76,9 @@ all: CMakeFiles/coinfinder.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/coinfinder.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/s23410fw/Documents/software/coinfinder/coinfinder/CMakeFiles 11
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/CMakeFiles 11
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/coinfinder.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/s23410fw/Documents/software/coinfinder/coinfinder/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/CMakeFiles 0
 .PHONY : CMakeFiles/coinfinder.dir/rule
 
 # Convenience name for target.

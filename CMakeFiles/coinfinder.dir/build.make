@@ -43,10 +43,10 @@ RM = /usr/local/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/s23410fw/Documents/software/coinfinder/coinfinder
+CMAKE_SOURCE_DIR = /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/s23410fw/Documents/software/coinfinder/coinfinder
+CMAKE_BINARY_DIR = /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus
 
 # Include any dependencies generated for this target.
 include CMakeFiles/coinfinder.dir/depend.make
@@ -59,16 +59,16 @@ include CMakeFiles/coinfinder.dir/flags.make
 
 CMakeFiles/coinfinder.dir/main.cpp.o: CMakeFiles/coinfinder.dir/flags.make
 CMakeFiles/coinfinder.dir/main.cpp.o: main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/s23410fw/Documents/software/coinfinder/coinfinder/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/coinfinder.dir/main.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coinfinder.dir/main.cpp.o -c /Users/s23410fw/Documents/software/coinfinder/coinfinder/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/coinfinder.dir/main.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coinfinder.dir/main.cpp.o -c /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/main.cpp
 
 CMakeFiles/coinfinder.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/coinfinder.dir/main.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/s23410fw/Documents/software/coinfinder/coinfinder/main.cpp > CMakeFiles/coinfinder.dir/main.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/main.cpp > CMakeFiles/coinfinder.dir/main.cpp.i
 
 CMakeFiles/coinfinder.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/coinfinder.dir/main.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/s23410fw/Documents/software/coinfinder/coinfinder/main.cpp -o CMakeFiles/coinfinder.dir/main.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/main.cpp -o CMakeFiles/coinfinder.dir/main.cpp.s
 
 CMakeFiles/coinfinder.dir/main.cpp.o.requires:
 
@@ -83,16 +83,16 @@ CMakeFiles/coinfinder.dir/main.cpp.o.provides.build: CMakeFiles/coinfinder.dir/m
 
 CMakeFiles/coinfinder.dir/id_lookup.cpp.o: CMakeFiles/coinfinder.dir/flags.make
 CMakeFiles/coinfinder.dir/id_lookup.cpp.o: id_lookup.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/s23410fw/Documents/software/coinfinder/coinfinder/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/coinfinder.dir/id_lookup.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coinfinder.dir/id_lookup.cpp.o -c /Users/s23410fw/Documents/software/coinfinder/coinfinder/id_lookup.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/coinfinder.dir/id_lookup.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coinfinder.dir/id_lookup.cpp.o -c /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/id_lookup.cpp
 
 CMakeFiles/coinfinder.dir/id_lookup.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/coinfinder.dir/id_lookup.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/s23410fw/Documents/software/coinfinder/coinfinder/id_lookup.cpp > CMakeFiles/coinfinder.dir/id_lookup.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/id_lookup.cpp > CMakeFiles/coinfinder.dir/id_lookup.cpp.i
 
 CMakeFiles/coinfinder.dir/id_lookup.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/coinfinder.dir/id_lookup.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/s23410fw/Documents/software/coinfinder/coinfinder/id_lookup.cpp -o CMakeFiles/coinfinder.dir/id_lookup.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/id_lookup.cpp -o CMakeFiles/coinfinder.dir/id_lookup.cpp.s
 
 CMakeFiles/coinfinder.dir/id_lookup.cpp.o.requires:
 
@@ -107,16 +107,16 @@ CMakeFiles/coinfinder.dir/id_lookup.cpp.o.provides.build: CMakeFiles/coinfinder.
 
 CMakeFiles/coinfinder.dir/dataset.cpp.o: CMakeFiles/coinfinder.dir/flags.make
 CMakeFiles/coinfinder.dir/dataset.cpp.o: dataset.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/s23410fw/Documents/software/coinfinder/coinfinder/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/coinfinder.dir/dataset.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coinfinder.dir/dataset.cpp.o -c /Users/s23410fw/Documents/software/coinfinder/coinfinder/dataset.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/coinfinder.dir/dataset.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coinfinder.dir/dataset.cpp.o -c /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/dataset.cpp
 
 CMakeFiles/coinfinder.dir/dataset.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/coinfinder.dir/dataset.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/s23410fw/Documents/software/coinfinder/coinfinder/dataset.cpp > CMakeFiles/coinfinder.dir/dataset.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/dataset.cpp > CMakeFiles/coinfinder.dir/dataset.cpp.i
 
 CMakeFiles/coinfinder.dir/dataset.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/coinfinder.dir/dataset.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/s23410fw/Documents/software/coinfinder/coinfinder/dataset.cpp -o CMakeFiles/coinfinder.dir/dataset.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/dataset.cpp -o CMakeFiles/coinfinder.dir/dataset.cpp.s
 
 CMakeFiles/coinfinder.dir/dataset.cpp.o.requires:
 
@@ -131,16 +131,16 @@ CMakeFiles/coinfinder.dir/dataset.cpp.o.provides.build: CMakeFiles/coinfinder.di
 
 CMakeFiles/coinfinder.dir/coincidence.cpp.o: CMakeFiles/coinfinder.dir/flags.make
 CMakeFiles/coinfinder.dir/coincidence.cpp.o: coincidence.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/s23410fw/Documents/software/coinfinder/coinfinder/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/coinfinder.dir/coincidence.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coinfinder.dir/coincidence.cpp.o -c /Users/s23410fw/Documents/software/coinfinder/coinfinder/coincidence.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/coinfinder.dir/coincidence.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coinfinder.dir/coincidence.cpp.o -c /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/coincidence.cpp
 
 CMakeFiles/coinfinder.dir/coincidence.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/coinfinder.dir/coincidence.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/s23410fw/Documents/software/coinfinder/coinfinder/coincidence.cpp > CMakeFiles/coinfinder.dir/coincidence.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/coincidence.cpp > CMakeFiles/coinfinder.dir/coincidence.cpp.i
 
 CMakeFiles/coinfinder.dir/coincidence.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/coinfinder.dir/coincidence.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/s23410fw/Documents/software/coinfinder/coinfinder/coincidence.cpp -o CMakeFiles/coinfinder.dir/coincidence.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/coincidence.cpp -o CMakeFiles/coinfinder.dir/coincidence.cpp.s
 
 CMakeFiles/coinfinder.dir/coincidence.cpp.o.requires:
 
@@ -155,16 +155,16 @@ CMakeFiles/coinfinder.dir/coincidence.cpp.o.provides.build: CMakeFiles/coinfinde
 
 CMakeFiles/coinfinder.dir/connectivity.cpp.o: CMakeFiles/coinfinder.dir/flags.make
 CMakeFiles/coinfinder.dir/connectivity.cpp.o: connectivity.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/s23410fw/Documents/software/coinfinder/coinfinder/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/coinfinder.dir/connectivity.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coinfinder.dir/connectivity.cpp.o -c /Users/s23410fw/Documents/software/coinfinder/coinfinder/connectivity.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/coinfinder.dir/connectivity.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coinfinder.dir/connectivity.cpp.o -c /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/connectivity.cpp
 
 CMakeFiles/coinfinder.dir/connectivity.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/coinfinder.dir/connectivity.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/s23410fw/Documents/software/coinfinder/coinfinder/connectivity.cpp > CMakeFiles/coinfinder.dir/connectivity.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/connectivity.cpp > CMakeFiles/coinfinder.dir/connectivity.cpp.i
 
 CMakeFiles/coinfinder.dir/connectivity.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/coinfinder.dir/connectivity.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/s23410fw/Documents/software/coinfinder/coinfinder/connectivity.cpp -o CMakeFiles/coinfinder.dir/connectivity.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/connectivity.cpp -o CMakeFiles/coinfinder.dir/connectivity.cpp.s
 
 CMakeFiles/coinfinder.dir/connectivity.cpp.o.requires:
 
@@ -179,16 +179,16 @@ CMakeFiles/coinfinder.dir/connectivity.cpp.o.provides.build: CMakeFiles/coinfind
 
 CMakeFiles/coinfinder.dir/binomial_test.cpp.o: CMakeFiles/coinfinder.dir/flags.make
 CMakeFiles/coinfinder.dir/binomial_test.cpp.o: binomial_test.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/s23410fw/Documents/software/coinfinder/coinfinder/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/coinfinder.dir/binomial_test.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coinfinder.dir/binomial_test.cpp.o -c /Users/s23410fw/Documents/software/coinfinder/coinfinder/binomial_test.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/coinfinder.dir/binomial_test.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coinfinder.dir/binomial_test.cpp.o -c /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/binomial_test.cpp
 
 CMakeFiles/coinfinder.dir/binomial_test.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/coinfinder.dir/binomial_test.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/s23410fw/Documents/software/coinfinder/coinfinder/binomial_test.cpp > CMakeFiles/coinfinder.dir/binomial_test.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/binomial_test.cpp > CMakeFiles/coinfinder.dir/binomial_test.cpp.i
 
 CMakeFiles/coinfinder.dir/binomial_test.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/coinfinder.dir/binomial_test.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/s23410fw/Documents/software/coinfinder/coinfinder/binomial_test.cpp -o CMakeFiles/coinfinder.dir/binomial_test.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/binomial_test.cpp -o CMakeFiles/coinfinder.dir/binomial_test.cpp.s
 
 CMakeFiles/coinfinder.dir/binomial_test.cpp.o.requires:
 
@@ -203,16 +203,16 @@ CMakeFiles/coinfinder.dir/binomial_test.cpp.o.provides.build: CMakeFiles/coinfin
 
 CMakeFiles/coinfinder.dir/significance.cpp.o: CMakeFiles/coinfinder.dir/flags.make
 CMakeFiles/coinfinder.dir/significance.cpp.o: significance.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/s23410fw/Documents/software/coinfinder/coinfinder/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/coinfinder.dir/significance.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coinfinder.dir/significance.cpp.o -c /Users/s23410fw/Documents/software/coinfinder/coinfinder/significance.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/coinfinder.dir/significance.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coinfinder.dir/significance.cpp.o -c /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/significance.cpp
 
 CMakeFiles/coinfinder.dir/significance.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/coinfinder.dir/significance.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/s23410fw/Documents/software/coinfinder/coinfinder/significance.cpp > CMakeFiles/coinfinder.dir/significance.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/significance.cpp > CMakeFiles/coinfinder.dir/significance.cpp.i
 
 CMakeFiles/coinfinder.dir/significance.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/coinfinder.dir/significance.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/s23410fw/Documents/software/coinfinder/coinfinder/significance.cpp -o CMakeFiles/coinfinder.dir/significance.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/significance.cpp -o CMakeFiles/coinfinder.dir/significance.cpp.s
 
 CMakeFiles/coinfinder.dir/significance.cpp.o.requires:
 
@@ -227,16 +227,16 @@ CMakeFiles/coinfinder.dir/significance.cpp.o.provides.build: CMakeFiles/coinfind
 
 CMakeFiles/coinfinder.dir/parameters.cpp.o: CMakeFiles/coinfinder.dir/flags.make
 CMakeFiles/coinfinder.dir/parameters.cpp.o: parameters.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/s23410fw/Documents/software/coinfinder/coinfinder/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/coinfinder.dir/parameters.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coinfinder.dir/parameters.cpp.o -c /Users/s23410fw/Documents/software/coinfinder/coinfinder/parameters.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/coinfinder.dir/parameters.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coinfinder.dir/parameters.cpp.o -c /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/parameters.cpp
 
 CMakeFiles/coinfinder.dir/parameters.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/coinfinder.dir/parameters.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/s23410fw/Documents/software/coinfinder/coinfinder/parameters.cpp > CMakeFiles/coinfinder.dir/parameters.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/parameters.cpp > CMakeFiles/coinfinder.dir/parameters.cpp.i
 
 CMakeFiles/coinfinder.dir/parameters.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/coinfinder.dir/parameters.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/s23410fw/Documents/software/coinfinder/coinfinder/parameters.cpp -o CMakeFiles/coinfinder.dir/parameters.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/parameters.cpp -o CMakeFiles/coinfinder.dir/parameters.cpp.s
 
 CMakeFiles/coinfinder.dir/parameters.cpp.o.requires:
 
@@ -251,16 +251,16 @@ CMakeFiles/coinfinder.dir/parameters.cpp.o.provides.build: CMakeFiles/coinfinder
 
 CMakeFiles/coinfinder.dir/elements.cpp.o: CMakeFiles/coinfinder.dir/flags.make
 CMakeFiles/coinfinder.dir/elements.cpp.o: elements.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/s23410fw/Documents/software/coinfinder/coinfinder/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/coinfinder.dir/elements.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coinfinder.dir/elements.cpp.o -c /Users/s23410fw/Documents/software/coinfinder/coinfinder/elements.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/coinfinder.dir/elements.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coinfinder.dir/elements.cpp.o -c /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/elements.cpp
 
 CMakeFiles/coinfinder.dir/elements.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/coinfinder.dir/elements.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/s23410fw/Documents/software/coinfinder/coinfinder/elements.cpp > CMakeFiles/coinfinder.dir/elements.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/elements.cpp > CMakeFiles/coinfinder.dir/elements.cpp.i
 
 CMakeFiles/coinfinder.dir/elements.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/coinfinder.dir/elements.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/s23410fw/Documents/software/coinfinder/coinfinder/elements.cpp -o CMakeFiles/coinfinder.dir/elements.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/elements.cpp -o CMakeFiles/coinfinder.dir/elements.cpp.s
 
 CMakeFiles/coinfinder.dir/elements.cpp.o.requires:
 
@@ -275,16 +275,16 @@ CMakeFiles/coinfinder.dir/elements.cpp.o.provides.build: CMakeFiles/coinfinder.d
 
 CMakeFiles/coinfinder.dir/test_cases.cpp.o: CMakeFiles/coinfinder.dir/flags.make
 CMakeFiles/coinfinder.dir/test_cases.cpp.o: test_cases.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/s23410fw/Documents/software/coinfinder/coinfinder/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/coinfinder.dir/test_cases.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coinfinder.dir/test_cases.cpp.o -c /Users/s23410fw/Documents/software/coinfinder/coinfinder/test_cases.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/coinfinder.dir/test_cases.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coinfinder.dir/test_cases.cpp.o -c /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/test_cases.cpp
 
 CMakeFiles/coinfinder.dir/test_cases.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/coinfinder.dir/test_cases.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/s23410fw/Documents/software/coinfinder/coinfinder/test_cases.cpp > CMakeFiles/coinfinder.dir/test_cases.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/test_cases.cpp > CMakeFiles/coinfinder.dir/test_cases.cpp.i
 
 CMakeFiles/coinfinder.dir/test_cases.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/coinfinder.dir/test_cases.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/s23410fw/Documents/software/coinfinder/coinfinder/test_cases.cpp -o CMakeFiles/coinfinder.dir/test_cases.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/test_cases.cpp -o CMakeFiles/coinfinder.dir/test_cases.cpp.s
 
 CMakeFiles/coinfinder.dir/test_cases.cpp.o.requires:
 
@@ -326,7 +326,7 @@ coinfinder: CMakeFiles/coinfinder.dir/test_cases.cpp.o
 coinfinder: CMakeFiles/coinfinder.dir/build.make
 coinfinder: /Library/Frameworks/Python.framework/Versions/3.6/lib/libpython3.6m.dylib
 coinfinder: CMakeFiles/coinfinder.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/s23410fw/Documents/software/coinfinder/coinfinder/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX executable coinfinder"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX executable coinfinder"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/coinfinder.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -352,6 +352,6 @@ CMakeFiles/coinfinder.dir/clean:
 .PHONY : CMakeFiles/coinfinder.dir/clean
 
 CMakeFiles/coinfinder.dir/depend:
-	cd /Users/s23410fw/Documents/software/coinfinder/coinfinder && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/s23410fw/Documents/software/coinfinder/coinfinder /Users/s23410fw/Documents/software/coinfinder/coinfinder /Users/s23410fw/Documents/software/coinfinder/coinfinder /Users/s23410fw/Documents/software/coinfinder/coinfinder /Users/s23410fw/Documents/software/coinfinder/coinfinder/CMakeFiles/coinfinder.dir/DependInfo.cmake --color=$(COLOR)
+	cd /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/CMakeFiles/coinfinder.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/coinfinder.dir/depend
 
