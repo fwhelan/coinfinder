@@ -1,0 +1,3 @@
+/Users/s23410fw/Documents/software/coinfinder/coinfinder/CMakeFiles/rebuild_cache.dir
+/Users/s23410fw/Documents/software/coinfinder/coinfinder/CMakeFiles/edit_cache.dir
+/Users/s23410fw/Documents/software/coinfinder/coinfinder/CMakeFiles/coinfinder.dir
