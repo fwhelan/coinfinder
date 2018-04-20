@@ -74,12 +74,27 @@ class Beta
         bool has_edges() const;
 };
 
-//Define the edge class here with all the methods I'll need to get weights etc.
 /**
  * EDGE class.
  * e.g. connections between alphas and betas, weights of the edges.
 **/
+class Edge
+{
+        private:
+#ifndef NDEBUG
+        std::string _name;
+#endif
+        std::unordered_set<Alpha*> _alphas;
+	std::unordered_set<Beta*> _betas;
+	int num_gammas;
+	int weight;
 
+        public:
+        explicit Edge( const std::string& name ); //, int num_gammas, int weight);
+        const std::string get_name() const;
+        int get_num_gammas() const;
+        int get_weight() const;
+};
 
 /**
  * The GAMMA, which are the elements of both the `Alpha` and `Beta` groups.

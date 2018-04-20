@@ -382,19 +382,19 @@ wchar.h
 
 /Library/Frameworks/Python.framework/Versions/3.6/include/python3.6m/weakrefobject.h
 
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/binomial_test.cpp
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/binomial_test.cpp
 binomial_test.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/binomial_test.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/binomial_test.h
 math.h
 -
 stdexcept
 -
 
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/binomial_test.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/binomial_test.h
 constants.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/constants.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/constants.h
 
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/coincidence.cpp
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/coincidence.cpp
 iostream
 -
 fstream
@@ -402,61 +402,61 @@ fstream
 vector
 -
 coincidence.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/coincidence.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/coincidence.h
 dataset.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/dataset.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/dataset.h
 elements.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/elements.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/elements.h
 parameters.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/parameters.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/parameters.h
 significance.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/significance.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/significance.h
 binomial_test.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/binomial_test.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/binomial_test.h
 Python.h
 -
 
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/coincidence.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/coincidence.h
 string
 -
 dataset.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/dataset.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/dataset.h
 elements.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/elements.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/elements.h
 constants.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/constants.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/constants.h
 
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/connectivity.cpp
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/connectivity.cpp
 iostream
 -
 sstream
 -
 connectivity.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/connectivity.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/connectivity.h
 binomial_test.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/binomial_test.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/binomial_test.h
 significance.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/significance.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/significance.h
 elements.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/elements.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/elements.h
 constants.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/constants.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/constants.h
 
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/connectivity.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/connectivity.h
 string
 -
 dataset.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/dataset.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/dataset.h
 binomial_test.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/binomial_test.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/binomial_test.h
 significance.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/significance.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/significance.h
 
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/constants.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/constants.h
 
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/dataset.cpp
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/dataset.cpp
 dataset.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/dataset.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/dataset.h
 fstream
 -
 vector
@@ -466,27 +466,27 @@ iostream
 sstream
 -
 elements.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/elements.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/elements.h
 parameters.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/parameters.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/parameters.h
 
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/dataset.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/dataset.h
 string
 -
 id_lookup.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/id_lookup.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/id_lookup.h
 parameters.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/parameters.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/parameters.h
 
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/elements.cpp
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/elements.cpp
 cassert
 -
 sstream
 -
 elements.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/elements.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/elements.h
 
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/elements.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/elements.h
 string
 -
 map
@@ -494,13 +494,13 @@ map
 unordered_set
 -
 
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/id_lookup.cpp
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/id_lookup.cpp
 id_lookup.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/id_lookup.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/id_lookup.h
 elements.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/elements.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/elements.h
 
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/id_lookup.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/id_lookup.h
 map
 -
 string
@@ -510,23 +510,23 @@ unordered_set
 set
 -
 
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/main.cpp
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/main.cpp
 iostream
 -
 dataset.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/dataset.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/dataset.h
 coincidence.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/coincidence.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/coincidence.h
 constants.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/constants.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/constants.h
 parameters.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/parameters.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/parameters.h
 connectivity.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/connectivity.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/connectivity.h
 test_cases.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/test_cases.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/test_cases.h
 
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/parameters.cpp
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/parameters.cpp
 iostream
 -
 sstream
@@ -540,35 +540,35 @@ vector
 functional
 -
 parameters.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/parameters.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/parameters.h
 test_cases.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/test_cases.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/test_cases.h
 
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/parameters.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/parameters.h
 string
 -
 constants.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/constants.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/constants.h
 
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/significance.cpp
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/significance.cpp
 iostream
 -
 cmath
 -
 significance.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/significance.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/significance.h
 
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/significance.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/significance.h
 constants.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/constants.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/constants.h
 
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/test_cases.cpp
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/test_cases.cpp
 iostream
 -
 test_cases.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/test_cases.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/test_cases.h
 binomial_test.h
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/binomial_test.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/binomial_test.h
 
-/Users/s23410fw/Documents/software/coinfinder/coinfinder/test_cases.h
+/Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/test_cases.h
 
