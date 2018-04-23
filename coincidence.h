@@ -22,7 +22,7 @@ class Coincidence
         
     private:
         static std::vector<double> calculate_phylogenetic_distance(const std::map<const Beta*, int>& edgeList_B1, const std::map<const Beta*, int>& edgeList_B2);
-	static void calculate_syntentic_distance(const std::map<const Beta*, int>& edgeList_B1, const std::map<const Beta*, int>& edgeList_B2);
+	static std::vector<int> calculate_syntentic_distance(const std::map<const Beta*, int>& edgeList_B1, const std::map<const Beta*, int>& edgeList_B2, const id_lookup<Edge>& edge_table, const Alpha& alpha_yain, const Alpha& alpha_tain);
 	static void _coincidence_to_p( const DataSet& dataset, const Alpha& alpha_yain, const Alpha& alpha_tain, double cor_sig_level, int both_of, int one_of, int any_yain, int any_tain );
         static void _write_header();
 };

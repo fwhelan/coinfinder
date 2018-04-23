@@ -41,7 +41,7 @@ void Coincidence::run( const DataSet& dataset /**< Dataset */ )
     {
         const Alpha& alpha_yain = *kvp_yain.second;
 
-	std::cerr << "alpha is: " << alpha_yain.get_name() << std::endl; /*Print alpha value for sanity check*/
+	//std::cerr << "alpha is: " << alpha_yain.get_name() << std::endl; /*Print alpha value for sanity check*/
 
         count++;
 
@@ -69,7 +69,7 @@ void Coincidence::run( const DataSet& dataset /**< Dataset */ )
         {
             const Alpha& alpha_tain = *kvp_tain.second;
 
-	    std::cerr << "alpha is: " << alpha_tain.get_name() << std::endl; /*Print alpha value for sanity check*/
+	    //std::cerr << "alpha is: " << alpha_tain.get_name() << std::endl; /*Print alpha value for sanity check*/
 		
             if (alpha_tain.get_name().compare( alpha_yain.get_name()) <= 0)
             {
@@ -80,9 +80,9 @@ void Coincidence::run( const DataSet& dataset /**< Dataset */ )
             int num_edges_tain = static_cast<int>(edges_tain.size());
 
 	    /*Print beta values for sanity check*/
-	    for (std::pair<const Beta*, int> p : edges_tain) {
+	    /*for (std::pair<const Beta*, int> p : edges_tain) {
             	std::cerr << "Edges: " << (p.first)->get_name() << ' ' << p.second << '\n';
-            }
+            }*/
 
             // Count overlaps
             int overlaps = 0;
@@ -102,11 +102,11 @@ void Coincidence::run( const DataSet& dataset /**< Dataset */ )
             int total_range = num_edges_yain + num_edges_tain - overlaps;
 
 	    // Calculate phylogenetic distance via Python Interpreter
-	    std::vector<double> dataList = Coincidence::calculate_phylogenetic_distance( edges_yain, edges_tain );
+	    std::vector<double> phenoList = Coincidence::calculate_phylogenetic_distance( edges_yain, edges_tain );
 	    
 	    // Calculate syntentic distance
-	    Coincidence::calculate_syntentic_distance( edges_yain, edges_tain );
-	    return;
+	    std::vector<int> synList = Coincidence::calculate_syntentic_distance( edges_yain, edges_tain, edge_table, alpha_yain, alpha_tain );
+	    //return;
 
             Coincidence::_coincidence_to_p( dataset, alpha_yain, alpha_tain, cor_sig, overlaps, total_range, num_edges_yain, num_edges_tain );
         }
@@ -191,14 +191,28 @@ std::vector<double> Coincidence::calculate_phylogenetic_distance( 	const std::ma
 	return(dataList);
 }
 
-void Coincidence::calculate_syntentic_distance( const std::map<const Beta*, int>& edgeList_B1,
-						const std::map<const Beta*, int>& edgeList_B2)
+std::vector<int> Coincidence::calculate_syntentic_distance( const std::map<const Beta*, int>& edgeList_B1,
+						const std::map<const Beta*, int>& edgeList_B2,
+						const id_lookup<Edge>& edge_table,
+						const Alpha& alpha_yain,
+						const Alpha& alpha_tain)
 {
-	//read in roary presence absence data
-	//for the 2 Beta's in question, pull out the 
-	/*Get weight for the associated edge*/
-        /*Edge edge = edge_table.find_id(alpha_yain.get_name()+"-"+(p.first)->get_name());
-        std::cerr << "With edge weights: " << edge.get_weight() << std::endl;*/
+	std::vector<int> synList;
+	/* For all intersecting betas between the 2 maps (i.e. genomes which contain both alphas), calculate the distance
+	 * between the 2 alphas by retrieving the edge weights and looking at the absolute difference betwene them*/
+	for (std::pair<const Beta*, int> p : edgeList_B1) {
+		for (std::pair<const Beta*, int> q : edgeList_B2) { //TODO- this is so costly!
+			if ((p.first)->get_name() == (q.first)->get_name()) {
+            			/*std::cerr << "Betas: " << (p.first)->get_name() << " and " << (q.first)->get_name() << " match"  << '\n';
+				std::cerr << "Weights are: " << edge1.get_weight() << " and " << edge2.get_weight() << std::endl;
+				std::cerr << "Diff is: " << abs(edge1.get_weight()-edge2.get_weight()) << std::endl;*/
+				Edge edge1 = edge_table.find_id(alpha_yain.get_name()+"-"+(p.first)->get_name());
+				Edge edge2 = edge_table.find_id(alpha_tain.get_name()+"-"+(q.first)->get_name());
+				synList.push_back(abs(edge1.get_weight()-edge2.get_weight()));
+			}
+		}
+	}
+	return(synList);
 }
 
 

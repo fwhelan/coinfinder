@@ -183,7 +183,6 @@ void DataSet::_read_combined_file( const std::string& file_name )
 
     while (getline( file_in, cell, left ? static_cast<char>('\t') : ( middle ? static_cast<char>('\t') : static_cast<char>('\n'))))
     {
-	std::cerr << "cell = " << cell << std::endl;
         if (left)
         {
             alpha = &this->_alphas.find_id( cell );
