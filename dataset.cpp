@@ -21,6 +21,7 @@ DataSet::DataSet( const TParameters& options )
           , _betas()
           , _gammas()
           , _num_edges( 0 )
+	  , _edges()
 {
     // pass
 }
@@ -165,7 +166,11 @@ void DataSet::_read_combined_file( const std::string& file_name )
     file_in.open( file_name );
     std::string cell;
     bool        left = true;
+    bool	middle = false;
+    bool	right = false;
     Alpha* alpha = nullptr; 
+    Beta* beta = nullptr;;
+    Edge* edge = nullptr;
     
     if (!file_in)
     {
@@ -176,32 +181,51 @@ void DataSet::_read_combined_file( const std::string& file_name )
     
     int n = 0;
 
-    while (getline( file_in, cell, left ? static_cast<char>('\t') : static_cast<char>('\n')))
+    while (getline( file_in, cell, left ? static_cast<char>('\t') : ( middle ? static_cast<char>('\t') : static_cast<char>('\n'))))
     {
+	std::cerr << "cell = " << cell << std::endl;
         if (left)
         {
             alpha = &this->_alphas.find_id( cell );
+		left = false;
+		middle = true;
         }
-        else
+	else if (middle)
         {
             // ALPHA--[WITH]->BETA
-            Beta& beta = this->_betas.find_id( cell );
+            beta = &this->_betas.find_id( cell );
             
-            if (alpha->register_edge( nullptr, beta )) //include that extra bit of information here about the edge
+            if (alpha->register_edge( nullptr, *beta )) //include that extra bit of information here about the edge
             {
                 ++this->_num_edges;
             }
             
-            beta.register_edge( nullptr, *alpha ); // B -> E
+            beta->register_edge( nullptr, *alpha ); // B -> E
             
             if (_options.verbose)
             {
-                std::cerr << "Edge formed between " << alpha->get_name() << " and " << beta.get_name() << std::endl;
+                std::cerr << "Edge formed between " << alpha->get_name() << " and " << beta->get_name() << std::endl;
             }
+		middle = false;
+		right = true;
         }
+	else
+	{
+		edge = &this->_edges.find_id( alpha->get_name()+"-"+beta->get_name() );
+
+		edge->register_nodes( *alpha, *beta );
+
+		edge->set_weight( std::stoi(cell) );
+
+		if (_options.verbose)
+		{
+			std::cerr << "Weight added " << cell << std::endl;
+		}
+		right = false;
+		left = true;
+	}
 
         n+=1;
-        left = !left;
     }
 
     this->_dump_sizes();
@@ -225,6 +249,11 @@ const id_lookup<Gamma>& DataSet::get_gammas() const
 const id_lookup<Beta>& DataSet::get_betas() const
 {
     return _betas;
+}
+
+const id_lookup<Edge>& DataSet::get_edges() const
+{
+	return _edges;
 }
 
 
