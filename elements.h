@@ -16,6 +16,9 @@ class Alpha;
 class Beta;
 
 
+class Edge;
+
+
 class Gamma;
 
 
@@ -84,16 +87,18 @@ class Edge
 #ifndef NDEBUG
         std::string _name;
 #endif
-        std::unordered_set<Alpha*> _alphas;
-	std::unordered_set<Beta*> _betas;
+        std::unordered_set<const Alpha*> _alphas;
+	std::unordered_set<const Beta*> _betas;
 	int num_gammas;
 	int weight;
 
         public:
         explicit Edge( const std::string& name ); //, int num_gammas, int weight);
-        const std::string get_name() const;
+        void register_nodes( const Alpha& alpha, const Beta& beta );
+	const std::string get_name() const;
         int get_num_gammas() const;
-        int get_weight() const;
+        void set_weight( const int weight );
+	int get_weight() const;
 };
 
 /**

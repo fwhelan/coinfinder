@@ -12,6 +12,7 @@
 
 class Alpha;
 class Beta;
+class Edge;
 class Gamma;
 
 
@@ -23,6 +24,7 @@ class DataSet
         id_lookup<Beta> _betas;
         id_lookup<Gamma> _gammas;
         int _num_edges;
+	id_lookup<Edge> _edges;
         
     public:
         explicit DataSet(const TParameters& options);
@@ -31,6 +33,7 @@ class DataSet
         const id_lookup<Alpha>& get_alphas() const;
         const id_lookup<Beta>& get_betas() const;
         const id_lookup<Gamma>& get_gammas() const;
+	const id_lookup<Edge>& get_edges() const;
 
         void read_files( const std::string& alpha_file_name, const std::string& beta_file_name, const std::string& combined_file_name );
         

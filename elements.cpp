@@ -243,6 +243,12 @@ Edge::Edge( const std::string& name ) //, int num_gammas, int weight )
 	// pass
 }
 
+void Edge::register_nodes( const Alpha& alpha, const Beta& beta )
+{
+	this->_alphas.insert( &alpha );
+	this->_betas.insert( &beta );
+}
+
 const std::string Edge::get_name() const
 {
 #ifndef NDEBUG
@@ -257,6 +263,11 @@ const std::string Edge::get_name() const
 int Edge::get_num_gammas() const
 {
 	return num_gammas;
+}
+
+void Edge::set_weight( const int weight )
+{
+	this->weight = weight;
 }
 
 int Edge::get_weight() const

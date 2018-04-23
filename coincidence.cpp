@@ -24,6 +24,7 @@ void Coincidence::run( const DataSet& dataset /**< Dataset */ )
 
     std::cerr << "Iterating matrix..." << std::endl;
     const id_lookup<Alpha>& alpha_table = dataset.get_alphas();
+    const id_lookup<Edge>& edge_table = dataset.get_edges();
 
     const double cor_sig = Significance::correct( dataset.get_options().sig_level, dataset.get_options().correction, dataset.get_num_edges());
 
@@ -54,7 +55,11 @@ void Coincidence::run( const DataSet& dataset /**< Dataset */ )
 	
 	/*Print beta values for sanity check*/
 	/*for (std::pair<const Beta*, int> p : edges_yain) {
-	    std::cerr << "Edges: " << (p.first)->get_name() << ' ' << p.second << '\n';
+	    std::cerr << "Betas: " << (p.first)->get_name() << ' ' << p.second << '\n';*/
+	    /*Get weight for the associated edge*/
+	    /*Edge edge = edge_table.find_id(alpha_yain.get_name()+"-"+(p.first)->get_name());
+	    std::cerr << "With edge weights: " << edge.get_weight() << std::endl;
+	    
 	}*/
 
 	//
@@ -65,7 +70,7 @@ void Coincidence::run( const DataSet& dataset /**< Dataset */ )
             const Alpha& alpha_tain = *kvp_tain.second;
 
 	    std::cerr << "alpha is: " << alpha_tain.get_name() << std::endl; /*Print alpha value for sanity check*/
-
+		
             if (alpha_tain.get_name().compare( alpha_yain.get_name()) <= 0)
             {
                 continue;
@@ -75,9 +80,9 @@ void Coincidence::run( const DataSet& dataset /**< Dataset */ )
             int num_edges_tain = static_cast<int>(edges_tain.size());
 
 	    /*Print beta values for sanity check*/
-	    /*for (std::pair<const Beta*, int> p : edges_tain) {
+	    for (std::pair<const Beta*, int> p : edges_tain) {
             	std::cerr << "Edges: " << (p.first)->get_name() << ' ' << p.second << '\n';
-            }*/	
+            }
 
             // Count overlaps
             int overlaps = 0;
@@ -191,6 +196,9 @@ void Coincidence::calculate_syntentic_distance( const std::map<const Beta*, int>
 {
 	//read in roary presence absence data
 	//for the 2 Beta's in question, pull out the 
+	/*Get weight for the associated edge*/
+        /*Edge edge = edge_table.find_id(alpha_yain.get_name()+"-"+(p.first)->get_name());
+        std::cerr << "With edge weights: " << edge.get_weight() << std::endl;*/
 }
 
 

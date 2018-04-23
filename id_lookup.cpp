@@ -92,4 +92,5 @@ int id_lookup<T>::size() const
 // We only use `id_lookup` on these types, so register them now
 template class id_lookup<Alpha>;
 template class id_lookup<Beta>;
+template class id_lookup<Edge>;
 template class id_lookup<Gamma>;
