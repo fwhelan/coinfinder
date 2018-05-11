@@ -219,6 +219,7 @@ void DataSet::_read_combined_file( const std::string& file_name )
 		if (_options.verbose)
 		{
 			std::cerr << "Weight added " << cell << std::endl;
+			std::cerr << "Weight is " << edge->get_weight() << std::endl;
 		}
 		right = false;
 		left = true;

@@ -20,9 +20,17 @@ def calc( *thelist ):
 	#Define distanceList
 	distList = list()
 	#For each unique combination between edgesB1 and edgesB2, calculate the pairwise phylogenetic distance
-	for perm in itertools.product(edgesB1, edgesB2):
-		nodeA = phylo&(str(perm[0]))
-		nodeB = phylo&(str(perm[1]))
+	for perm in itertools.combinations(edgesB1, edgesB2):
+		try:
+			nodeA = phylo&(str(perm[0]))
+		except:
+			print("Cannot find node {} in phylogeny.".format(perm[0]))
+			return(perm[0])
+		try:
+			nodeB = phylo&(str(perm[1]))
+		except:
+			print("Cannot find node {} in phylogeny.".format(perm[1]))
+			return(perm[1])
 		distList.append(nodeA.get_distance(nodeB))
 		#add catch for nodes not in the tree
 	print(str(distList))
