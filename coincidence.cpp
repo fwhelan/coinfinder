@@ -41,7 +41,7 @@ void Coincidence::run( const DataSet& dataset /**< Dataset */ )
     {
         const Alpha& alpha_yain = *kvp_yain.second;
 
-	//std::cerr << "alpha is: " << alpha_yain.get_name() << std::endl; /*Print alpha value for sanity check*/
+	std::cerr << "alpha is: " << alpha_yain.get_name() << std::endl; /*Print alpha value for sanity check*/
 
         count++;
 
@@ -59,9 +59,9 @@ void Coincidence::run( const DataSet& dataset /**< Dataset */ )
 	    /*Get weight for the associated edge*/
 	    /*Edge edge = edge_table.find_id(alpha_yain.get_name()+"-"+(p.first)->get_name());
 	    std::cerr << "With edge weights: " << edge.get_weight() << std::endl;
-	    
 	}*/
-
+	std::cerr << "I have " << num_edges_yain << " edges" << std::endl;
+	    
 	//
         // Iterate second alpha
         //
@@ -69,7 +69,7 @@ void Coincidence::run( const DataSet& dataset /**< Dataset */ )
         {
             const Alpha& alpha_tain = *kvp_tain.second;
 
-	    //std::cerr << "alpha is: " << alpha_tain.get_name() << std::endl; /*Print alpha value for sanity check*/
+	    std::cerr << "alpha is: " << alpha_tain.get_name() << std::endl; /*Print alpha value for sanity check*/
 		
             if (alpha_tain.get_name().compare( alpha_yain.get_name()) <= 0)
             {
@@ -81,8 +81,13 @@ void Coincidence::run( const DataSet& dataset /**< Dataset */ )
 
 	    /*Print beta values for sanity check*/
 	    /*for (std::pair<const Beta*, int> p : edges_tain) {
-            	std::cerr << "Edges: " << (p.first)->get_name() << ' ' << p.second << '\n';
+            	std::cerr << "Betas: " << (p.first)->get_name() << ' ' << p.second << '\n';*/
+		/*Get weight for the associated edge*/
+            	/*Edge edge = edge_table.find_id(alpha_tain.get_name()+"-"+(p.first)->get_name());
+            	std::cerr << "With edge weights: " << edge.get_weight() << std::endl;
             }*/
+
+	    std::cerr << "I have " << num_edges_tain << " edges" << std::endl;
 
             // Count overlaps
             int overlaps = 0;
@@ -98,15 +103,24 @@ void Coincidence::run( const DataSet& dataset /**< Dataset */ )
                     overlaps += 1;
                 }
             }
+
+	    std::cerr << "I have " << overlaps << " number of overlapping edges" << std::endl;
+
 	    // Count total range
             int total_range = num_edges_yain + num_edges_tain - overlaps;
 
 	    // Calculate phylogenetic distance via Python Interpreter
 	    std::vector<double> phenoList = Coincidence::calculate_phylogenetic_distance( edges_yain, edges_tain );
-	    
+	    /*Temp print out vector to decide on next step*/
+	    for (auto v : phenoList) { std::cerr << v << " "; }
+	    std::cerr << std::endl;
+	    /*Print length of phenoList*/
+	    std::cerr << "phenoList is " << phenoList.size() << " long" << std::endl;
 	    // Calculate syntentic distance
 	    std::vector<int> synList = Coincidence::calculate_syntentic_distance( edges_yain, edges_tain, edge_table, alpha_yain, alpha_tain );
-	    //return;
+	    /*Temp print out vector to decide on next step*/
+	    for (auto v : synList) { std::cerr << v << " "; }
+	    return;
 
             Coincidence::_coincidence_to_p( dataset, alpha_yain, alpha_tain, cor_sig, overlaps, total_range, num_edges_yain, num_edges_tain );
         }
@@ -167,6 +181,10 @@ std::vector<double> Coincidence::calculate_phylogenetic_distance( 	const std::ma
 				std::cerr << "pValue is null" << std::endl;
 				PyErr_Print();
 			} else {
+				if (PyUnicode_Check(pValue) == 1) { //return value is a string; there was an error
+					std::cerr << "Node " << PyUnicode_AsUTF8(pValue) << " was not found in phylogeny" << std::endl;
+					PyErr_Print();
+				}
 				if (PyList_Check(pValue) == 1) { //return value is a list
 					Py_ssize_t sizey = PyList_Size(pValue);
 					for(int a=0; a<PyList_Size(pValue); a=a+1) {
