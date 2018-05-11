@@ -35,16 +35,20 @@ void Coincidence::run( const DataSet& dataset /**< Dataset */ )
     int count      = 0;
 
     //
+    // Determine the maximum phylogenetic distance in given tree
+    // and save distance information into hash
+    std::cerr << "Calculating the maximum phylogenetic distance..." << std::endl;
+    double max_phenoDist = Coincidence::maximum_phylogenetic_distance( );
+    std::cerr << "Maximum phylogenetic distance is " << max_phenoDist << std::endl;
+
+    //
     // Iterate first alpha
     //
     for (const auto& kvp_yain : alpha_table.get_table())
     {
         const Alpha& alpha_yain = *kvp_yain.second;
-
 	std::cerr << "alpha is: " << alpha_yain.get_name() << std::endl; /*Print alpha value for sanity check*/
-
         count++;
-
         if (( count % 1000 ) == 0)
         {
             std::cout << "- Row " << count << " of " << num_alphas << std::endl;
@@ -68,9 +72,7 @@ void Coincidence::run( const DataSet& dataset /**< Dataset */ )
         for (const auto& kvp_tain : alpha_table.get_table())
         {
             const Alpha& alpha_tain = *kvp_tain.second;
-
 	    std::cerr << "alpha is: " << alpha_tain.get_name() << std::endl; /*Print alpha value for sanity check*/
-		
             if (alpha_tain.get_name().compare( alpha_yain.get_name()) <= 0)
             {
                 continue;
@@ -89,18 +91,20 @@ void Coincidence::run( const DataSet& dataset /**< Dataset */ )
 
 	    std::cerr << "I have " << num_edges_tain << " edges" << std::endl;
 
+	    //
             // Count overlaps
+	    //
+	    std::vector<std::string> edges_ovlp;
             int overlaps = 0;
 
             for (const auto& kvp_edges : edges_yain)
             {
                 const Beta& beta = *kvp_edges.first;
-
                 auto it = edges_tain.find( &beta );
-
                 if (it != edges_tain.end())
                 {
                     overlaps += 1;
+		    edges_ovlp.push_back(beta.get_name());
                 }
             }
 
@@ -110,16 +114,37 @@ void Coincidence::run( const DataSet& dataset /**< Dataset */ )
             int total_range = num_edges_yain + num_edges_tain - overlaps;
 
 	    // Calculate phylogenetic distance via Python Interpreter
-	    std::vector<double> phenoList = Coincidence::calculate_phylogenetic_distance( edges_yain, edges_tain );
+	    //std::vector<double> phenoList = Coincidence::calculate_phylogenetic_distance( edges_yain, edges_tain );
+	    std::vector<double> phenoList = Coincidence::calculate_phylogenetic_distance( edges_ovlp );
 	    /*Temp print out vector to decide on next step*/
 	    for (auto v : phenoList) { std::cerr << v << " "; }
 	    std::cerr << std::endl;
+	    /*Calculate the average of the elements in phenoList*/
+	    double avg_pheno = 0;
+	    double max_pheno = 0;
+	    for (auto v : phenoList) {
+		avg_pheno += v;
+		if (v > max_pheno) { max_pheno = v; }
+	    }
+	    avg_pheno = avg_pheno/phenoList.size();
+	    std::cerr << "The maximum phenotypic distance is " << max_phenoDist << std::endl;
+	    std::cerr << "The maximum observed phenotypic distance is " << max_pheno << std::endl;
 	    /*Print length of phenoList*/
 	    std::cerr << "phenoList is " << phenoList.size() << " long" << std::endl;
 	    // Calculate syntentic distance
 	    std::vector<int> synList = Coincidence::calculate_syntentic_distance( edges_yain, edges_tain, edge_table, alpha_yain, alpha_tain );
 	    /*Temp print out vector to decide on next step*/
 	    for (auto v : synList) { std::cerr << v << " "; }
+	    std::cerr << std::endl;
+	    /*Calculate the average of the elements in synList*/
+	    double avg_syn = 0;
+	    for (auto v : synList) {
+		avg_syn += v;
+	    }
+	    avg_syn = avg_syn/synList.size();
+	    std::cerr << "The average synthetic distance is " << avg_syn << std::endl;
+	    /*Print length of synList*/
+	    std::cerr << "synList is " << synList.size() << " long" << std::endl;
 	    return;
 
             Coincidence::_coincidence_to_p( dataset, alpha_yain, alpha_tain, cor_sig, overlaps, total_range, num_edges_yain, num_edges_tain );
@@ -128,22 +153,75 @@ void Coincidence::run( const DataSet& dataset /**< Dataset */ )
 }
 
 /**
+ * Calculate the maximum phylogenetic distance in the given phylogeny
+*/
+double Coincidence::maximum_phylogenetic_distance( )
+{
+        Py_Initialize();
+        PyRun_SimpleString("import sys");
+        PyRun_SimpleString("sys.path.append(\".\")");
+
+        PyObject* pName = PyUnicode_DecodeFSDefault("phylomax");
+        PyObject* pModule = PyImport_Import(pName);
+        Py_DECREF(pName);
+        if (pModule != NULL) {
+                PyObject* pFunc = PyObject_GetAttrString(pModule, "calc");
+                if (pFunc && PyCallable_Check(pFunc)) {
+                        /*Convert vector to array for send*/
+                        //PyObject* pArgs = PyTuple_New(2+edgesB1.size()+edgesB2.size());
+                        PyObject* pArgs = PyTuple_New(1);
+                        PyObject* pValue;
+                        PyTuple_SetItem(pArgs, 0, PyUnicode_FromString("core.nex.con.tre.newick")); //send tree as first element
+			pValue = PyObject_CallObject(pFunc, pArgs);
+                        Py_DECREF(pArgs);
+                        if (pValue == NULL) {
+                                std::cerr << "pValue is null" << std::endl;
+                                PyErr_Print();
+                        } else {
+                                if (PyUnicode_Check(pValue) == 1) { //return value is a string; there was an error
+                                        std::cerr << "There was an error in Python code" << std::endl;
+                                        PyErr_Print();
+                                } else if (PyFloat_Check(pValue) == 1) {
+					return(PyFloat_AsDouble(pValue));
+				} else if (PyList_Check(pValue) == 1) { //return value is a list
+                                        Py_ssize_t sizey = PyList_Size(pValue);
+                                        for(int a=0; a<PyList_Size(pValue); a=a+1) {
+                                                PyObject *value = PyList_GetItem(pValue, a);
+                                                //dataList.push_back(PyFloat_AsDouble(value));
+                                                //std::cerr << "value: " << PyFloat_AsDouble(value) << std::endl;
+                                        }
+
+                                } else {
+                                        std::cerr << "Error: a list isn't being returned" << std::endl; //catch this properly
+                                }
+				Py_DECREF(pValue);
+                        }
+                }
+        } else {
+		PyErr_Print();
+	}
+        Py_Finalize();
+	return(-1);
+}
+
+/**
  * Calculate the phylogenetic distances between all combinations of nodes in edges_yain and edges_tain
 */
-std::vector<double> Coincidence::calculate_phylogenetic_distance( 	const std::map<const Beta*, int>& edgeList_B1,
-							const std::map<const Beta*, int>& edgeList_B2)
+//std::vector<double> Coincidence::calculate_phylogenetic_distance( 	const std::map<const Beta*, int>& edgeList_B1,
+//							const std::map<const Beta*, int>& edgeList_B2)
+std::vector<double> Coincidence::calculate_phylogenetic_distance(	std::vector<std::string> edges_ovlp)
 {
 	/*Definitions*/
 	std::vector<double> dataList;
 	/*Save map values into vector for push to Python*/
-	std::vector<std::string> edgesB1;
+	/*std::vector<std::string> edgesB1;
 	for(std::pair<const Beta*, int> p : edgeList_B1) {
 		edgesB1.push_back((p.first)->get_name());
 	}
 	std::vector<std::string> edgesB2;
 	for(std::pair<const Beta*, int> q : edgeList_B2) {
 		edgesB2.push_back((q.first)->get_name());
-	}
+	}*/
 	
 	Py_Initialize();
 	PyRun_SimpleString("import sys");
@@ -156,11 +234,12 @@ std::vector<double> Coincidence::calculate_phylogenetic_distance( 	const std::ma
 		PyObject* pFunc = PyObject_GetAttrString(pModule, "calc");
 		if (pFunc && PyCallable_Check(pFunc)) {
 			/*Convert vector to array for send*/
-			PyObject* pArgs = PyTuple_New(2+edgesB1.size()+edgesB2.size());
+			//PyObject* pArgs = PyTuple_New(2+edgesB1.size()+edgesB2.size());
+			PyObject* pArgs = PyTuple_New(1+edges_ovlp.size());
 			PyObject* pValue;
-			PyTuple_SetItem(pArgs, 0, PyUnicode_FromString("ROARY_nov30_fasttree.newick")); //send tree as first element
-			PyTuple_SetItem(pArgs, 1, PyLong_FromLong(edgesB1.size())); //set a break counter to know where to split the input into the 2 edge lists
-			for (size_t i=0; i < edgesB1.size(); i++) {
+			PyTuple_SetItem(pArgs, 0, PyUnicode_FromString("core.nex.con.tre.newick")); //send tree as first element
+			//PyTuple_SetItem(pArgs, 1, PyLong_FromLong(edgesB1.size())); //set a break counter to know where to split the input into the 2 edge lists
+			/*for (size_t i=0; i < edgesB1.size(); i++) {
 				pValue = PyUnicode_FromString(edgesB1[i].c_str());
 				if (!pValue) {
 					//catch
@@ -173,6 +252,13 @@ std::vector<double> Coincidence::calculate_phylogenetic_distance( 	const std::ma
 					//catch
 				}
 				PyTuple_SetItem(pArgs, (i+2+edgesB1.size()), pValue);
+			}*/
+			for (size_t i=0; i < edges_ovlp.size(); i++) {
+				pValue = PyUnicode_FromString(edges_ovlp[i].c_str());
+				if (!pValue) {
+					//catch
+				}
+				PyTuple_SetItem(pArgs, (i+1), pValue);
 			}
 			pValue = PyObject_CallObject(pFunc, pArgs);
 			Py_DECREF(pArgs);

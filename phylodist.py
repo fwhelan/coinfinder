@@ -11,16 +11,16 @@ import itertools
 # (b) newick formatted phylogeny of the As
 #
 #Output: an array of pairwise distances between all combinations of B1 and B2 edges (maybe a 2d array with labelled A pairs?)
-
 def calc( *thelist ):
 	phylo = ete3.Tree(str(thelist[0]))
-	count = thelist[1]
-	edgesB1 = thelist[2:2+count]
-	edgesB2 = thelist[2+count:]
+	#count = thelist[1]
+	#edgesB1 = thelist[2:2+count]
+	#edgesB2 = thelist[2+count:]
+	edgesB1 = thelist[1:]
 	#Define distanceList
 	distList = list()
 	#For each unique combination between edgesB1 and edgesB2, calculate the pairwise phylogenetic distance
-	for perm in itertools.combinations(edgesB1, edgesB2):
+	for perm in itertools.combinations(edgesB1, 2):
 		try:
 			nodeA = phylo&(str(perm[0]))
 		except:
