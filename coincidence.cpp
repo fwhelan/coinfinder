@@ -35,8 +35,8 @@ void Coincidence::run( const DataSet& dataset /**< Dataset */ )
     int count      = 0;
 
     //
-    // Determine the maximum phylogenetic distance in given tree
-    // and save distance information into hash
+    // Determine the maximum phylogenetic distance in given tree and save distance information into hash
+    //
     std::cerr << "Calculating phylogenetic distance information..." << std::endl;
     std::map<std::pair<std::string, std::string>, double> phylo_dists = Coincidence::calc_phylogenetic_distances( );
     std::cerr << "Calculating the maximum phylogenetic distance..." << std::endl;
@@ -44,7 +44,6 @@ void Coincidence::run( const DataSet& dataset /**< Dataset */ )
     for(const auto &p : phylo_dists) {
 	if((p.second) > max_phylo_dist) { max_phylo_dist = (p.second); }
     }
-    //std::cerr << "Maximum phylogenetic distance: " << max_phylo_dist << std::endl;
 
     //
     // Iterate first alpha
@@ -53,33 +52,19 @@ void Coincidence::run( const DataSet& dataset /**< Dataset */ )
     for (const auto& kvp_yain : alpha_table.get_table())
     {
         const Alpha& alpha_yain = *kvp_yain.second;
-	//std::cerr << "alpha is: " << alpha_yain.get_name() << std::endl; /*Print alpha value for sanity check*/
         count++;
-        if (( count % 1000 ) == 0)
-        {
-            //std::cout << "- Row " << count << " of " << num_alphas << std::endl;
-        }
-
-        const std::map<const Beta*, int>& edges_yain = alpha_yain.get_edges();
+        
+	const std::map<const Beta*, int>& edges_yain = alpha_yain.get_edges();
         int num_edges_yain = static_cast<int>(edges_yain.size());
 	
-	/*Print beta values for sanity check*/
-	/*for (std::pair<const Beta*, int> p : edges_yain) {
-	    std::cerr << "Betas: " << (p.first)->get_name() << ' ' << p.second << '\n';*/
-	    /*Get weight for the associated edge*/
-	    /*Edge edge = edge_table.find_id(alpha_yain.get_name()+"-"+(p.first)->get_name());
-	    std::cerr << "With edge weights: " << edge.get_weight() << std::endl;
-	}*/
-	//std::cerr << "I have " << num_edges_yain << " edges" << std::endl;
-	    
 	//
         // Iterate second alpha
         //
         for (const auto& kvp_tain : alpha_table.get_table())
         {
             const Alpha& alpha_tain = *kvp_tain.second;
-	    //std::cerr << "alpha is: " << alpha_tain.get_name() << std::endl; /*Print alpha value for sanity check*/
-            if (alpha_tain.get_name().compare( alpha_yain.get_name()) <= 0)
+            
+	    if (alpha_tain.get_name().compare( alpha_yain.get_name()) <= 0)
             {
                 continue;
             }
@@ -87,20 +72,9 @@ void Coincidence::run( const DataSet& dataset /**< Dataset */ )
             const std::map<const Beta*, int>& edges_tain = alpha_tain.get_edges();
             int num_edges_tain = static_cast<int>(edges_tain.size());
 
-	    /*Print beta values for sanity check*/
-	    /*for (std::pair<const Beta*, int> p : edges_tain) {
-            	std::cerr << "Betas: " << (p.first)->get_name() << ' ' << p.second << '\n';*/
-		/*Get weight for the associated edge*/
-            	/*Edge edge = edge_table.find_id(alpha_tain.get_name()+"-"+(p.first)->get_name());
-            	std::cerr << "With edge weights: " << edge.get_weight() << std::endl;
-            }*/
-
-	    //std::cerr << "I have " << num_edges_tain << " edges" << std::endl;
-
 	    //
             // Count overlaps
 	    //
-	    std::vector<std::string> edges_ovlp;
             int overlaps = 0;
 
             for (const auto& kvp_edges : edges_yain)
@@ -110,29 +84,12 @@ void Coincidence::run( const DataSet& dataset /**< Dataset */ )
                 if (it != edges_tain.end())
                 {
                     overlaps += 1;
-		    edges_ovlp.push_back(beta.get_name());
                 }
             }
 
-	    //std::cerr << "I have " << overlaps << " number of overlapping edges" << std::endl;
-
 	    // Count total range
             int total_range = num_edges_yain + num_edges_tain - overlaps;
-
-	    // Calculate maximum observed phenotypic distance
-	    double max_pheno = pull_phylogenetic_maximum(phylo_dists, edges_ovlp);
-	    //std::cerr << "The maximum observed phenotypic distance is " << max_pheno << std::endl;
-	    // Calculate syntentic distance
-	    std::vector<int> synList = Coincidence::calculate_syntentic_distance( edges_yain, edges_tain, edge_table, alpha_yain, alpha_tain );
-	    /*Calculate the average of the elements in synList*/
-	    double avg_syn = 0;
-	    for (auto v : synList) {
-		avg_syn += v;
-	    }
-	    avg_syn = avg_syn/synList.size();
-	    //std::cerr << "The average synthetic distance is " << avg_syn << std::endl;
-
-            Coincidence::_coincidence_to_p( dataset, alpha_yain, alpha_tain, cor_sig, overlaps, total_range, num_edges_yain, num_edges_tain, (max_pheno/max_phylo_dist), avg_syn );
+            Coincidence::_coincidence_to_p( dataset, alpha_yain, alpha_tain, cor_sig, overlaps, total_range, num_edges_yain, num_edges_tain, phylo_dists, edges_yain, edges_tain, edge_table, max_phylo_dist );
         }
     }
 }
@@ -197,9 +154,21 @@ std::map<std::pair<std::string,std::string>, double> Coincidence::calc_phylogene
 /**
  * Pull the maximum phylogenetic distances between all overlapping edges for a given gene
 */
-double Coincidence::pull_phylogenetic_maximum(  std::map<std::pair<std::string, std::string>, double> phylo_dists,
-						std::vector<std::string> edges_ovlp)
+double Coincidence::pull_phylogenetic_maximum(  const std::map<std::pair<std::string, std::string>, double>& phylo_dists,
+						const std::map<const Beta*, int>& edges_yain,
+						const std::map<const Beta*, int>& edges_tain )
 {
+	std::vector<std::string> edges_ovlp;
+        for (const auto& kvp_edges : edges_yain)
+        {   
+        	const Beta& beta = *kvp_edges.first;
+                auto it = edges_tain.find( &beta );
+                if (it != edges_tain.end())
+                {   
+                    edges_ovlp.push_back(beta.get_name());
+                }
+        }
+
 	double max = 0;
 	for(const auto &p : edges_ovlp) {
 		for(const auto &q : edges_ovlp) {
@@ -244,9 +213,12 @@ void Coincidence::_coincidence_to_p( const DataSet& dataset,        /**< Dataset
                                      const int both_of,             /**< "both of" count (yain AND tain) */
                                      const int one_of,              /**< "one of" count (yain OR tain)   */
                                      const int any_yain,            /**< yain count (yain)               */
-                                     const int any_tain,             /**< tain count (tain)               */ 
-				     const double max_phylodist,
-				     const double avg_syndist	)
+                                     const int any_tain,             /**< tain count (tain)               */
+				     const std::map<std::pair<std::string, std::string>, double>& phylo_dists,
+				     const std::map<const Beta*, int>& edges_yain,
+				     const std::map<const Beta*, int>& edges_tain,
+				     const id_lookup<Edge>& edge_table,
+				     const double max_act_phylodist )
 {
     int       num_observations;
     const int max_coincidence = dataset.get_betas().size();
@@ -368,10 +340,20 @@ void Coincidence::_coincidence_to_p( const DataSet& dataset,        /**< Dataset
         }
     }
 
+    //Result is significant: calculate maximum observed phylogenetic distance and average synthetic distance to output to file
+    double max_obs_phylodist = pull_phylogenetic_maximum(phylo_dists, edges_yain, edges_tain);
+    double phylo_output = max_act_phylodist - max_obs_phylodist;
+    std::vector<int> synList = Coincidence::calculate_syntentic_distance( edges_yain, edges_tain, edge_table, alpha_yain, alpha_tain );
+    /*Calculate the average of the elements in synList*/
+    double avg_syndist = 0;
+    for (auto v : synList) {
+    	avg_syndist += float(v);
+    }
+    avg_syndist = avg_syndist/synList.size();
     std::cout << alpha_yain.get_name()
               << "\t" << alpha_tain.get_name()
               << "\t" << p_value
-	      << "\t" << max_phylodist
+	      << "\t" << phylo_output
 	      << "\t" << avg_syndist
               << "\t" << successes
               << "\t" << num_observations

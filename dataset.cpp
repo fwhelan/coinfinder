@@ -159,7 +159,7 @@ void DataSet::_read_alpha_file( const std::string& file_name )
  */
 void DataSet::_read_combined_file( const std::string& file_name )
 {
-	//add a bit to this about reading in a separate bit of information, a middle column, that contains the edge information
+    //add a bit to this about reading in a separate bit of information, a middle column, that contains the edge information
     std::cerr << "Reading alpha-beta edges..." << std::endl;
 
     std::ifstream file_in;
@@ -186,15 +186,15 @@ void DataSet::_read_combined_file( const std::string& file_name )
         if (left)
         {
             alpha = &this->_alphas.find_id( cell );
-		left = false;
-		middle = true;
+	    left = false;
+	    middle = true;
         }
 	else if (middle)
         {
             // ALPHA--[WITH]->BETA
             beta = &this->_betas.find_id( cell );
             
-            if (alpha->register_edge( nullptr, *beta )) //include that extra bit of information here about the edge
+            if (alpha->register_edge( nullptr, *beta ))
             {
                 ++this->_num_edges;
             }
@@ -205,8 +205,8 @@ void DataSet::_read_combined_file( const std::string& file_name )
             {
                 std::cerr << "Edge formed between " << alpha->get_name() << " and " << beta->get_name() << std::endl;
             }
-		middle = false;
-		right = true;
+	    middle = false;
+  	    right = true;
         }
 	else
 	{
