@@ -53,6 +53,10 @@ void Coincidence::run( const DataSet& dataset /**< Dataset */ )
     {
         const Alpha& alpha_yain = *kvp_yain.second;
         count++;
+	if (( count % 1000 ) == 0)
+        {
+            std::cerr << "- Row " << count << " of " << num_alphas << std::endl;
+        }
         
 	const std::map<const Beta*, int>& edges_yain = alpha_yain.get_edges();
         int num_edges_yain = static_cast<int>(edges_yain.size());
@@ -116,7 +120,8 @@ std::map<std::pair<std::string,std::string>, double> Coincidence::calc_phylogene
                 PyObject* pFunc = PyObject_GetAttrString(pModule, "calc");
                 if (pFunc && PyCallable_Check(pFunc)) {
                         PyObject* pArgs = PyTuple_New(1);
-                        PyTuple_SetItem(pArgs, 0, PyUnicode_FromString("core.nex.con.tre.newick")); //send tree as first element
+                        //PyTuple_SetItem(pArgs, 0, PyUnicode_FromString("core.nex.con.tre.newick")); //send tree as first element
+			PyTuple_SetItem(pArgs, 0, PyUnicode_FromString("core-gps_fasttree.newick"));
 			pValue = PyObject_CallObject(pFunc, pArgs);
                         Py_DECREF(pArgs);
                         if (pValue == NULL) {
