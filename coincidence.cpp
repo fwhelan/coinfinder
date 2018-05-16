@@ -39,11 +39,11 @@ void Coincidence::run( const DataSet& dataset, /**< Dataset */
     // Determine the maximum phylogenetic distance in given tree and save distance information into hash
     //
     std::cerr << "Calculating phylogenetic distance information..." << std::endl;
-    std::map<std::pair<std::string, std::string>, double> phylo_dists = Coincidence::calc_phylogenetic_distances( phylogeny );
+    std::map<double, std::pair<std::string, std::string>> phylo_dists = Coincidence::calc_phylogenetic_distances( phylogeny );
     std::cerr << "Calculating the maximum phylogenetic distance..." << std::endl;
     double max_phylo_dist = 0;
-    for(const auto &p : phylo_dists) {
-	if((p.second) > max_phylo_dist) { max_phylo_dist = (p.second); }
+    if(!phylo_dists.empty()) {
+    	max_phylo_dist = phylo_dists.rbegin()->first;
     }
     //
     // Iterate first alpha
@@ -103,10 +103,10 @@ void Coincidence::run( const DataSet& dataset, /**< Dataset */
 /**
  * Calculate the phylogenetic distances between all nodes in the given phylogeny up front
 */
-std::map<std::pair<std::string,std::string>, double> Coincidence::calc_phylogenetic_distances( const std::string& phylogeny )
+std::map<double, std::pair<std::string,std::string>> Coincidence::calc_phylogenetic_distances( const std::string& phylogeny )
 {
 	/*Definitions*/
-	std::map<std::pair<std::string,std::string>, double> phylogenetic_distances;
+	std::map<double, std::pair<std::string,std::string>> phylogenetic_distances;
 
 	/*Embedded Python*/
         Py_Initialize();
@@ -142,7 +142,7 @@ std::map<std::pair<std::string,std::string>, double> Coincidence::calc_phylogene
                                                 PyObject *value1 = PyList_GetItem(pValue, a);
 						PyObject *value2 = PyList_GetItem(pValue, a+1);
 						PyObject *value3 = PyList_GetItem(pValue, a+2);
-						phylogenetic_distances[std::make_pair(PyUnicode_AsUTF8(value1),PyUnicode_AsUTF8(value2))] = PyFloat_AsDouble(value3);
+						phylogenetic_distances[PyFloat_AsDouble(value3)] = std::make_pair(PyUnicode_AsUTF8(value1),PyUnicode_AsUTF8(value2));
                                         }
 
                                 } else {
@@ -162,7 +162,7 @@ std::map<std::pair<std::string,std::string>, double> Coincidence::calc_phylogene
  * Calculate the maximum observed phylogenetic distances and the average synthetic distance between all overlapping edge pairs.
 */
 std::pair<double, double> Coincidence::calc_secondaries(
-						const std::map<std::pair<std::string, std::string>, double>& phylo_dists,
+						const std::map<double, std::pair<std::string, std::string>>& phylo_dists,
 						const id_lookup<Edge>& edge_table,
 						const Alpha& alpha_yain,
 						const Alpha& alpha_tain,
@@ -176,14 +176,18 @@ std::pair<double, double> Coincidence::calc_secondaries(
 		Edge edge1 = edge_table.find_id(alpha_yain.get_name()+"-"+(p.c_str()));
 		Edge edge2 = edge_table.find_id(alpha_tain.get_name()+"-"+(p.c_str()));
 		syn_sums += abs(edge1.get_weight()-edge2.get_weight());
-                for(const auto &q : edges_ovlp) {
-			//Phylogenetic distance
-                        if (phylo_dists.find(std::make_pair(p.c_str(), q.c_str()))->second > phy_max) {
-                                phy_max = phylo_dists.find(std::make_pair(p.c_str(), q.c_str()))->second;
-                        }
-                }
         }
 	double syn_avg = syn_sums/edges_ovlp.size();
+	//Phylogenetic distance: iterate backwards through the phylogenetic distances to find the first observed in this pair of alphas
+	std::map<double, std::pair<std::string, std::string>>::const_reverse_iterator rit;
+  	for (rit=phylo_dists.rbegin(); rit!=phylo_dists.rend(); ++rit) {
+			std::pair<std::string, std::string> beta_pair = rit->second;
+			if((std::find(edges_ovlp.begin(), edges_ovlp.end(), beta_pair.first) != edges_ovlp.end()) &
+			   (std::find(edges_ovlp.begin(), edges_ovlp.end(), beta_pair.second) != edges_ovlp.end())) {
+				phy_max = rit->first;
+				break;
+			}
+	}
 	return(std::make_pair(phy_max, syn_avg));
 }
 
@@ -197,7 +201,7 @@ void Coincidence::_coincidence_to_p( const DataSet& dataset,        /**< Dataset
                                      int one_of,              /**< "one of" count (yain OR tain)   */
                                      int any_yain,            /**< yain count (yain)               */
                                      int any_tain,             /**< tain count (tain)               */
-				     const std::map<std::pair<std::string, std::string>, double>& phylo_dists,
+				     const std::map<double, std::pair<std::string, std::string>>& phylo_dists,
 				     const id_lookup<Edge>& edge_table,
 				     const double max_act_phylodist,
 				     const std::vector<std::string>& edges_ovlp )
@@ -326,14 +330,14 @@ void Coincidence::_coincidence_to_p( const DataSet& dataset,        /**< Dataset
     std::pair<double, double> secondaries = calc_secondaries(phylo_dists, edge_table, alpha_yain, alpha_tain, edges_ovlp);
     double max_obs_phylodist = secondaries.first;
     //double max_obs_phylodist = 0;
-    double phylo_output = max_act_phylodist - max_obs_phylodist;
+    //double phylo_output = max_act_phylodist - max_obs_phylodist;
     double avg_syndist = secondaries.second;
     //double avg_syndist = 0;
     
     std::cout << alpha_yain.get_name()
               << "\t" << alpha_tain.get_name()
               << "\t" << p_value
-	      << "\t" << phylo_output
+	      << "\t" << max_obs_phylodist
 	      << "\t" << avg_syndist
               << "\t" << successes
               << "\t" << num_observations
