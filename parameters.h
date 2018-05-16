@@ -26,6 +26,7 @@ struct TParameters
     std::string alpha_file_name;
     std::string beta_file_name;
     std::string combined_file_name;
+    std::string phylogeny;
     std::string deep_query_alpha;
     bool output_all;
     

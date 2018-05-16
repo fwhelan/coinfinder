@@ -98,6 +98,7 @@ TParameters TParameters::parse( int arg_count, const char** arg_vals )
             BETA_N,
             GAMMA_N,
             SIG_LEVEL,
+	    PHYLO,
             QUERY,
     };
 
@@ -118,7 +119,7 @@ TParameters TParameters::parse( int arg_count, const char** arg_vals )
     commands.emplace_back( "--accompany", 'o', [ &result ]() { SET_ONCE( coin_max_mode, EMaxMode::ACCOMPANY ); } );
     commands.emplace_back( "--avoid", 's', [ &result ]() { SET_ONCE( coin_max_mode, EMaxMode::AVOID ); } );
     commands.emplace_back( "--verbose", 'v', [ &result ]() { SET_ONCE( verbose, true ); } );
-    commands.emplace_back( "--filter", 'p', [ &result ]() { SET_ONCE( permit_filter, true ); } );
+    commands.emplace_back( "--filter", 'i', [ &result ]() { SET_ONCE( permit_filter, true ); } );
     commands.emplace_back( "--level", 'l', [ &next_command ]() { next_command = ECommand::SIG_LEVEL; } );
     commands.emplace_back( "--a", 'a', [ &next_command ]() { next_command = ECommand::ALPHA_FN; } );
     commands.emplace_back( "--b", 'b', [ &next_command ]() { next_command = ECommand::BETA_FN; } );
@@ -126,6 +127,7 @@ TParameters TParameters::parse( int arg_count, const char** arg_vals )
     commands.emplace_back( "--alpha", 'A', [ &next_command ]() { next_command = ECommand::ALPHA_N; } );
     commands.emplace_back( "--beta", 'B', [ &next_command ]() { next_command = ECommand::BETA_N; } );
     commands.emplace_back( "--gamma", 'C', [ &next_command ]() { next_command = ECommand::GAMMA_N; } );
+    commands.emplace_back( "--phylogeny", 'p', [ &next_command ]() { next_command = ECommand::PHYLO; } );
     commands.emplace_back( "--query", 'q', [ &next_command ]() { next_command = ECommand::QUERY; } );
     commands.emplace_back( "--all", 'E', [ &result ]() { SET_ONCE( output_all, true ); } );
     commands.emplace_back( "--test", 'T', &test_cases );
@@ -250,6 +252,14 @@ TParameters TParameters::parse( int arg_count, const char** arg_vals )
                 result.sig_level = std::stof( arg );
                 next_command = ECommand::FLAGS;
                 break;
+
+	    case ECommand::PHYLO:
+#ifndef NDEBUG
+		std::cerr << "command=parser: Phylogeny '" << arg << "' specified." << std::endl;
+#endif
+		result.phylogeny = arg;
+		next_command = ECommand::FLAGS;
+		break;
 
             case ECommand::QUERY:
 #ifndef NDEBUG

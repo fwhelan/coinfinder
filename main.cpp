@@ -58,7 +58,7 @@ int main( int argc, const char** argv )
             break;
 
         case EMethod::COINCIDENCE:
-            Coincidence::run( dataset );
+            Coincidence::run( dataset, options.phylogeny );
             break;
 
         default:
