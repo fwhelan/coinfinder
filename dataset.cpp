@@ -256,6 +256,11 @@ const id_lookup<Edge>& DataSet::get_edges() const
 	return _edges;
 }
 
+const int DataSet::get_num_betas() const
+{
+	return (this->get_betas()).size();
+}
+
 
 /**
  * Drops all alphas that reference no betas (through gammas). 
@@ -309,6 +314,54 @@ int DataSet::_drop_empty_alphas()
     }
 
     return static_cast<int>(to_drop.size());
+}
+
+/**
+ * Drop all saturated alphas (i.e. alphas that reference *all* betas.
+ * (an alpha cannot significantly coincide or avoid anything if it is
+ * linked to all betas).
+*/
+int DataSet::_drop_saturated_alphas()
+{
+	std::vector<std::string> to_drop = std::vector<std::string>();
+
+	std::map<std::string, Alpha*>& table = this->_alphas.get_table();
+
+	for (const auto& kvp : table) {
+		const Alpha& alpha = *kvp.second;
+		if (alpha.get_num_edges() == this->get_num_betas()) {
+			const std::string& name = kvp.first;
+			to_drop.push_back( name );
+		}
+	}
+
+	for (const std::string& name : to_drop) {
+		if(_options.verbose) {
+			std::cerr << "Deleting saturated alpha group '" << name << "'." << std::endl;
+		}
+
+		auto it = table.find(name);
+
+		if (it == table.end()) {
+			std::stringstream ss;
+			ss << "An internal error occurred, please submit a bug report. Error details: Failted to recall an alpha group for deletion. Name = '" << name << "'.";
+			throw std::logic_error( ss.str() );
+		}
+
+		Alpha* alpha = it->second;
+
+		if (alpha->get_num_gammas()) {
+			std::stringstream ss;
+			ss << "An internal error occurred, please submit a bug report. Error details: Alpha's gammas weren't removed earlier. Name = '" << name << "'. Count = " << alpha->get_num_gammas() << ".";
+			throw std::logic_error( ss.str() );
+		}
+
+		delete alpha;
+
+		table.erase( it );
+	}
+
+	return static_cast<int>(to_drop.size());
 }
 
 
@@ -484,6 +537,23 @@ void DataSet::_drop_empty()
     }
 }
 
+/**
+ * Drops elements that form edges to everything in the collection.
+ */
+void DataSet::_drop_saturated()
+{
+	std::cerr << "Dropping saturated sets..." << std::endl;
+	int alpha_dropped = this->_drop_saturated_alphas();
+
+	if (alpha_dropped) {
+		std::cerr << "Warning: Saturated data has been dropped!" << std::endl;
+		std::cerr << "- d.ALPHA = " << -alpha_dropped << std::endl;
+		this->_dump_sizes();
+	} else {
+		std::cerr << "Nothing dropped due to node saturation, your data is good to go. :)" << std::endl;
+	}
+}
+
 
 /**
  * Reads in the input files
@@ -501,7 +571,8 @@ void DataSet::read_files( const std::string& alpha_file_name, const std::string&
     {
         this->_read_combined_file( combined_file_name );
     }
-    
+   
+    this->_drop_saturated(); 
     this->_drop_empty();
 }
 

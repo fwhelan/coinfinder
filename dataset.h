@@ -34,6 +34,7 @@ class DataSet
         const id_lookup<Beta>& get_betas() const;
         const id_lookup<Gamma>& get_gammas() const;
 	const id_lookup<Edge>& get_edges() const;
+	const int get_num_betas() const;
 
         void read_files( const std::string& alpha_file_name, const std::string& beta_file_name, const std::string& combined_file_name );
         
@@ -47,7 +48,9 @@ class DataSet
         void _read_combined_file( const std::string& file_name );
         
         void _drop_empty();
+	void _drop_saturated();
         int _drop_empty_alphas();
+	int _drop_saturated_alphas();
         int _drop_empty_betas();
         int _drop_empty_gammas();
         
