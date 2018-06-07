@@ -35,6 +35,7 @@ class Alpha
         std::unordered_set<const Gamma*> _gammas;
 #else
         int _num_gammas;
+	int _num_edges;
 #endif
         std::map<const Beta*, int> _edges; // beta, to the count of gammas in the edge (i.e. the weight)
 
@@ -48,6 +49,7 @@ class Alpha
         void unregister_gamma( const Gamma& gamma );
 
         int get_num_gammas() const;
+	int get_num_edges() const;
         const std::map<const Beta*, int>& get_edges() const;
 };
 

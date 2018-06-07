@@ -44,6 +44,8 @@ bool Alpha::register_edge( const Gamma* gamma, const Beta& beta )
         _edges[ &beta ] = it->second + 1;
         return false;
     }
+
+    ++this->_num_edges;
 }
 
 
@@ -58,6 +60,10 @@ int Alpha::get_num_gammas() const
 #else
     return this->_num_gammas;
 #endif
+}
+
+int Alpha::get_num_edges() const {
+	return (this->_edges).size();
 }
 
 
