@@ -77,10 +77,11 @@ void Coincidence::run( const DataSet& dataset, /**< Dataset */
             int num_edges_tain = static_cast<int>(edges_tain.size());
 
 	    //
-            // Count overlaps
+            // Count overlaps & union
 	    //
             int overlaps = 0;
 	    std::vector<std::string> edges_ovlp;
+	    std::vector<std::string> edges_union;
 
             for (const auto& kvp_edges : edges_yain)
             {
@@ -91,11 +92,19 @@ void Coincidence::run( const DataSet& dataset, /**< Dataset */
                     overlaps += 1;
 		    edges_ovlp.push_back(beta.get_name());
                 }
+		edges_union.push_back(beta.get_name());
             }
+	    for (const auto& kvp_edges : edges_tain) {
+		const Beta& beta = *kvp_edges.first;
+		auto it =edges_yain.find( & beta );
+		if (it == edges_tain.end()) {
+			edges_union.push_back(beta.get_name());
+		}
+	    }
 
 	    // Count total range
             int total_range = num_edges_yain + num_edges_tain - overlaps;
-            Coincidence::_coincidence_to_p( dataset, alpha_yain, alpha_tain, cor_sig, overlaps, total_range, num_edges_yain, num_edges_tain, phylo_dists, edge_table, max_phylo_dist, edges_ovlp );
+            Coincidence::_coincidence_to_p( dataset, phylogeny, alpha_yain, alpha_tain, cor_sig, overlaps, total_range, num_edges_yain, num_edges_tain, phylo_dists, edge_table, max_phylo_dist, edges_ovlp, edges_union );
         }
     }
 }
@@ -191,9 +200,20 @@ std::pair<double, double> Coincidence::calc_secondaries(
 	return(std::make_pair(phy_max, syn_avg));
 }
 
+std::string Coincidence::calc_common_ancestor(
+					const std::string& phylogeny,
+					const std::vector<std::string>& edges_union )
+{
+	
+	//write me!
+
+	return("");
+}
+
 
 /** Calculates a p-value of coincicidence.                                                               */
 void Coincidence::_coincidence_to_p( const DataSet& dataset,        /**< Dataset                         */
+				     const std::string& phylogeny,
                                      const Alpha& alpha_yain,       /**< First alpha                     */
                                      const Alpha& alpha_tain,       /**< Second alpha                    */
                                      double cor_sig_level,    /**< Corrected significance level    */
@@ -204,7 +224,8 @@ void Coincidence::_coincidence_to_p( const DataSet& dataset,        /**< Dataset
 				     const std::map<double, std::pair<std::string, std::string>>& phylo_dists,
 				     const id_lookup<Edge>& edge_table,
 				     const double max_act_phylodist,
-				     const std::vector<std::string>& edges_ovlp )
+				     const std::vector<std::string>& edges_ovlp,
+				     const std::vector<std::string>& edges_union )
 {
     int       num_observations;
     const int max_coincidence = dataset.get_betas().size();
@@ -331,6 +352,8 @@ void Coincidence::_coincidence_to_p( const DataSet& dataset,        /**< Dataset
     double max_obs_phylodist = secondaries.first;
     //double max_obs_phylodist = 0;
     //double phylo_output = max_act_phylodist - max_obs_phylodist;
+    //Calculate the common ancestor of all nodes which have edges to alpha_yain or alpha_tain
+    std::string commonancestor = calc_common_ancestor(phylogeny, edges_union); 
     double avg_syndist = secondaries.second;
     //double avg_syndist = 0;
     
