@@ -199,11 +199,12 @@ std::pair<double, double> Coincidence::calc_secondaries(
 	return(std::make_pair(phy_max, syn_avg));
 }
 
-std::string Coincidence::calc_common_ancestor(
+double Coincidence::calc_common_ancestor(
 					const std::string& phylogeny,
 					const std::vector<std::string>& edges_union )
 {
-        /*Embedded Python*/
+	/*Embedded Python*/
+	double returnval = 0.0;
         Py_Initialize();
         PyObject* pValue;
         
@@ -216,22 +217,32 @@ std::string Coincidence::calc_common_ancestor(
         if (pModule != NULL) {
                 PyObject* pFunc = PyObject_GetAttrString(pModule, "calc");
                 if (pFunc && PyCallable_Check(pFunc)) {
-                        PyObject* pArgs = PyTuple_New(1);
+                        PyObject* pArgs = PyTuple_New(1+edges_union.size());
                         PyTuple_SetItem(pArgs, 0, PyUnicode_FromString(phylogeny.c_str()));
-			PyTuple_SetItem(pArgs, 1, PyList_FromList(edges_union);
+			for (size_t i=0; i < edges_union.size(); i++) {
+				pValue = PyUnicode_FromString(edges_union[i].c_str());
+				if (!pValue) {
+					//catch
+				}
+				PyTuple_SetItem(pArgs, (i+1), pValue);
+			}
                         pValue = PyObject_CallObject(pFunc, pArgs);
                         Py_DECREF(pArgs);
                         if (pValue == NULL) {
                                 std::cerr << "pValue is null" << std::endl;
                                 PyErr_Print();
 			} else {
-				std::cerr << "Yippee! A return value!" << std::endl;
+				if (PyFloat_Check(pValue) == 1) {
+					returnval = PyFloat_AsDouble(pValue);
+					//std::cerr << "Return value: " << returnval << std::endl;
+				} else { //if (PyUnicode_Check(pValue) == 1) {
+					std::cerr << "There was an error in Python code" << std::endl;
+					PyErr_Print();
+				}
 			}
 		}
 	}
-	
-
-	return("");
+	return(returnval);
 }
 
 
@@ -380,13 +391,13 @@ void Coincidence::_coincidence_to_p( const DataSet& dataset,        /**< Dataset
     //double avg_syndist = 0;
 
     //Calculate the common ancestor of all nodes which have edges to alpha_yain or alpha_tain
-    std::string commonancestor = calc_common_ancestor(phylogeny, edges_union); 
-    exit;
+    double commonancestor = calc_common_ancestor(phylogeny, edges_union); 
     
     std::cout << alpha_yain.get_name()
               << "\t" << alpha_tain.get_name()
               << "\t" << p_value
 	      << "\t" << max_obs_phylodist
+	      << "\t" << commonancestor
 	      << "\t" << avg_syndist
               << "\t" << successes
               << "\t" << num_observations
@@ -408,6 +419,7 @@ void Coincidence::_write_header()
               << "\t" << "Target"
               << "\t" << "p"
 	      << "\t" << "Max phylogenetic distance"
+	      << "\t" << "Common ancestor"
 	      << "\t" << "Avg synthetic distance"
               << "\t" << "successes"
               << "\t" << "observations"
