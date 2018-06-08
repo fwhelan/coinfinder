@@ -131,7 +131,6 @@ std::map<double, std::pair<std::string,std::string>> Coincidence::calc_phylogene
                 PyObject* pFunc = PyObject_GetAttrString(pModule, "calc");
                 if (pFunc && PyCallable_Check(pFunc)) {
                         PyObject* pArgs = PyTuple_New(1);
-                        //PyTuple_SetItem(pArgs, 0, PyUnicode_FromString("core.nex.con.tre.newick")); //send tree as first element
 			PyTuple_SetItem(pArgs, 0, PyUnicode_FromString(phylogeny.c_str()));
 			pValue = PyObject_CallObject(pFunc, pArgs);
                         Py_DECREF(pArgs);
@@ -204,8 +203,33 @@ std::string Coincidence::calc_common_ancestor(
 					const std::string& phylogeny,
 					const std::vector<std::string>& edges_union )
 {
+        /*Embedded Python*/
+        Py_Initialize();
+        PyObject* pValue;
+        
+        PyRun_SimpleString("import sys");
+        PyRun_SimpleString("sys.path.append(\".\")");
+        
+        PyObject* pName = PyUnicode_DecodeFSDefault("common_ancestor");
+        PyObject* pModule = PyImport_Import(pName);
+        Py_DECREF(pName);
+        if (pModule != NULL) {
+                PyObject* pFunc = PyObject_GetAttrString(pModule, "calc");
+                if (pFunc && PyCallable_Check(pFunc)) {
+                        PyObject* pArgs = PyTuple_New(1);
+                        PyTuple_SetItem(pArgs, 0, PyUnicode_FromString(phylogeny.c_str()));
+			PyTuple_SetItem(pArgs, 1, PyList_FromList(edges_union);
+                        pValue = PyObject_CallObject(pFunc, pArgs);
+                        Py_DECREF(pArgs);
+                        if (pValue == NULL) {
+                                std::cerr << "pValue is null" << std::endl;
+                                PyErr_Print();
+			} else {
+				std::cerr << "Yippee! A return value!" << std::endl;
+			}
+		}
+	}
 	
-	//write me!
 
 	return("");
 }
@@ -352,10 +376,12 @@ void Coincidence::_coincidence_to_p( const DataSet& dataset,        /**< Dataset
     double max_obs_phylodist = secondaries.first;
     //double max_obs_phylodist = 0;
     //double phylo_output = max_act_phylodist - max_obs_phylodist;
-    //Calculate the common ancestor of all nodes which have edges to alpha_yain or alpha_tain
-    std::string commonancestor = calc_common_ancestor(phylogeny, edges_union); 
     double avg_syndist = secondaries.second;
     //double avg_syndist = 0;
+
+    //Calculate the common ancestor of all nodes which have edges to alpha_yain or alpha_tain
+    std::string commonancestor = calc_common_ancestor(phylogeny, edges_union); 
+    exit;
     
     std::cout << alpha_yain.get_name()
               << "\t" << alpha_tain.get_name()
