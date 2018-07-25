@@ -21,7 +21,8 @@
 void Coincidence::run( const DataSet& dataset, /**< Dataset */
 		       const std::string& phylogeny )
 {
-    Coincidence::_write_header();
+    Coincidence::_write_header(dataset);
+    const TParameters& options = dataset.get_options();
 
     std::cerr << "Iterating matrix..." << std::endl;
     const id_lookup<Alpha>& alpha_table = dataset.get_alphas();
@@ -37,13 +38,30 @@ void Coincidence::run( const DataSet& dataset, /**< Dataset */
 
     //
     // Determine the maximum phylogenetic distance in given tree and save distance information into hash
+    // (Right now, there is only reason to do this if the mode is coincidence)
     //
-    std::cerr << "Calculating phylogenetic distance information..." << std::endl;
-    std::map<double, std::pair<std::string, std::string>> phylo_dists = Coincidence::calc_phylogenetic_distances( phylogeny );
-    std::cerr << "Calculating the maximum phylogenetic distance..." << std::endl;
+    std::map<double, std::pair<std::string, std::string>> phylo_dists;
     double max_phylo_dist = 0;
-    if(!phylo_dists.empty()) {
-    	max_phylo_dist = phylo_dists.rbegin()->first;
+    switch (options.coin_max_mode)
+    {
+        case EMaxMode::ACCOMPANY:
+	{
+    		std::cerr << "Calculating phylogenetic distance information..." << std::endl;
+    		phylo_dists = Coincidence::calc_phylogenetic_distances( phylogeny );
+    		std::cerr << "Calculating the maximum phylogenetic distance..." << std::endl;
+    		if(!phylo_dists.empty()) {
+    			max_phylo_dist = phylo_dists.rbegin()->first;
+    		}
+		break;
+	}
+	case EMaxMode::AVOID:
+	{
+		break;
+	}
+	default:
+        {
+            throw std::logic_error( "Invalid options around MAX_MODE_MASK." );
+        }
     }
     //
     // Iterate first alpha
@@ -183,6 +201,8 @@ std::pair<double, double> Coincidence::calc_secondaries(
 		//Synthetic distance
 		Edge edge1 = edge_table.find_id(alpha_yain.get_name()+"-"+(p.c_str()));
 		Edge edge2 = edge_table.find_id(alpha_tain.get_name()+"-"+(p.c_str()));
+		//std::cerr << "edge1.get_weight() " << edge1.get_weight() << std::endl;
+		//std::cerr << "edge2.get_weight() " << edge2.get_weight() << std::endl;
 		syn_sums += abs(edge1.get_weight()-edge2.get_weight());
         }
 	double syn_avg = syn_sums/edges_ovlp.size();
@@ -384,54 +404,114 @@ void Coincidence::_coincidence_to_p( const DataSet& dataset,        /**< Dataset
         }
     }
 
-    //Result is significant: calculate maximum observed phylogenetic distance and average synthetic distance to output to file
-    std::pair<double, double> secondaries = calc_secondaries(phylo_dists, edge_table, alpha_yain, alpha_tain, edges_ovlp);
-    double max_obs_phylodist = secondaries.first;
-    //double max_obs_phylodist = 0;
-    //double phylo_output = max_act_phylodist - max_obs_phylodist;
-    double avg_syndist = secondaries.second;
-    //double avg_syndist = 0;
+    //Result is significant: calculate secondaries for coincidence or avoidance, depending on what the user called for
+    switch (options.coin_max_mode)
+    {
+        case EMaxMode::ACCOMPANY:
+        {
+    		//calculate maximum observed phylogenetic distance and average synthetic distance to output to file
+    		std::pair<double, double> secondaries = calc_secondaries(phylo_dists, edge_table, alpha_yain, alpha_tain, edges_ovlp);
+    		double max_obs_phylodist = secondaries.first;
+    		//double max_obs_phylodist = 0;
+    		//double phylo_output = max_act_phylodist - max_obs_phylodist;
+    		double avg_syndist = secondaries.second;
+    		//double avg_syndist = 0;
 
-    //Calculate the common ancestor of all nodes which have edges to alpha_yain or alpha_tain
-    std::string commonancestor = calc_common_ancestor(phylogeny, edges_union); 
+    		//Calculate the common ancestor of all nodes which have edges to alpha_yain or alpha_tain
+    		std::string commonancestor = calc_common_ancestor(phylogeny, edges_union); 
     
-    std::cout << alpha_yain.get_name()
-              << "\t" << alpha_tain.get_name()
-              << "\t" << p_value
-	      << "\t" << max_obs_phylodist
-	      << "\t" << commonancestor
-	      << "\t" << avg_syndist
-              << "\t" << successes
-              << "\t" << num_observations
-              << "\t" << rate
-              << "\t" << static_cast<int>(rate * num_observations + 0.5)
-              << "\t" << any_yain
-              << "\t" << any_tain
-              << "\t" << chance_i
-              << "\t" << chance_j
-              << std::endl;
+    		std::cout << alpha_yain.get_name()
+        	      << "\t" << alpha_tain.get_name()
+        	      << "\t" << p_value
+		      << "\t" << max_obs_phylodist
+		      << "\t" << commonancestor
+		      << "\t" << avg_syndist
+        	      << "\t" << successes
+        	      << "\t" << num_observations
+        	      << "\t" << rate
+        	      << "\t" << static_cast<int>(rate * num_observations + 0.5)
+        	      << "\t" << any_yain
+        	      << "\t" << any_tain
+        	      << "\t" << chance_i
+        	      << "\t" << chance_j
+        	      << std::endl;
+		break;
+	}
+	case EMaxMode::AVOID:
+        {
+		//TODO- are there any interesting secondaries to do for avoidance data?
+
+		std::cout << alpha_yain.get_name()
+		     << "\t" << alpha_tain.get_name()
+                     << "\t" << p_value
+                     << "\t" << successes
+                     << "\t" << num_observations
+                     << "\t" << rate
+                     << "\t" << static_cast<int>(rate * num_observations + 0.5)
+                     << "\t" << any_yain
+                     << "\t" << any_tain
+                     << "\t" << chance_i
+                     << "\t" << chance_j
+                     << std::endl;
+		break;
+	}
+	default:
+        {   
+            throw std::logic_error( "Invalid options around MAX_MODE_MASK." );
+        }
+   }
 }
 
 /**
  * Writes the header
  */
-void Coincidence::_write_header()
+void Coincidence::_write_header(const DataSet& dataset)
 {
-    std::cout << "Source"
-              << "\t" << "Target"
-              << "\t" << "p"
-	      << "\t" << "Max phylogenetic distance"
-	      << "\t" << "Common ancestor"
-	      << "\t" << "Avg synthetic distance"
-              << "\t" << "successes"
-              << "\t" << "observations"
-              << "\t" << "rate"
-              << "\t" << "expected"
-              << "\t" << "total source"
-              << "\t" << "total target"
-              << "\t" << "fraction source"
-              << "\t" << "fraction target"
-              << std::endl;
+    const TParameters& options = dataset.get_options();
+
+    switch (options.coin_max_mode)
+    {
+    	case EMaxMode::ACCOMPANY:
+    	{
+    		std::cout << "Source"
+        		<< "\t" << "Target"
+        	      	<< "\t" << "p"
+		      	<< "\t" << "Max phylogenetic distance"
+		      	<< "\t" << "Common ancestor"
+		      	<< "\t" << "Avg synthetic distance"
+        	      	<< "\t" << "successes"
+        	      	<< "\t" << "observations"
+        	      	<< "\t" << "rate"
+        	      	<< "\t" << "expected"
+        	      	<< "\t" << "total source"
+        	      	<< "\t" << "total target"
+        	      	<< "\t" << "fraction source"
+        	      	<< "\t" << "fraction target"
+        	      	<< std::endl;
+		break;
+	}
+	case EMaxMode::AVOID:
+	{
+		std::cout << "Source"
+                        << "\t" << "Target"
+                        << "\t" << "p"
+                        << "\t" << "successes"
+                        << "\t" << "observations"
+                        << "\t" << "rate"
+                        << "\t" << "expected"
+                        << "\t" << "total source"
+                        << "\t" << "total target"
+                        << "\t" << "fraction source"
+                        << "\t" << "fraction target"
+                        << std::endl;
+		break;
+	}
+	default:
+        {   
+            throw std::logic_error( "Invalid options around MAX_MODE_MASK.");
+        }
+   }
+	
 }
 
 
