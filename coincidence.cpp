@@ -199,12 +199,12 @@ std::pair<double, double> Coincidence::calc_secondaries(
 	return(std::make_pair(phy_max, syn_avg));
 }
 
-double Coincidence::calc_common_ancestor(
+std::string Coincidence::calc_common_ancestor(
 					const std::string& phylogeny,
 					const std::vector<std::string>& edges_union )
 {
 	/*Embedded Python*/
-	double returnval = 0.0;
+	std::string returnval = "";
         Py_Initialize();
         PyObject* pValue;
         
@@ -232,9 +232,11 @@ double Coincidence::calc_common_ancestor(
                                 std::cerr << "pValue is null" << std::endl;
                                 PyErr_Print();
 			} else {
-				if (PyFloat_Check(pValue) == 1) {
-					returnval = PyFloat_AsDouble(pValue);
-					//std::cerr << "Return value: " << returnval << std::endl;
+				//if (PyFloat_Check(pValue) == 1) {
+				if (PyUnicode_Check(pValue) == 1) {
+					//returnval = PyFloat_AsDouble(pValue);
+					returnval = PyUnicode_AsUTF8(pValue);
+					//std::cerr << "Return value: " << returnval2 << std::endl;
 				} else { //if (PyUnicode_Check(pValue) == 1) {
 					std::cerr << "There was an error in Python code" << std::endl;
 					PyErr_Print();
@@ -391,7 +393,7 @@ void Coincidence::_coincidence_to_p( const DataSet& dataset,        /**< Dataset
     //double avg_syndist = 0;
 
     //Calculate the common ancestor of all nodes which have edges to alpha_yain or alpha_tain
-    double commonancestor = calc_common_ancestor(phylogeny, edges_union); 
+    std::string commonancestor = calc_common_ancestor(phylogeny, edges_union); 
     
     std::cout << alpha_yain.get_name()
               << "\t" << alpha_tain.get_name()

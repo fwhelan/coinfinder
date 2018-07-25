@@ -364,6 +364,53 @@ int DataSet::_drop_saturated_alphas()
 	return static_cast<int>(to_drop.size());
 }
 
+/**
+ * Drop all rare alaphs (i.e. alphas that reference <5% of betas.
+*/
+int DataSet::_drop_rare_alphas()
+{
+	std::vector<std::string> to_drop = std::vector<std::string>();
+	
+	std::map<std::string, Alpha*>& table = this->_alphas.get_table();
+	int num_betas = this->get_num_betas();
+
+	for (const auto& kvp : table) {
+		const Alpha& alpha = *kvp.second;
+		if (alpha.get_num_edges() < num_betas*0.05) {
+			const std::string& name = kvp.first;
+			to_drop.push_back( name );
+		}
+	}
+
+	for (const std::string& name : to_drop) {
+		if (_options.verbose) {
+			std::cerr << "Deleting rare alpha group '" << name << "'." << std::endl;
+		}
+
+		auto it = table.find(name);
+
+		if (it == table.end()) {
+			std::stringstream ss;
+			ss << "An internal error occurred, please submit a bug report. Error details: Failed to recall an alpha group for deletion. Name = '" << name << "'.";
+			throw std::logic_error( ss.str() );
+		}
+
+		Alpha* alpha = it->second;
+
+		if (alpha->get_num_gammas()) {
+			std::stringstream ss;
+			ss << "An internal error occurred, please submit a bug report. Error details: Alpha's gammas weren't removed earlier. Name = '" << name << "'. Count = " << alpha->get_num_gammas() << ".";
+			throw std::logic_error( ss.str() );
+		}
+
+		delete alpha;
+
+		table.erase( it );
+	}
+
+	return static_cast<int>(to_drop.size());
+}
+
 
 /**
  * Drops all betas that reference no alphas (through gammas)
@@ -546,11 +593,29 @@ void DataSet::_drop_saturated()
 	int alpha_dropped = this->_drop_saturated_alphas();
 
 	if (alpha_dropped) {
-		std::cerr << "Warning: Saturated data has been dropped!" << std::endl;
+		std::cerr << "**Warning**: Saturated data has been dropped!" << std::endl;
 		std::cerr << "- d.ALPHA = " << -alpha_dropped << std::endl;
 		this->_dump_sizes();
 	} else {
 		std::cerr << "Nothing dropped due to node saturation, your data is good to go. :)" << std::endl;
+	}
+}
+
+/**
+ *
+ * Drops elements that are less than 2% abundant in the collection.
+**/
+void DataSet::_drop_rare()
+{
+	std::cerr << "Dropping rare elements in collection..." << std::endl;
+	int alpha_dropped = this->_drop_rare_alphas();
+
+	if (alpha_dropped) {
+		std::cerr << "**Warning**: Rare elements have been dropped!" << std::endl;
+		std::cerr << "- d.ALPHA = " << -alpha_dropped << std::endl;
+		this->_dump_sizes();
+	} else {
+		std::cerr << "Nothing dropped due to rare elements in collection, your data is good to go. :)" << std::endl;
 	}
 }
 
@@ -573,6 +638,7 @@ void DataSet::read_files( const std::string& alpha_file_name, const std::string&
     }
    
     this->_drop_saturated(); 
+    this->_drop_rare();
     this->_drop_empty();
 }
 

@@ -12,7 +12,7 @@ import itertools
 #
 #Output: an array of pairwise distances between all combinations of B1 and B2 edges (maybe a 2d array with labelled A pairs?)
 def calc( *thelist ):
-	phylo = ete3.Tree(str(thelist[0]))
+	phylo = ete3.Tree(str(thelist[0]), format=1)
 	edges = []
 	dists = list()
 	maxi = 0
