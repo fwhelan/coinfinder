@@ -49,8 +49,10 @@ class DataSet
         
         void _drop_empty();
 	void _drop_saturated();
+	void _drop_rare();
         int _drop_empty_alphas();
 	int _drop_saturated_alphas();
+	int _drop_rare_alphas();
         int _drop_empty_betas();
         int _drop_empty_gammas();
         
