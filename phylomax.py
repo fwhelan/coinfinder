@@ -13,21 +13,27 @@ import itertools
 #Output: an array of pairwise distances between all combinations of B1 and B2 edges (maybe a 2d array with labelled A pairs?)
 def calc( *thelist ):
 	phylo = ete3.Tree(str(thelist[0]), format=1)
-	edges = []
+	edges = {}
 	dists = list()
-	maxi = 0
+	#maxi = 0
 	#for nodeA in phylo.traverse("postorder"):
 	#	edges.append(nodeA.name)
-	edges = phylo.get_leaf_names()
-	for perm in itertools.combinations(edges, 2):
-		nodeA = phylo&(str(perm[0]))
-		nodeB = phylo&(str(perm[1]))
-		curdist = nodeA.get_distance(nodeB)
-		dists.append(nodeA.name)
-		dists.append(nodeB.name)
-		dists.append(curdist)
+	edges = {leaf.name : {} for leaf in phylo}
+	for perm in itertools.combinations(list(edges.keys()), 2):
+		curdist = phylo.get_distance(perm[0],perm[1])
+		edges[perm[0]][perm[1]]=curdist
+		#nodeA = phylo&(str(perm[0]))
+		#nodeB = phylo&(str(perm[1]))
+		#curdist = nodeA.get_distance(nodeB)
+		#dists.append(nodeA.name)
+		#dists.append(nodeB.name)
+		#dists.append(curdist)
 		#dists[nodeA.name,nodeB.name] = float(416.5)
 		#dists['Toronto','Hamilton'] = 416
 		#if (curdist > maxi):
 		#        maxi = curdist
+	else:
+		for nodeA in edges:
+			for nodeB in edges[nodeA]:
+				dists.extend((nodeA,nodeB,edges[nodeA][nodeB]))
 	return(dists)
