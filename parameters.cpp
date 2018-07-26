@@ -115,12 +115,12 @@ TParameters TParameters::parse( int arg_count, const char** arg_vals )
     commands.emplace_back( "--less", 'l', [ &result ]() { SET_ONCE( alt_hypothesis, EHypothesis::LESS ); } );
     commands.emplace_back( "--twotailed", 't', [ &result ]() { SET_ONCE( alt_hypothesis, EHypothesis::TWOTAILED ); } );
     commands.emplace_back( "--full", 'f', [ &result ]() { SET_ONCE( coin_set_mode, ESetMode::FULL ); } );
-    commands.emplace_back( "--intersection", 'i', [ &result ]() { SET_ONCE( coin_set_mode, ESetMode::INTERSECTION ); } );
+    commands.emplace_back( "--union", 'u', [ &result ]() { SET_ONCE( coin_set_mode, ESetMode::INTERSECTION ); } );
     commands.emplace_back( "--accompany", 'o', [ &result ]() { SET_ONCE( coin_max_mode, EMaxMode::ACCOMPANY ); } );
     commands.emplace_back( "--avoid", 's', [ &result ]() { SET_ONCE( coin_max_mode, EMaxMode::AVOID ); } );
     commands.emplace_back( "--verbose", 'v', [ &result ]() { SET_ONCE( verbose, true ); } );
     commands.emplace_back( "--filter", 'i', [ &result ]() { SET_ONCE( permit_filter, true ); } );
-    commands.emplace_back( "--level", 'l', [ &next_command ]() { next_command = ECommand::SIG_LEVEL; } );
+    commands.emplace_back( "--level", 'L', [ &next_command ]() { next_command = ECommand::SIG_LEVEL; } );
     commands.emplace_back( "--a", 'a', [ &next_command ]() { next_command = ECommand::ALPHA_FN; } );
     commands.emplace_back( "--b", 'b', [ &next_command ]() { next_command = ECommand::BETA_FN; } );
     commands.emplace_back( "--d", 'd', [ &next_command ]() { next_command = ECommand::COMBINED_FN; } );
