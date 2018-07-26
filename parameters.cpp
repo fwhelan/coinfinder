@@ -432,6 +432,11 @@ void TParameters::print_and_assert() const
             std::cerr << "> SIGNIFICANCE_LEVEL = " << this->sig_level << std::endl;
             break;
     }
+    if (!this->phylogeny.empty()) {
+	std::cerr << "> PHYLOGENY ........ = " << this->phylogeny << std::endl;
+    } else {
+	throw std::logic_error( "Phylogeny file is missing." ) ;
+    }
     
     if (this->combined_file_name.empty())
     {
