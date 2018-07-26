@@ -36,7 +36,7 @@ class DataSet
 	const id_lookup<Edge>& get_edges() const;
 	const int get_num_betas() const;
 
-        void read_files( const std::string& alpha_file_name, const std::string& beta_file_name, const std::string& combined_file_name );
+        void read_files( const std::string& alpha_file_name, const std::string& beta_file_name, const std::string& combined_file_name, const std::string& phylogeny_file_name );
         
         int get_num_edges() const;
         const TParameters& get_options() const;
@@ -48,6 +48,7 @@ class DataSet
         void _read_combined_file( const std::string& file_name );
         
         void _drop_empty();
+	void _phylo_check( const std::string& phylogeny_file_name );
 	void _drop_saturated();
 	void _drop_rare();
         int _drop_empty_alphas();

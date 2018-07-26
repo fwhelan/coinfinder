@@ -46,7 +46,7 @@ int main( int argc, const char** argv )
     // Load in relations
     //
     DataSet dataset = DataSet( options );
-    dataset.read_files( options.alpha_file_name, options.beta_file_name, options.combined_file_name );
+    dataset.read_files( options.alpha_file_name, options.beta_file_name, options.combined_file_name, options.phylogeny );
 
     //
     // Do what it is that needs to be done
