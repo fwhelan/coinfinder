@@ -180,52 +180,99 @@ void DataSet::_read_combined_file( const std::string& file_name )
     }
     
     int n = 0;
-
-    while (getline( file_in, cell, left ? static_cast<char>('\t') : ( middle ? static_cast<char>('\t') : static_cast<char>('\n'))))
-    {
-        if (left)
-        {
-            alpha = &this->_alphas.find_id( cell );
-	    left = false;
-	    middle = true;
-        }
-	else if (middle)
-        {
-            // ALPHA--[WITH]->BETA
-            beta = &this->_betas.find_id( cell );
-            
-            if (alpha->register_edge( nullptr, *beta ))
-            {
-                ++this->_num_edges;
-            }
-            
-            beta->register_edge( nullptr, *alpha ); // B -> E
-            
-            if (_options.verbose)
-            {
-                std::cerr << "Edge formed between " << alpha->get_name() << " and " << beta->get_name() << std::endl;
-            }
-	    middle = false;
-  	    right = true;
-        }
-	else
-	{
-		edge = &this->_edges.find_id( alpha->get_name()+"-"+beta->get_name() );
-
-		edge->register_nodes( *alpha, *beta );
-
-		edge->set_weight( std::stoi(cell) );
-
-		if (_options.verbose)
+    //Check to see if user has added synthetic data; if not, input weights of zero
+    bool synDists = false;
+    std::string line;
+    int pos = file_in.tellg();
+    getline(file_in, line);
+    size_t tmp = std::count(line.begin(), line.end(), '\t');
+    if (tmp > 2) {
+	synDists = true;
+    }
+    file_in.seekg(pos, std::ios_base::beg);
+    //Read in with or without synthetic distances
+    if (synDists) {
+    	while (getline( file_in, cell, left ? static_cast<char>('\t') : ( middle ? static_cast<char>('\t') : static_cast<char>('\n'))))
+    	{
+        	if (left)
+        	{
+            	alpha = &this->_alphas.find_id( cell );
+	    	left = false;
+	    	middle = true;
+        	}
+		else if (middle)
+        	{
+        	    // ALPHA--[WITH]->BETA
+        	    beta = &this->_betas.find_id( cell );
+        	    
+        	    if (alpha->register_edge( nullptr, *beta ))
+        	    {
+        	        ++this->_num_edges;
+        	    }
+        	    
+        	    beta->register_edge( nullptr, *alpha ); // B -> E
+        	    
+        	    if (_options.verbose)
+        	    {
+        	        std::cerr << "Edge formed between " << alpha->get_name() << " and " << beta->get_name() << std::endl;
+        	    }
+		    middle = false;
+  		    right = true;
+        	}
+		else
 		{
-			std::cerr << "Weight added " << cell << std::endl;
-			std::cerr << "Weight is " << edge->get_weight() << std::endl;
-		}
-		right = false;
-		left = true;
-	}
+			edge = &this->_edges.find_id( alpha->get_name()+"-"+beta->get_name() );
+	
+			edge->register_nodes( *alpha, *beta );
 
-        n+=1;
+			edge->set_weight( std::stoi(cell) );
+	
+			if (_options.verbose)
+			{
+				std::cerr << "Weight added " << cell << std::endl;
+				std::cerr << "Weight is " << edge->get_weight() << std::endl;
+			}
+			right = false;
+			left = true;
+		}
+
+        	n+=1;
+    	}
+    } else {
+	while (getline( file_in, cell, left ? static_cast<char>('\t') : static_cast<char>('\n')))
+    	{
+        	if (left)
+        	{
+        	    alpha = &this->_alphas.find_id( cell );
+        	}
+        	else
+        	{
+            	// ALPHA--[WITH]->BETA
+           		beta = &this->_betas.find_id( cell );
+            
+            		if (alpha->register_edge( nullptr, *beta ))
+            		{
+                		++this->_num_edges;
+            		}
+            
+            		beta->register_edge( nullptr, *alpha ); // B -> E
+            
+            		if (_options.verbose)
+        		    {
+        	        	std::cerr << "Edge formed between " << alpha->get_name() << " and " << beta->get_name() << std::endl;
+        	    	}
+			//Set edge weight to zero as no synthetic distance has been included
+			edge = &this->_edges.find_id( alpha->get_name()+"-"+beta->get_name() );
+	
+			edge->register_nodes( *alpha, *beta );
+			
+			edge->set_weight(0);
+		}
+	
+        	n+=1;
+        	left = !left;
+    	}
+
     }
 
     this->_dump_sizes();
