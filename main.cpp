@@ -6,7 +6,9 @@
 #include "connectivity.h"
 #include "test_cases.h"
 #include <stdio.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstdio>
+#include <array>
 
 /**
  * Entry point, boom!
@@ -17,7 +19,7 @@
  */
 int main( int argc, const char** argv )
 {
-    const char* version = "1.0.0.7.";
+    const char* version = "1.1";
     
     //
     // Validate arguments
@@ -39,11 +41,6 @@ int main( int argc, const char** argv )
     //
     // Check for ask for help
     //
-    //char *help = NULL;
-    //help = strstr(argv, "-h");
-    //if (help) {
-	//std::cerr << "Hello world" << std::endl;
-    //}
     std::string help = "-h";
     for (int n = 1; n < argc; ++n) {
         std::string arg = argv[ n ];
@@ -97,6 +94,28 @@ int main( int argc, const char** argv )
     options.print_and_assert();
 
     //
+    // Save coinfinder location to pass to Python
+    //
+    std::string command("which coinfinder");
+    std::array<char, 128> buffer;
+    std::string result;
+    FILE* pipe = popen(command.c_str(), "r");
+    if (!pipe) {
+	std::cerr << "Couldn't start command." << std::endl;
+	return 1;
+    }
+    while (fgets(buffer.data(), 128, pipe) != NULL) {
+ 	result += buffer.data();
+    }
+    std::cerr << "Result of which coinfinder: " << result << std::endl;
+    //Strip off the trailing "/coinfinder"
+    result = result.substr(0,result.length()-11);
+    //Deal with coinfinder not being set
+    if (result == "") {
+	result = ".";
+    }
+
+    //
     // Load in relations
     //
     DataSet dataset = DataSet( options );
@@ -112,7 +131,7 @@ int main( int argc, const char** argv )
             break;
 
         case EMethod::COINCIDENCE:
-            Coincidence::run( dataset, options.phylogeny );
+            Coincidence::run( dataset, options.phylogeny, result );
             break;
 
         default:

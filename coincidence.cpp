@@ -19,7 +19,8 @@
  * Runs coincidence analysis
  */
 void Coincidence::run( const DataSet& dataset, /**< Dataset */
-		       const std::string& phylogeny )
+		       const std::string& phylogeny,
+		       const std::string path )
 {
     Coincidence::_write_header(dataset);
     const TParameters& options = dataset.get_options();
@@ -47,7 +48,7 @@ void Coincidence::run( const DataSet& dataset, /**< Dataset */
         case EMaxMode::ACCOMPANY:
 	{
     		std::cerr << "Calculating phylogenetic distance information..." << std::endl;
-    		phylo_dists = Coincidence::calc_phylogenetic_distances( phylogeny );
+    		phylo_dists = Coincidence::calc_phylogenetic_distances( phylogeny, path );
     		std::cerr << "Calculating the maximum phylogenetic distance..." << std::endl;
     		if(!phylo_dists.empty()) {
     			max_phylo_dist = phylo_dists.rbegin()->first;
@@ -122,7 +123,7 @@ void Coincidence::run( const DataSet& dataset, /**< Dataset */
 
 	    // Count total range
             int total_range = num_edges_yain + num_edges_tain - overlaps;
-            Coincidence::_coincidence_to_p( dataset, phylogeny, alpha_yain, alpha_tain, cor_sig, overlaps, total_range, num_edges_yain, num_edges_tain, phylo_dists, edge_table, max_phylo_dist, edges_ovlp, edges_union );
+            Coincidence::_coincidence_to_p( dataset, phylogeny, alpha_yain, alpha_tain, cor_sig, overlaps, total_range, num_edges_yain, num_edges_tain, phylo_dists, edge_table, max_phylo_dist, edges_ovlp, edges_union, path );
         }
     }
 }
@@ -130,7 +131,7 @@ void Coincidence::run( const DataSet& dataset, /**< Dataset */
 /**
  * Calculate the phylogenetic distances between all nodes in the given phylogeny up front
 */
-std::map<double, std::pair<std::string,std::string>> Coincidence::calc_phylogenetic_distances( const std::string& phylogeny )
+std::map<double, std::pair<std::string,std::string>> Coincidence::calc_phylogenetic_distances( const std::string& phylogeny, const std::string path )
 {
 	/*Definitions*/
 	std::map<double, std::pair<std::string,std::string>> phylogenetic_distances;
@@ -140,7 +141,8 @@ std::map<double, std::pair<std::string,std::string>> Coincidence::calc_phylogene
 	PyObject* pValue;
 
         PyRun_SimpleString("import sys");
-        PyRun_SimpleString("sys.path.append(\".\")");
+	std::string python_path = "sys.path.append(\""+path+"\")";
+	PyRun_SimpleString(python_path.c_str());
 
         PyObject* pName = PyUnicode_DecodeFSDefault("phylomax");
         PyObject* pModule = PyImport_Import(pName);
@@ -220,7 +222,8 @@ std::pair<double, double> Coincidence::calc_secondaries(
 
 std::string Coincidence::calc_common_ancestor(
 					const std::string& phylogeny,
-					const std::vector<std::string>& edges_union )
+					const std::vector<std::string>& edges_union,
+					const std::string path )
 {
 	/*Embedded Python*/
 	std::string returnval = "";
@@ -228,7 +231,8 @@ std::string Coincidence::calc_common_ancestor(
         PyObject* pValue;
         
         PyRun_SimpleString("import sys");
-        PyRun_SimpleString("sys.path.append(\".\")");
+	std::string python_path = "sys.path.append(\""+path+"\")";
+        PyRun_SimpleString(python_path.c_str());
         
         PyObject* pName = PyUnicode_DecodeFSDefault("common_ancestor");
         PyObject* pModule = PyImport_Import(pName);
@@ -278,7 +282,8 @@ void Coincidence::_coincidence_to_p( const DataSet& dataset,        /**< Dataset
 				     const id_lookup<Edge>& edge_table,
 				     const double max_act_phylodist,
 				     const std::vector<std::string>& edges_ovlp,
-				     const std::vector<std::string>& edges_union )
+				     const std::vector<std::string>& edges_union,
+				     const std::string path )
 {
     int       num_observations;
     const int max_coincidence = dataset.get_betas().size();
@@ -412,7 +417,7 @@ void Coincidence::_coincidence_to_p( const DataSet& dataset,        /**< Dataset
     		double avg_syndist = secondaries.second;
 
     		//Calculate the common ancestor of all nodes which have edges to alpha_yain or alpha_tain
-    		std::string commonancestor = calc_common_ancestor(phylogeny, edges_union); 
+    		std::string commonancestor = calc_common_ancestor(phylogeny, edges_union, path); 
     
     		std::cout << alpha_yain.get_name()
         	      << "\t" << alpha_tain.get_name()
