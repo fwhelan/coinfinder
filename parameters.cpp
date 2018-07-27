@@ -470,7 +470,7 @@ void TParameters::print_and_assert() const
             throw std::logic_error( "Cannot specify both the combined and alpha filenames." );
         }
         
-        std::cerr << "> COMBINED_FILE ······· = " << this->combined_file_name << std::endl;
+        std::cerr << "> COMBINED_FILE ···· = " << this->combined_file_name << std::endl;
     }
 
     
