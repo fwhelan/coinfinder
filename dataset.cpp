@@ -186,7 +186,7 @@ void DataSet::_read_combined_file( const std::string& file_name )
     int pos = file_in.tellg();
     getline(file_in, line);
     size_t tmp = std::count(line.begin(), line.end(), '\t');
-    if (tmp > 2) {
+    if (tmp > 1) {
 	synDists = true;
     }
     file_in.seekg(pos, std::ios_base::beg);
