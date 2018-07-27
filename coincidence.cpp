@@ -157,11 +157,11 @@ std::map<double, std::pair<std::string,std::string>> Coincidence::calc_phylogene
                                 PyErr_Print();
                         } else {
                                 if (PyUnicode_Check(pValue) == 1) { //return value is a string; there was an error
-                                        std::cerr << "There was an error in Python code" << std::endl;
                                         PyErr_Print();
+					throw std::logic_error( "Error: python's phylomax returned a Unicode. This is unexpected behaviour; please submit a bug report." );
                                 } else if (PyFloat_Check(pValue) == 1) {
-					std::cerr << "There was an error in Python code" << std::endl;
 					PyErr_Print();
+					throw std::logic_error( "Error: python's phylomax returned a Float. This is unexpected behaviour; please submit a bug report." );
 				} else if (PyList_Check(pValue) == 1) { //return value is a list
                                         /*Save returned list into a map with beta names as paired keys and dist as value*/
 					for(int a=0; a<PyList_Size(pValue); a=a+3) {
@@ -172,13 +172,14 @@ std::map<double, std::pair<std::string,std::string>> Coincidence::calc_phylogene
                                         }
 
                                 } else {
-                                        std::cerr << "Error: a list isn't being returned" << std::endl; //catch this properly
+					throw std::logic_error( "Error: a list isn't being returned from phylomax. This is unexpected behaviour; please submit a bug report." );
                                 }
 				Py_DECREF(pValue);
                         }
                 }
         } else {
 		PyErr_Print();
+		throw std::logic_error( "There was an error in Python's phylomax. This is unexpected behaviour; please submit a bug report." );
 	}
         Py_Finalize();
 	return(phylogenetic_distances);
@@ -201,8 +202,6 @@ std::pair<double, double> Coincidence::calc_secondaries(
 		//Synthetic distance
 		Edge edge1 = edge_table.find_id(alpha_yain.get_name()+"-"+(p.c_str()));
 		Edge edge2 = edge_table.find_id(alpha_tain.get_name()+"-"+(p.c_str()));
-		//std::cerr << "edge1.get_weight() " << edge1.get_weight() << std::endl;
-		//std::cerr << "edge2.get_weight() " << edge2.get_weight() << std::endl;
 		syn_sums += abs(edge1.get_weight()-edge2.get_weight());
         }
 	double syn_avg = syn_sums/edges_ovlp.size();
@@ -242,7 +241,7 @@ std::string Coincidence::calc_common_ancestor(
 			for (size_t i=0; i < edges_union.size(); i++) {
 				pValue = PyUnicode_FromString(edges_union[i].c_str());
 				if (!pValue) {
-					//catch
+					throw std::logic_error( "A value wasn't returned from Python's common_ancestor. This is unexpected behaviour; please submit a bug report." );
 				}
 				PyTuple_SetItem(pArgs, (i+1), pValue);
 			}
@@ -252,14 +251,11 @@ std::string Coincidence::calc_common_ancestor(
                                 std::cerr << "pValue is null" << std::endl;
                                 PyErr_Print();
 			} else {
-				//if (PyFloat_Check(pValue) == 1) {
 				if (PyUnicode_Check(pValue) == 1) {
-					//returnval = PyFloat_AsDouble(pValue);
 					returnval = PyUnicode_AsUTF8(pValue);
-					//std::cerr << "Return value: " << returnval2 << std::endl;
 				} else { //if (PyUnicode_Check(pValue) == 1) {
-					std::cerr << "There was an error in Python code" << std::endl;
 					PyErr_Print();
+					throw std::logic_error( "There was an error in Python's common_ancestor. This is unexpected behaviour; please submit a bug report." );
 				}
 			}
 		}
@@ -412,10 +408,8 @@ void Coincidence::_coincidence_to_p( const DataSet& dataset,        /**< Dataset
     		//calculate maximum observed phylogenetic distance and average synthetic distance to output to file
     		std::pair<double, double> secondaries = calc_secondaries(phylo_dists, edge_table, alpha_yain, alpha_tain, edges_ovlp);
     		double max_obs_phylodist = secondaries.first;
-    		//double max_obs_phylodist = 0;
     		//double phylo_output = max_act_phylodist - max_obs_phylodist;
     		double avg_syndist = secondaries.second;
-    		//double avg_syndist = 0;
 
     		//Calculate the common ancestor of all nodes which have edges to alpha_yain or alpha_tain
     		std::string commonancestor = calc_common_ancestor(phylogeny, edges_union); 
