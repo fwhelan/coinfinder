@@ -636,13 +636,13 @@ void DataSet::_phylo_check( const std::string& phylogeny_file_name )
 	//Read contents of phylogeny into a string
 	std::ifstream ifs(phylogeny_file_name);
 	std::string phylo( (std::istreambuf_iterator<char>(ifs) ), (std::istreambuf_iterator<char>() ) );
-	//Check that all alphas are in phylogeny
-	std::map<std::string, Alpha*>& table = this->_alphas.get_table();
+	//Check that all betas are in phylogeny
+	std::map<std::string, Beta*>& table = this->_betas.get_table();
         for (const auto& kvp : table) {
 		const std::string& name = kvp.first;
                 if (phylo.find(name) == std::string::npos ) {
                 	std::stringstream ss;
-        		ss << std::endl << "The alpha group called '" << name << "' is not in your phylogeny input file. Please correct this error and try using coinfinder again. Note that there may also be additional alphas following '" << name << "' in the input but I am stopping here. Exiting...";
+        		ss << std::endl << "The beta group called '" << name << "' is not in your phylogeny input file. Please correct this error and try using coinfinder again. Note that there may also be additional betas following '" << name << "' in the input but I am stopping here. Exiting...";
         		throw std::logic_error( ss.str().c_str());
 		}
         }
