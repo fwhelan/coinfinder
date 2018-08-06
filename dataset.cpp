@@ -412,9 +412,9 @@ int DataSet::_drop_saturated_alphas()
 }
 
 /**
- * Drop all rare alaphs (i.e. alphas that reference <5% of betas.
+ * Drop all rare alaphs (i.e. alphas that reference <5% (default) of betas).
 */
-int DataSet::_drop_rare_alphas()
+int DataSet::_drop_rare_alphas(const double filt_thres)
 {
 	std::vector<std::string> to_drop = std::vector<std::string>();
 	
@@ -423,7 +423,7 @@ int DataSet::_drop_rare_alphas()
 
 	for (const auto& kvp : table) {
 		const Alpha& alpha = *kvp.second;
-		if (alpha.get_num_edges() < num_betas*0.05) {
+		if (alpha.get_num_edges() < num_betas*filt_thres) {
 			const std::string& name = kvp.first;
 			to_drop.push_back( name );
 		}
@@ -668,12 +668,12 @@ void DataSet::_drop_saturated()
 
 /**
  *
- * Drops elements that are less than 2% abundant in the collection.
+ * Drops elements that are less than x% abundant in the collection.
 **/
-void DataSet::_drop_rare()
+void DataSet::_drop_rare(const double filt_thres)
 {
 	std::cerr << "Dropping rare elements in collection..." << std::endl;
-	int alpha_dropped = this->_drop_rare_alphas();
+	int alpha_dropped = this->_drop_rare_alphas(filt_thres);
 
 	if (alpha_dropped) {
 		std::cerr << "**Warning**: Rare elements have been dropped!" << std::endl;
@@ -690,7 +690,7 @@ void DataSet::_drop_rare()
  * @param alpha_file_name 
  * @param beta_file_name 
  */
-void DataSet::read_files( const std::string& alpha_file_name, const std::string& beta_file_name, const std::string& combined_file_name, const std::string& phylogeny_file_name )
+void DataSet::read_files( const std::string& alpha_file_name, const std::string& beta_file_name, const std::string& combined_file_name, const std::string& phylogeny_file_name, const double filt_thres )
 {
     if (combined_file_name.empty())
     {
@@ -703,7 +703,7 @@ void DataSet::read_files( const std::string& alpha_file_name, const std::string&
     }
     
     this->_drop_saturated(); 
-    this->_drop_rare();
+    this->_drop_rare(filt_thres);
     this->_drop_empty();
 
     this->_phylo_check( phylogeny_file_name);

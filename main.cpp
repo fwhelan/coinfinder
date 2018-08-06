@@ -79,6 +79,7 @@ int main( int argc, const char** argv )
 		std::cerr << "    -p or --phylogeny      Phylogeny of Betas in Newick format (mandatory)" << std::endl;
 		std::cerr << "    -v or --verbose        Verbose output." << std::endl;
 		std::cerr << "    -i or --filter         Permit filtering of saturated and low-abundance data." << std::endl;
+		std::cerr << "    -F or --filthreshold   Threshold for low-abundance data filtering (default: 0.05 i.e. any alpha in <=5\% of betas." << std::endl;
 		std::cerr << "    -q or --query          Query a specific Alpha family." << std::endl;
 		std::cerr << "    -T or --test           Runs the test cases and exits." << std::endl;
 		std::cerr << "    -E or --all            Outputs all results, regardless of significance." << std::endl;
@@ -119,7 +120,7 @@ int main( int argc, const char** argv )
     // Load in relations
     //
     DataSet dataset = DataSet( options );
-    dataset.read_files( options.alpha_file_name, options.beta_file_name, options.combined_file_name, options.phylogeny );
+    dataset.read_files( options.alpha_file_name, options.beta_file_name, options.combined_file_name, options.phylogeny, options.filt_thres );
 
     //
     // Do what it is that needs to be done
