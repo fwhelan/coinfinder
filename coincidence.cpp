@@ -415,15 +415,17 @@ void Coincidence::_coincidence_to_p( const DataSet& dataset,        /**< Dataset
     		double max_obs_phylodist = secondaries.first;
     		//double phylo_output = max_act_phylodist - max_obs_phylodist;
     		double avg_syndist = secondaries.second;
-
     		//Calculate the common ancestor of all nodes which have edges to alpha_yain or alpha_tain
     		std::string commonancestor = calc_common_ancestor(phylogeny, edges_union, path); 
+		//use Pagel's test to determine whether the genes share a phylogenetic history (statistically speaking)
+		//double pagels_pvalue = calc_pagels(phylogeny, );
     
     		std::cout << alpha_yain.get_name()
         	      << "\t" << alpha_tain.get_name()
         	      << "\t" << p_value
 		      << "\t" << max_obs_phylodist
 		      << "\t" << commonancestor
+		      //<< "\t" << pagels_pvalue
 		      << "\t" << avg_syndist
         	      << "\t" << successes
         	      << "\t" << num_observations
@@ -459,6 +461,9 @@ void Coincidence::_coincidence_to_p( const DataSet& dataset,        /**< Dataset
             throw std::logic_error( "Invalid options around MAX_MODE_MASK." );
         }
    }
+
+   //Adjust both Beta's _coin_status with status update
+   //TODO- this might be overkill- just do it on the output files?
 }
 
 /**
@@ -477,6 +482,7 @@ void Coincidence::_write_header(const DataSet& dataset)
         	      	<< "\t" << "p"
 		      	<< "\t" << "Max phylogenetic distance"
 		      	<< "\t" << "Common ancestor"
+			<< "\t" << "Pagel's p-value"
 		      	<< "\t" << "Avg synthetic distance"
         	      	<< "\t" << "successes"
         	      	<< "\t" << "observations"

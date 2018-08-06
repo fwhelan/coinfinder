@@ -8,7 +8,7 @@
 #include <string>
 #include <map>   
 #include <unordered_set>
-
+#include "constants.h"
 
 class Alpha;
 
@@ -68,6 +68,7 @@ class Beta
         int _num_gammas;    // Number of gammas this beta contains
 #endif
         bool _has_edges;
+	CoinStatus _coin_status;
 
     public:
         explicit Beta( const std::string& name );

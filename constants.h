@@ -42,4 +42,13 @@ enum class EMaxMode
         AVOID
 };
 
+enum class CoinStatus
+{
+	_INVALID,
+	NEITHER,
+	COOCCUR,
+	EXCLUDE,
+	BOTH
+};
+
 #endif //COINFINDER_ENUMS_H

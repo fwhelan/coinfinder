@@ -146,6 +146,7 @@ Beta::Beta( const std::string& name )
         , _num_gammas( 0 )
 #endif
         , _has_edges( false )
+	, _coin_status( CoinStatus::NEITHER )
 {
     // pass
 }
