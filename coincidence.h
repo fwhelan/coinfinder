@@ -8,6 +8,7 @@
 class DataSet;
 
 #include <string>
+#include <vector>
 #include "dataset.h"
 #include "elements.h"
 #include "constants.h"
