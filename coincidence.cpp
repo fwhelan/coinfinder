@@ -482,7 +482,7 @@ void Coincidence::_write_header(const DataSet& dataset)
         	      	<< "\t" << "p"
 		      	<< "\t" << "Max phylogenetic distance"
 		      	<< "\t" << "Common ancestor"
-			<< "\t" << "Pagel's p-value"
+			//<< "\t" << "Pagel's p-value"
 		      	<< "\t" << "Avg synthetic distance"
         	      	<< "\t" << "successes"
         	      	<< "\t" << "observations"
