@@ -6,6 +6,7 @@
 #define COINFINDER_FAMILYSET_H
 
 #include <string>
+#include <algorithm>
 #include "id_lookup.h"
 #include "parameters.h"
 
