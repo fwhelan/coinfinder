@@ -221,10 +221,13 @@ std::pair<double, double> Coincidence::calc_secondaries(
 }
 
 std::string Coincidence::calc_common_ancestor(
+					const DataSet& dataset,
 					const std::string& phylogeny,
 					const std::vector<std::string>& edges_union,
 					const std::string path )
 {
+	const TParameters& options = dataset.get_options();
+
 	/*Embedded Python*/
 	std::string returnval = "";
         Py_Initialize();
@@ -233,9 +236,17 @@ std::string Coincidence::calc_common_ancestor(
         PyRun_SimpleString("import sys");
 	std::string python_path = "sys.path.append(\""+path+"\")";
         PyRun_SimpleString(python_path.c_str());
-        
+        if (options.verbose) {
+		std::cerr << "Python path established." << std::endl;
+	}
         PyObject* pName = PyUnicode_DecodeFSDefault("common_ancestor");
+	if (options.verbose) {
+		std::cerr << "Python pName established." << std::endl;
+	}
         PyObject* pModule = PyImport_Import(pName);
+	if (options.verbose) {
+		std::cerr << "Python pModule established." << std::endl;
+	}
         Py_DECREF(pName);
         if (pModule != NULL) {
                 PyObject* pFunc = PyObject_GetAttrString(pModule, "calc");
@@ -249,7 +260,13 @@ std::string Coincidence::calc_common_ancestor(
 				}
 				PyTuple_SetItem(pArgs, (i+1), pValue);
 			}
+			if (options.verbose) {
+				std::cerr << "Calling common_ancestor.py..." << std::endl;
+			}
                         pValue = PyObject_CallObject(pFunc, pArgs);
+			if (options.verbose) {
+				std::cerr << "Returning from common_ancestor.py..." << std::endl;
+			}
                         Py_DECREF(pArgs);
                         if (pValue == NULL) {
                                 std::cerr << "pValue is null" << std::endl;
@@ -410,13 +427,23 @@ void Coincidence::_coincidence_to_p( const DataSet& dataset,        /**< Dataset
     {
         case EMaxMode::ACCOMPANY:
         {
-    		//calculate maximum observed phylogenetic distance and average synthetic distance to output to file
+    		if (options.verbose) {
+			std::cerr << "Calling: calc_secondaries" << std::endl;
+		}
+		//calculate maximum observed phylogenetic distance and average synthetic distance to output to file
     		std::pair<double, double> secondaries = calc_secondaries(phylo_dists, edge_table, alpha_yain, alpha_tain, edges_ovlp);
     		double max_obs_phylodist = secondaries.first;
     		//double phylo_output = max_act_phylodist - max_obs_phylodist;
     		double avg_syndist = secondaries.second;
+		if (options.verbose) {
+			std::cerr << "Returning: calc_secondaries" << std::endl;
+			std::cerr << "Calling: calc_common_ancestor" << std::endl;
+		}
     		//Calculate the common ancestor of all nodes which have edges to alpha_yain or alpha_tain
-    		std::string commonancestor = calc_common_ancestor(phylogeny, edges_union, path); 
+    		std::string commonancestor = calc_common_ancestor(dataset, phylogeny, edges_union, path);
+		if (options.verbose) {
+			std::cerr << "Returning: calc_common_ancestor" << std::endl;
+		}
 		//use Pagel's test to determine whether the genes share a phylogenetic history (statistically speaking)
 		//double pagels_pvalue = calc_pagels(phylogeny, );
     
@@ -436,6 +463,9 @@ void Coincidence::_coincidence_to_p( const DataSet& dataset,        /**< Dataset
         	      << "\t" << chance_i
         	      << "\t" << chance_j
         	      << std::endl;
+		if (options.verbose) {
+			std::cerr << "All done; next case." << std::endl;
+		}
 		break;
 	}
 	case EMaxMode::AVOID:
