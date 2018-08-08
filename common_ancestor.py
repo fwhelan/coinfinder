@@ -1,5 +1,5 @@
-#import ete3
-#import itertools
+import ete3
+import itertools
 
 def calc( *thelist ):
 	phylo = ete3.Tree(str(thelist[0]), format=8)
