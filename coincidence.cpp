@@ -144,7 +144,8 @@ std::map<double, std::pair<std::string,std::string>> Coincidence::calc_phylogene
 	std::string python_path = "sys.path.append(\""+path+"\")";
 	PyRun_SimpleString(python_path.c_str());
 
-        PyObject* pName = PyUnicode_DecodeFSDefault("phylomax");
+        //PyObject* pName = PyUnicode_DecodeFSDefault("phylomax");
+	PyObject* pName = PyUnicode_DecodeFSDefault("both");
         PyObject* pModule = PyImport_Import(pName);
         Py_DECREF(pName);
         if (pModule != NULL) {
@@ -239,7 +240,8 @@ std::string Coincidence::calc_common_ancestor(
         if (options.verbose) {
 		std::cerr << "Python path established." << std::endl;
 	}
-        PyObject* pName = PyUnicode_DecodeFSDefault("common_ancestor");
+        //PyObject* pName = PyUnicode_DecodeFSDefault("common_ancestor");
+	PyObject* pName = PyUnicode_DecodeFSDefault("both");
 	if (options.verbose) {
 		std::cerr << "Python pName established." << std::endl;
 	}
@@ -249,7 +251,7 @@ std::string Coincidence::calc_common_ancestor(
 	}
         Py_DECREF(pName);
         if (pModule != NULL) {
-                PyObject* pFunc = PyObject_GetAttrString(pModule, "calc");
+                PyObject* pFunc = PyObject_GetAttrString(pModule, "calc1");
                 if (pFunc && PyCallable_Check(pFunc)) {
                         PyObject* pArgs = PyTuple_New(1+edges_union.size());
                         PyTuple_SetItem(pArgs, 0, PyUnicode_FromString(phylogeny.c_str()));
