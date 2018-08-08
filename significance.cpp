@@ -6,7 +6,6 @@
 #include <cmath>
 #include "significance.h"
 
-
 double Significance::correct( double sig_level, ECorrection correction, int num_tests )
 {
     switch(correction)
