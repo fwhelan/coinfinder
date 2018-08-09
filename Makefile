@@ -150,6 +150,33 @@ binomial_test.cpp.s:
 	$(MAKE) -f CMakeFiles/coinfinder.dir/build.make CMakeFiles/coinfinder.dir/binomial_test.cpp.s
 .PHONY : binomial_test.cpp.s
 
+bugfix.o: bugfix.cpp.o
+
+.PHONY : bugfix.o
+
+# target to build an object file
+bugfix.cpp.o:
+	$(MAKE) -f CMakeFiles/coinfinder.dir/build.make CMakeFiles/coinfinder.dir/bugfix.cpp.o
+.PHONY : bugfix.cpp.o
+
+bugfix.i: bugfix.cpp.i
+
+.PHONY : bugfix.i
+
+# target to preprocess a source file
+bugfix.cpp.i:
+	$(MAKE) -f CMakeFiles/coinfinder.dir/build.make CMakeFiles/coinfinder.dir/bugfix.cpp.i
+.PHONY : bugfix.cpp.i
+
+bugfix.s: bugfix.cpp.s
+
+.PHONY : bugfix.s
+
+# target to generate assembly for a file
+bugfix.cpp.s:
+	$(MAKE) -f CMakeFiles/coinfinder.dir/build.make CMakeFiles/coinfinder.dir/bugfix.cpp.s
+.PHONY : bugfix.cpp.s
+
 coincidence.o: coincidence.cpp.o
 
 .PHONY : coincidence.o
@@ -405,6 +432,9 @@ help:
 	@echo "... binomial_test.o"
 	@echo "... binomial_test.i"
 	@echo "... binomial_test.s"
+	@echo "... bugfix.o"
+	@echo "... bugfix.i"
+	@echo "... bugfix.s"
 	@echo "... coincidence.o"
 	@echo "... coincidence.i"
 	@echo "... coincidence.s"
