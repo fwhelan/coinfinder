@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(SOURCE_FILES main.cpp id_lookup.cpp id_lookup.h dataset.cpp dataset.h coincidence.cpp coincidence.h connectivity.cpp connectivity.h binomial_test.cpp binomial_test.h significance.cpp significance.h constants.h parameters.cpp parameters.h elements.cpp elements.h test_cases.cpp test_cases.h both.py)
+set(SOURCE_FILES main.cpp id_lookup.cpp id_lookup.h dataset.cpp dataset.h coincidence.cpp coincidence.h connectivity.cpp connectivity.h binomial_test.cpp binomial_test.h significance.cpp significance.h constants.h parameters.cpp parameters.h elements.cpp elements.h test_cases.cpp test_cases.h phylomax.py common_ancestor.py)
 add_executable(coinfinder ${SOURCE_FILES})
 
 target_compile_features(coinfinder PRIVATE cxx_std_14)
