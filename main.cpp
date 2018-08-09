@@ -10,6 +10,7 @@
 #include <cstdio>
 #include <array>
 
+#include "bugfix.h"
 /**
  * Entry point, boom!
  * 
@@ -19,6 +20,11 @@
  */
 int main( int argc, const char** argv )
 {
+
+	//Bug test
+	BugFix::test1();
+	std::cerr << "Pass: returned from test1. Exiting now..." << std::endl;
+	return 0;
     const char* version = "1.1";
     
     //
@@ -147,5 +153,3 @@ int main( int argc, const char** argv )
     std::cerr << "All done!" << std::endl;
     return 0;
 }
-
-
