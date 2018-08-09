@@ -22,9 +22,11 @@ int main( int argc, const char** argv )
 {
 
 	//Bug test
-	BugFix::test1();
-	std::cerr << "Pass: returned from test1. Exiting now..." << std::endl;
-	return 0;
+	//BugFix::test1();
+	//std::cerr << "Pass: returned from test1. Exiting now..." << std::endl;
+	//return 0;
+
+
     const char* version = "1.1";
     
     //
