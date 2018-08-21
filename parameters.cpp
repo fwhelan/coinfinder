@@ -31,6 +31,7 @@ TParameters::TParameters()
           , alpha_file_name( "" )
           , beta_file_name( "" )
           , output_all( false )
+	  , upper_filt_thres( 1.0 )
 	  , filt_thres( 0.05 )
           , combined_file_name( "" )
 {
@@ -100,6 +101,7 @@ TParameters TParameters::parse( int arg_count, const char** arg_vals )
             GAMMA_N,
             SIG_LEVEL,
 	    PHYLO,
+	    UPFILT,
 	    FILT,
             QUERY,
     };
@@ -122,6 +124,7 @@ TParameters TParameters::parse( int arg_count, const char** arg_vals )
     commands.emplace_back( "--avoid", 's', [ &result ]() { SET_ONCE( coin_max_mode, EMaxMode::AVOID ); } );
     commands.emplace_back( "--verbose", 'v', [ &result ]() { SET_ONCE( verbose, true ); } );
     commands.emplace_back( "--filter", 'i', [ &result ]() { SET_ONCE( permit_filter, true ); } );
+    commands.emplace_back( "--upfilthreshold", 'U', [ &next_command ]() { next_command = ECommand::UPFILT; } );
     commands.emplace_back( "--filthreshold", 'F', [ &next_command ]() { next_command = ECommand::FILT; } );
     commands.emplace_back( "--level", 'L', [ &next_command ]() { next_command = ECommand::SIG_LEVEL; } );
     commands.emplace_back( "--a", 'a', [ &next_command ]() { next_command = ECommand::ALPHA_FN; } );
@@ -261,6 +264,13 @@ TParameters TParameters::parse( int arg_count, const char** arg_vals )
 		std::cerr << "command=parser: Phylogeny '" << arg << "' specified." << std::endl;
 #endif
 		result.phylogeny = arg;
+		next_command = ECommand::FLAGS;
+		break;
+	    case ECommand::UPFILT:
+#ifndef NDEBUG
+		std::cerr << "command-parser: Upper filter threshold '" << arg << "' specified." << std::endl;
+#endif
+		result.upper_filt_thres = std::stod(arg);
 		next_command = ECommand::FLAGS;
 		break;
 

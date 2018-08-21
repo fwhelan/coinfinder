@@ -368,15 +368,16 @@ int DataSet::_drop_empty_alphas()
  * (an alpha cannot significantly coincide or avoid anything if it is
  * linked to all betas).
 */
-int DataSet::_drop_saturated_alphas()
+int DataSet::_drop_saturated_alphas(const double upper_filt_thres)
 {
 	std::vector<std::string> to_drop = std::vector<std::string>();
 
 	std::map<std::string, Alpha*>& table = this->_alphas.get_table();
+	int num_betas = this->get_num_betas();
 
 	for (const auto& kvp : table) {
 		const Alpha& alpha = *kvp.second;
-		if (alpha.get_num_edges() == this->get_num_betas()) {
+		if (alpha.get_num_edges() >= num_betas*upper_filt_thres) {
 			const std::string& name = kvp.first;
 			to_drop.push_back( name );
 		}
@@ -652,10 +653,10 @@ void DataSet::_phylo_check( const std::string& phylogeny_file_name )
 /**
  * Drops elements that form edges to everything in the collection.
  */
-void DataSet::_drop_saturated()
+void DataSet::_drop_saturated(const double upper_filt_thres)
 {
 	std::cerr << "Dropping saturated sets..." << std::endl;
-	int alpha_dropped = this->_drop_saturated_alphas();
+	int alpha_dropped = this->_drop_saturated_alphas(upper_filt_thres);
 
 	if (alpha_dropped) {
 		std::cerr << "**Warning**: Saturated data has been dropped!" << std::endl;
@@ -690,7 +691,7 @@ void DataSet::_drop_rare(const double filt_thres)
  * @param alpha_file_name 
  * @param beta_file_name 
  */
-void DataSet::read_files( const std::string& alpha_file_name, const std::string& beta_file_name, const std::string& combined_file_name, const std::string& phylogeny_file_name, const double filt_thres )
+void DataSet::read_files( const std::string& alpha_file_name, const std::string& beta_file_name, const std::string& combined_file_name, const std::string& phylogeny_file_name, const double filt_thres, const double upper_filt_thres )
 {
     if (combined_file_name.empty())
     {
@@ -702,7 +703,7 @@ void DataSet::read_files( const std::string& alpha_file_name, const std::string&
         this->_read_combined_file( combined_file_name );
     }
     
-    this->_drop_saturated(); 
+    this->_drop_saturated(upper_filt_thres); 
     this->_drop_rare(filt_thres);
     this->_drop_empty();
 

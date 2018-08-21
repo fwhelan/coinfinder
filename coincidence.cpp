@@ -48,11 +48,12 @@ void Coincidence::run( const DataSet& dataset, /**< Dataset */
         case EMaxMode::ACCOMPANY:
 	{
     		std::cerr << "Calculating phylogenetic distance information..." << std::endl;
-    		phylo_dists = Coincidence::calc_phylogenetic_distances( phylogeny, path );
+    		//phylo_dists = Coincidence::calc_phylogenetic_distances( phylogeny, path );
     		std::cerr << "Calculating the maximum phylogenetic distance..." << std::endl;
     		if(!phylo_dists.empty()) {
     			max_phylo_dist = phylo_dists.rbegin()->first;
     		}
+		max_phylo_dist = 0;
 		break;
 	}
 	case EMaxMode::AVOID:
@@ -258,7 +259,7 @@ std::string Coincidence::calc_common_ancestor(
 			for (size_t i=0; i < edges_union.size(); i++) {
 				pValue = PyUnicode_FromString(edges_union[i].c_str());
 				if (!pValue) {
-					throw std::logic_error( "A value wasn't returned from Python's common_ancestor. This is unexpected behaviour; please submit a bug report." );
+					//throw std::logic_error( "A value wasn't returned from Python's common_ancestor. This is unexpected behaviour; please submit a bug report." );
 				}
 				PyTuple_SetItem(pArgs, (i+1), pValue);
 			}
@@ -434,16 +435,19 @@ void Coincidence::_coincidence_to_p( const DataSet& dataset,        /**< Dataset
 			std::cerr << "Calling: calc_secondaries" << std::endl;
 		}
 		//calculate maximum observed phylogenetic distance and average synthetic distance to output to file
-    		std::pair<double, double> secondaries = calc_secondaries(phylo_dists, edge_table, alpha_yain, alpha_tain, edges_ovlp);
-    		double max_obs_phylodist = secondaries.first;
+    		//std::pair<double, double> secondaries = calc_secondaries(phylo_dists, edge_table, alpha_yain, alpha_tain, edges_ovlp);
+    		//double max_obs_phylodist = secondaries.first;
+		double max_obs_phylodist = 0;
     		//double phylo_output = max_act_phylodist - max_obs_phylodist;
-    		double avg_syndist = secondaries.second;
+    		//double avg_syndist = secondaries.second;
+		double avg_syndist = 0;
 		if (options.verbose) {
 			std::cerr << "Returning: calc_secondaries" << std::endl;
 			std::cerr << "Calling: calc_common_ancestor" << std::endl;
 		}
     		//Calculate the common ancestor of all nodes which have edges to alpha_yain or alpha_tain
-    		std::string commonancestor = calc_common_ancestor(dataset, phylogeny, edges_union, path);
+    		//std::string commonancestor = calc_common_ancestor(dataset, phylogeny, edges_union, path);
+		std::string commonancestor = "NA";
 		if (options.verbose) {
 			std::cerr << "Returning: calc_common_ancestor" << std::endl;
 		}
