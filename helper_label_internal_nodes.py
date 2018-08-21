@@ -13,4 +13,4 @@ for node in tree.traverse():
       node.name = "NODE_%d" %edge
       edge += 1
 
-print(tree.write(format=8))
+print(tree.write(format=3))
