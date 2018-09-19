@@ -2,6 +2,7 @@
 #include <vector>
 #include "elements.h"
 #include "constants.h"
+#include "dataset.h"
 
 struct TParameters;
 
@@ -9,7 +10,7 @@ struct TParameters;
 class Lineage
 {
     public:
-        static void run(std::map<std::string, int> gene_list);
+        static void run(DataSet& dataset);
         
     private:
 };

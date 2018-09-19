@@ -18,13 +18,10 @@
 /**
  * Runs coincidence analysis
  */
-std::map<std::string, int> Coincidence::run( const DataSet& dataset, /**< Dataset */
+void Coincidence::run( DataSet& dataset, /**< Dataset */
 		       const std::string& phylogeny,
 		       const std::string path )
 {
-    std::map<std::string, int> gene_list;
-    Dataset coincident_dataset;
-
     Coincidence::_write_header(dataset);
     const TParameters& options = dataset.get_options();
 
@@ -74,7 +71,7 @@ std::map<std::string, int> Coincidence::run( const DataSet& dataset, /**< Datase
     std::cerr << "Running analyses..." << std::endl;
     for (const auto& kvp_yain : alpha_table.get_table())
     {
-        const Alpha& alpha_yain = *kvp_yain.second;
+        Alpha& alpha_yain = *kvp_yain.second;
         count++;
 	if (( count % 1000 ) == 0)
         {
@@ -89,7 +86,7 @@ std::map<std::string, int> Coincidence::run( const DataSet& dataset, /**< Datase
         //
         for (const auto& kvp_tain : alpha_table.get_table())
         {
-            const Alpha& alpha_tain = *kvp_tain.second;
+            Alpha& alpha_tain = *kvp_tain.second;
             
 	    if (alpha_tain.get_name().compare( alpha_yain.get_name()) <= 0)
             {
@@ -131,20 +128,10 @@ std::map<std::string, int> Coincidence::run( const DataSet& dataset, /**< Datase
 	    bool signif = Coincidence::_coincidence_to_p( dataset, alpha_yain, alpha_tain, cor_sig, overlaps, total_range, num_edges_yain, num_edges_tain, edge_table, edges_ovlp, edges_union, path );
 	    // If result is significant, add genes to gene_list to pass to lineage code
 	    if (signif) {
-                if (gene_list.count(alpha_yain.get_name()) <= 0) {
-                        gene_list[ alpha_yain.get_name() ] = 1;
-                }
-                if (gene_list.count(alpha_tain.get_name()) == 0) {
-                        gene_list[ alpha_tain.get_name() ] = 1;
-                }
-
-
-		coincident_dataset.
-
+		dataset._generate_coincident_edge(alpha_yain, alpha_tain);;
 	    }
         }
     }
-    return(gene_list);
 }
 
 /**

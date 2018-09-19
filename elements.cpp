@@ -14,12 +14,14 @@
 Alpha::Alpha( const std::string& name )
         : _name( name )
           , _index( -1 )
+	  ,D()
 #ifndef  NDEBUG
         , _gammas()
 #else
         , _num_gammas( 0 )
 #endif
         , _edges()
+	, _coincident_edges()
 {
     // pass
 }
@@ -48,6 +50,23 @@ bool Alpha::register_edge( const Gamma* gamma, const Beta& beta )
     ++this->_num_edges;
 }
 
+bool Alpha::register_coincident_edge( const Alpha& alpha )
+{
+	auto it = this->_coincident_edges.find( &alpha );
+
+	if (it == _coincident_edges.end()) {
+		_coincident_edges[ &alpha ] = 1;
+		++this->_num_coincident_edges;
+		return true;
+	} else {
+		_coincident_edges[ &alpha ] = it->second + 1;
+		return false;
+	}
+}
+
+void Alpha::register_D( double D ) {
+	this->D = D;
+}
 
 /**
  * Indicates the number of gammas in `this` group.
@@ -66,6 +85,10 @@ int Alpha::get_num_edges() const {
 	return (this->_edges).size();
 }
 
+int Alpha::get_num_coincident_edges() const {
+	return (this->_coincident_edges).size();
+}
+
 
 /**
  * Returns the map representing the edges (see `_edges`). 
@@ -74,6 +97,11 @@ int Alpha::get_num_edges() const {
 const std::map<const Beta*, int>& Alpha::get_edges() const
 {
     return _edges;
+}
+
+const std::map<const Alpha*, int>& Alpha::get_coincident_edges() const
+{
+   return _coincident_edges;
 }
 
 

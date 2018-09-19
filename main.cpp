@@ -145,8 +145,8 @@ int main( int argc, const char** argv )
 
         case EMethod::COINCIDENCE:
 	{
-            std::map<std::string, int> gene_list = Coincidence::run( dataset, options.phylogeny, result );
-	    Lineage::run( gene_list  );
+            Coincidence::run( dataset, options.phylogeny, result );
+	    Lineage::run( dataset );
 	    Gexf::run(   );
 	    Network::run(  );
             break;

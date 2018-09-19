@@ -31,13 +31,16 @@ class Alpha
     private:
         const std::string _name;
         int               _index;
+	double		  D;
 #ifndef NDEBUG
         std::unordered_set<const Gamma*> _gammas;
 #else
         int _num_gammas;
 	int _num_edges;
+	int _num_coincident_edges;
 #endif
         std::map<const Beta*, int> _edges; // beta, to the count of gammas in the edge (i.e. the weight)
+	std::map<const Alpha*, int> _coincident_edges;
 
     public:
         explicit Alpha( const std::string& name );
@@ -45,12 +48,16 @@ class Alpha
         const std::string& get_name() const;
 
         bool register_edge( const Gamma* gamma, const Beta& beta );
+	bool register_coincident_edge( const Alpha& alpha );
+	void register_D( double D );
         void register_gamma( const Gamma& gamma );
         void unregister_gamma( const Gamma& gamma );
 
         int get_num_gammas() const;
 	int get_num_edges() const;
+	int get_num_coincident_edges() const;
         const std::map<const Beta*, int>& get_edges() const;
+	const std::map<const Alpha*, int>& get_coincident_edges() const;
 };
 
 

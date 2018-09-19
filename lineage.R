@@ -71,4 +71,4 @@ for(a in 1:length(results)) {
   }
 }
 setwd("~/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/")
-write.table(genes2, "coincident_nodes.csv", sep=",", col.names=FALSE, quote=FALSE)
+write.table(genes2, "coincident_nodes.csv", sep="\t", col.names=FALSE, quote=FALSE)

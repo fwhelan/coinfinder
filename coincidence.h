@@ -19,7 +19,7 @@ struct TParameters;
 class Coincidence
 {
     public:
-        static std::map<std::string, int> run(const DataSet& dataset, const std::string& phylogeny, const std::string path);
+        static void run(DataSet& dataset, const std::string& phylogeny, const std::string path);
         
     private:
         //static std::map<double, std::pair<std::string, std::string>> calc_phylogenetic_distances( const std::string& phylogeny, const std::string path);
