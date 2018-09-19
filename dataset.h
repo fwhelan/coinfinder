@@ -25,10 +25,13 @@ class DataSet
         id_lookup<Beta> _betas;
         id_lookup<Gamma> _gammas;
         int _num_edges;
+	int _num_coincident_edges;
 	id_lookup<Edge> _edges;
         
     public:
-        explicit DataSet(const TParameters& options);
+        //DataSet();
+	explicit DataSet(const TParameters& options);
+	//DataSet(const TParameters& options);
         ~DataSet();
         
         const id_lookup<Alpha>& get_alphas() const;
@@ -37,17 +40,20 @@ class DataSet
 	const id_lookup<Edge>& get_edges() const;
 	const int get_num_betas() const;
 
-        void read_files( const std::string& alpha_file_name, const std::string& beta_file_name, const std::string& combined_file_name, const std::string& phylogeny_file_name, const double filt_thres, const double upper_filt_thres );
+	void read_files( const std::string& alpha_file_name, const std::string& beta_file_name, const std::string& combined_file_name, const std::string& phylogeny_file_name, const double filt_thres, const double upper_filt_thres );
         
         int get_num_edges() const;
+	//int get_num_coincident_edges() const;
         const TParameters& get_options() const;
+
+	void _generate_coincident_edge( Alpha& alpha1, Alpha& alpha2 );
 
         
     private:
         void _read_alpha_file( const std::string& file_name );
         void _read_beta_file( const std::string& file_name );
         void _read_combined_file( const std::string& file_name );
-        
+
         void _drop_empty();
 	void _phylo_check( const std::string& phylogeny_file_name );
 	void _drop_saturated(const double upper_filt_thres);

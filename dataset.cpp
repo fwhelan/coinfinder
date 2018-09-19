@@ -21,10 +21,21 @@ DataSet::DataSet( const TParameters& options )
           , _betas()
           , _gammas()
           , _num_edges( 0 )
+	  , _num_coincident_edges( 0 )
 	  , _edges()
 {
     // pass
 }
+
+//DataSet::DataSet( )
+//	: _options()
+//	, _alphas()
+//	, _betas()
+//	, _gammas()
+//	, _num_edges( 0 )
+//	, _num_coincident_edges( 0 )
+//	, _edges()
+//	, _coincident_edges()
 
 
 /**
@@ -276,6 +287,20 @@ void DataSet::_read_combined_file( const std::string& file_name )
     }
 
     this->_dump_sizes();
+}
+
+void DataSet::_generate_coincident_edge( Alpha& alpha1, Alpha& alpha2 ) {
+	//Alpha* alphaA = &this->_alphas.find_id(alpha1.get_name());
+	//Alpha* alphaB = &this->_alphas.find_id(alpha2.get_name());
+
+	if (alpha1.register_coincident_edge( alpha2 )) {
+		++this->_num_coincident_edges;
+	}
+	alpha2.register_coincident_edge( alpha1 );
+
+	if(_options.verbose) {
+		std::cerr << "Coincident edge formed between " << alpha1.get_name() << " and " << alpha2.get_name() << std::endl;
+	}
 }
 
 
