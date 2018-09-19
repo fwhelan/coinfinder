@@ -285,6 +285,33 @@ elements.cpp.s:
 	$(MAKE) -f CMakeFiles/coinfinder.dir/build.make CMakeFiles/coinfinder.dir/elements.cpp.s
 .PHONY : elements.cpp.s
 
+gexf.o: gexf.cpp.o
+
+.PHONY : gexf.o
+
+# target to build an object file
+gexf.cpp.o:
+	$(MAKE) -f CMakeFiles/coinfinder.dir/build.make CMakeFiles/coinfinder.dir/gexf.cpp.o
+.PHONY : gexf.cpp.o
+
+gexf.i: gexf.cpp.i
+
+.PHONY : gexf.i
+
+# target to preprocess a source file
+gexf.cpp.i:
+	$(MAKE) -f CMakeFiles/coinfinder.dir/build.make CMakeFiles/coinfinder.dir/gexf.cpp.i
+.PHONY : gexf.cpp.i
+
+gexf.s: gexf.cpp.s
+
+.PHONY : gexf.s
+
+# target to generate assembly for a file
+gexf.cpp.s:
+	$(MAKE) -f CMakeFiles/coinfinder.dir/build.make CMakeFiles/coinfinder.dir/gexf.cpp.s
+.PHONY : gexf.cpp.s
+
 id_lookup.o: id_lookup.cpp.o
 
 .PHONY : id_lookup.o
@@ -312,6 +339,33 @@ id_lookup.cpp.s:
 	$(MAKE) -f CMakeFiles/coinfinder.dir/build.make CMakeFiles/coinfinder.dir/id_lookup.cpp.s
 .PHONY : id_lookup.cpp.s
 
+lineage.o: lineage.cpp.o
+
+.PHONY : lineage.o
+
+# target to build an object file
+lineage.cpp.o:
+	$(MAKE) -f CMakeFiles/coinfinder.dir/build.make CMakeFiles/coinfinder.dir/lineage.cpp.o
+.PHONY : lineage.cpp.o
+
+lineage.i: lineage.cpp.i
+
+.PHONY : lineage.i
+
+# target to preprocess a source file
+lineage.cpp.i:
+	$(MAKE) -f CMakeFiles/coinfinder.dir/build.make CMakeFiles/coinfinder.dir/lineage.cpp.i
+.PHONY : lineage.cpp.i
+
+lineage.s: lineage.cpp.s
+
+.PHONY : lineage.s
+
+# target to generate assembly for a file
+lineage.cpp.s:
+	$(MAKE) -f CMakeFiles/coinfinder.dir/build.make CMakeFiles/coinfinder.dir/lineage.cpp.s
+.PHONY : lineage.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -338,6 +392,33 @@ main.s: main.cpp.s
 main.cpp.s:
 	$(MAKE) -f CMakeFiles/coinfinder.dir/build.make CMakeFiles/coinfinder.dir/main.cpp.s
 .PHONY : main.cpp.s
+
+network.o: network.cpp.o
+
+.PHONY : network.o
+
+# target to build an object file
+network.cpp.o:
+	$(MAKE) -f CMakeFiles/coinfinder.dir/build.make CMakeFiles/coinfinder.dir/network.cpp.o
+.PHONY : network.cpp.o
+
+network.i: network.cpp.i
+
+.PHONY : network.i
+
+# target to preprocess a source file
+network.cpp.i:
+	$(MAKE) -f CMakeFiles/coinfinder.dir/build.make CMakeFiles/coinfinder.dir/network.cpp.i
+.PHONY : network.cpp.i
+
+network.s: network.cpp.s
+
+.PHONY : network.s
+
+# target to generate assembly for a file
+network.cpp.s:
+	$(MAKE) -f CMakeFiles/coinfinder.dir/build.make CMakeFiles/coinfinder.dir/network.cpp.s
+.PHONY : network.cpp.s
 
 parameters.o: parameters.cpp.o
 
@@ -447,12 +528,21 @@ help:
 	@echo "... elements.o"
 	@echo "... elements.i"
 	@echo "... elements.s"
+	@echo "... gexf.o"
+	@echo "... gexf.i"
+	@echo "... gexf.s"
 	@echo "... id_lookup.o"
 	@echo "... id_lookup.i"
 	@echo "... id_lookup.s"
+	@echo "... lineage.o"
+	@echo "... lineage.i"
+	@echo "... lineage.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... network.o"
+	@echo "... network.i"
+	@echo "... network.s"
 	@echo "... parameters.o"
 	@echo "... parameters.i"
 	@echo "... parameters.s"

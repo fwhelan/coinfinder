@@ -1,6 +1,9 @@
 #include <iostream>  
 #include "dataset.h"
 #include "coincidence.h"
+#include "lineage.h"
+#include "gexf.h"
+#include "network.h"
 #include "constants.h"
 #include "parameters.h"
 #include "connectivity.h"
@@ -141,8 +144,13 @@ int main( int argc, const char** argv )
             break;
 
         case EMethod::COINCIDENCE:
-            Coincidence::run( dataset, options.phylogeny, result );
+	{
+            std::map<std::string, int> gene_list = Coincidence::run( dataset, options.phylogeny, result );
+	    Lineage::run( gene_list  );
+	    Gexf::run(   );
+	    Network::run(  );
             break;
+	}
 
         default:
             throw std::logic_error( "Invalid `method` specified." );
