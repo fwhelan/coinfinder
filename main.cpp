@@ -147,8 +147,8 @@ int main( int argc, const char** argv )
 	{
             Coincidence::run( dataset, options.phylogeny, result );
 	    Lineage::run( dataset );
-	    Gexf::run(   );
-	    Network::run(  );
+	    Gexf::run( dataset );
+	    Network::run( dataset );
             break;
 	}
 

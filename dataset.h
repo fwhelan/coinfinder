@@ -43,10 +43,10 @@ class DataSet
 	void read_files( const std::string& alpha_file_name, const std::string& beta_file_name, const std::string& combined_file_name, const std::string& phylogeny_file_name, const double filt_thres, const double upper_filt_thres );
         
         int get_num_edges() const;
-	//int get_num_coincident_edges() const;
+	int get_num_coincident_edges() const;
         const TParameters& get_options() const;
 
-	void _generate_coincident_edge( Alpha& alpha1, Alpha& alpha2 );
+	void _generate_coincident_edge( Alpha& alpha1, Alpha& alpha2, double p_value );
 
         
     private:

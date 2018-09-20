@@ -50,16 +50,16 @@ bool Alpha::register_edge( const Gamma* gamma, const Beta& beta )
     ++this->_num_edges;
 }
 
-bool Alpha::register_coincident_edge( const Alpha& alpha )
+bool Alpha::register_coincident_edge( const Alpha& alpha, double p_value )
 {
 	auto it = this->_coincident_edges.find( &alpha );
 
 	if (it == _coincident_edges.end()) {
-		_coincident_edges[ &alpha ] = 1;
+		_coincident_edges[ &alpha ] = p_value;
 		++this->_num_coincident_edges;
 		return true;
 	} else {
-		_coincident_edges[ &alpha ] = it->second + 1;
+		_coincident_edges[ &alpha ] = p_value;
 		return false;
 	}
 }

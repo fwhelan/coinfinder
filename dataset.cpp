@@ -289,14 +289,14 @@ void DataSet::_read_combined_file( const std::string& file_name )
     this->_dump_sizes();
 }
 
-void DataSet::_generate_coincident_edge( Alpha& alpha1, Alpha& alpha2 ) {
+void DataSet::_generate_coincident_edge( Alpha& alpha1, Alpha& alpha2, double p_value ) {
 	//Alpha* alphaA = &this->_alphas.find_id(alpha1.get_name());
 	//Alpha* alphaB = &this->_alphas.find_id(alpha2.get_name());
 
-	if (alpha1.register_coincident_edge( alpha2 )) {
+	if (alpha1.register_coincident_edge( alpha2, p_value )) {
 		++this->_num_coincident_edges;
 	}
-	alpha2.register_coincident_edge( alpha1 );
+	alpha2.register_coincident_edge( alpha1, p_value );
 
 	if(_options.verbose) {
 		std::cerr << "Coincident edge formed between " << alpha1.get_name() << " and " << alpha2.get_name() << std::endl;
@@ -630,6 +630,11 @@ void DataSet::_dump_sizes() const
 int DataSet::get_num_edges() const
 {
     return _num_edges;
+}
+
+int DataSet::get_num_coincident_edges() const
+{
+	return _num_coincident_edges;
 }
 
 

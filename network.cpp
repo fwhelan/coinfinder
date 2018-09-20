@@ -9,7 +9,7 @@
  * Calculates the level of lineage-dependence per gene in the output gene_list
  */
 
-void Network::run( )
+void Network::run( DataSet& dataset )
 {
 	std::cerr << "hello, world --network." << std::endl;
 }
