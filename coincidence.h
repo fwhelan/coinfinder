@@ -30,7 +30,7 @@ class Coincidence
 	static double calc_secondaries(const id_lookup<Edge>& edge_table, const Alpha& alpha_yain, const Alpha& alpha_tain, const std::vector<std::string>& edges_ovlp);
 	//static std::string calc_common_ancestor(const DataSet& dataset, const std::string& phylogeny, const std::vector<std::string>& edges_union, std::string path);
 	//static void _coincidence_to_p( const DataSet& dataset, const std::string& phylogeny, const Alpha& alpha_yain, const Alpha& alpha_tain, double cor_sig_level, int both_of, int one_of, int any_yain, int any_tain, const std::map<double, std::pair<std::string, std::string>>& phylo_dists, const id_lookup<Edge>& edge_table, const double max_act_phylodist, const std::vector<std::string>& edges_ovlp, const std::vector<std::string>& edges_union, std::string path);
-	static bool  _coincidence_to_p( const DataSet& dataset, const Alpha& alpha_yain, const Alpha& alpha_tain, double cor_sig_level, int both_of, int one_of, int any_yain, int any_tain, const id_lookup<Edge>& edge_table, const std::vector<std::string>& edges_ovlp, const std::vector<std::string>& edges_union, std::string path);
+	static double  _coincidence_to_p( const DataSet& dataset, const Alpha& alpha_yain, const Alpha& alpha_tain, double cor_sig_level, int both_of, int one_of, int any_yain, int any_tain, const id_lookup<Edge>& edge_table, const std::vector<std::string>& edges_ovlp, const std::vector<std::string>& edges_union, std::string path);
         static void _write_header(const DataSet& dataset);
 };
 

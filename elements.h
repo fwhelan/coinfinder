@@ -48,7 +48,7 @@ class Alpha
         const std::string& get_name() const;
 
         bool register_edge( const Gamma* gamma, const Beta& beta );
-	bool register_coincident_edge( const Alpha& alpha );
+	bool register_coincident_edge( const Alpha& alpha, double p_value );
 	void register_D( double D );
         void register_gamma( const Gamma& gamma );
         void unregister_gamma( const Gamma& gamma );

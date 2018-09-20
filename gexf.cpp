@@ -9,7 +9,7 @@
  * Calculates the level of lineage-dependence per gene in the output gene_list
  */
 
-void Gexf::run( )
+void Gexf::run( DataSet& dataset )
 {
 	std::cerr << "hello, world --gexf." << std::endl;
 }

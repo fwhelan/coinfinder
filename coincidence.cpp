@@ -12,6 +12,7 @@
 #include "parameters.h"
 #include "significance.h"
 #include "binomial_test.h"
+#include "math.h"
 
 #include <Python.h>
 
@@ -125,10 +126,10 @@ void Coincidence::run( DataSet& dataset, /**< Dataset */
 	    // Count total range
             int total_range = num_edges_yain + num_edges_tain - overlaps;
             //Coincidence::_coincidence_to_p( dataset, phylogeny, alpha_yain, alpha_tain, cor_sig, overlaps, total_range, num_edges_yain, num_edges_tain, phylo_dists, edge_table, max_phylo_dist, edges_ovlp, edges_union, path );
-	    bool signif = Coincidence::_coincidence_to_p( dataset, alpha_yain, alpha_tain, cor_sig, overlaps, total_range, num_edges_yain, num_edges_tain, edge_table, edges_ovlp, edges_union, path );
+	    double signif = Coincidence::_coincidence_to_p( dataset, alpha_yain, alpha_tain, cor_sig, overlaps, total_range, num_edges_yain, num_edges_tain, edge_table, edges_ovlp, edges_union, path );
 	    // If result is significant, add genes to gene_list to pass to lineage code
-	    if (signif) {
-		dataset._generate_coincident_edge(alpha_yain, alpha_tain);;
+	    if (signif == signif) { //way of checking if signif is NAN
+		dataset._generate_coincident_edge(alpha_yain, alpha_tain, signif);;
 	    }
         }
     }
@@ -297,7 +298,7 @@ double Coincidence::calc_secondaries(
 
 
 /** Calculates a p-value of coincicidence.                                                               */
-bool Coincidence::_coincidence_to_p( const DataSet& dataset,        /**< Dataset                         */
+double Coincidence::_coincidence_to_p( const DataSet& dataset,        /**< Dataset                         */
 				     //const std::string& phylogeny,
                                      const Alpha& alpha_yain,       /**< First alpha                     */
                                      const Alpha& alpha_tain,       /**< Second alpha                    */
@@ -314,7 +315,8 @@ bool Coincidence::_coincidence_to_p( const DataSet& dataset,        /**< Dataset
 				     const std::string path)
 {
     int       num_observations;
-    bool retval = false;
+    //bool retval = false;
+    double retval = NAN;
     const int max_coincidence = dataset.get_betas().size();
 
     const TParameters& options = dataset.get_options();
@@ -436,7 +438,7 @@ bool Coincidence::_coincidence_to_p( const DataSet& dataset,        /**< Dataset
     }
 
     //Result is significant: calculate secondaries for coincidence or avoidance, depending on what the user called for
-    retval = true;
+    retval = p_value;
     switch (options.coin_max_mode)
     {
         case EMaxMode::ACCOMPANY:
