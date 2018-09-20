@@ -40,7 +40,7 @@ class Alpha
 	int _num_coincident_edges;
 #endif
         std::map<const Beta*, int> _edges; // beta, to the count of gammas in the edge (i.e. the weight)
-	std::map<const Alpha*, int> _coincident_edges;
+	std::map<const Alpha*, double> _coincident_edges;
 
     public:
         explicit Alpha( const std::string& name );
@@ -56,8 +56,9 @@ class Alpha
         int get_num_gammas() const;
 	int get_num_edges() const;
 	int get_num_coincident_edges() const;
+	double get_D() const;
         const std::map<const Beta*, int>& get_edges() const;
-	const std::map<const Alpha*, int>& get_coincident_edges() const;
+	const std::map<const Alpha*, double>& get_coincident_edges() const;
 };
 
 

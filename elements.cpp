@@ -89,6 +89,10 @@ int Alpha::get_num_coincident_edges() const {
 	return (this->_coincident_edges).size();
 }
 
+double Alpha::get_D() const {
+	return this->D;
+}
+
 
 /**
  * Returns the map representing the edges (see `_edges`). 
@@ -99,7 +103,7 @@ const std::map<const Beta*, int>& Alpha::get_edges() const
     return _edges;
 }
 
-const std::map<const Alpha*, int>& Alpha::get_coincident_edges() const
+const std::map<const Alpha*, double>& Alpha::get_coincident_edges() const
 {
    return _coincident_edges;
 }
