@@ -34,6 +34,7 @@ void Gexf::run( DataSet& dataset )
 						" <attvalues>\n" +
 						"  <attvalue for=\"D-value\" value=\"" + std::to_string(alpha1_D) + "\"/>\n" +
 						" </attvalues>\n" +
+						"<viz:color r=\"239\" g=\"173\" b=\"66\"/>
 						"</node>\n";
 			std::string alpha2_name;
 			double p_value;
