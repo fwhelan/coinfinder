@@ -10,7 +10,8 @@ struct TParameters;
 class Lineage
 {
     public:
-        static void run(DataSet& dataset);
+        static int run(DataSet& dataset);
         
     private:
+	static std::string systemSTDOUT(std::string cmd);
 };

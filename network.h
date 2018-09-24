@@ -10,7 +10,8 @@ struct TParameters;
 class Network
 {
     public:
-        static void run( DataSet& dataset);
+        static int run( DataSet& dataset);
         
     private:
+	static std::string systemSTDOUT(std::string cmd);
 };
