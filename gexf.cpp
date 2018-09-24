@@ -11,13 +11,10 @@
 
 void Gexf::run( DataSet& dataset )
 {
-	std::cerr << "hello, world --gexf." << std::endl;
 	std::ofstream gexf;
         gexf.open("coincident_network.gexf");
 	std::string node_attr_xml = "";
-	std::string node_xml = "";
 	std::string edge_attr_xml = "";
-	std::string edge_xml = "";
 	//Cycle through nodes and edges to output to gexf format
 	std::string alpha1_name;
 	double alpha1_D;
@@ -30,12 +27,11 @@ void Gexf::run( DataSet& dataset )
 		if (alpha.get_num_coincident_edges() > 0) {
 			alpha1_name = alpha.get_name();
 			alpha1_D = alpha.get_D();
-			alpha1_col = 289*alpha1_D;
+			alpha1_col = 255*alpha1_D; //Most meaningful values of D are between 0 and 1
 			if (alpha1_col > 255) { alpha1_col = 255; }
-			if (alpha1_col < 0)   { alpha1_col = 0; } //TODO- make this more comprehensive
-			alpha1_size = 10+(alpha1_D*2);
+			if (alpha1_col < 0)   { alpha1_col = 0; }
+			alpha1_size = 20+(alpha1_D*2);
 			//push node to node array for gexf
-			//node_xml += "<node id=\"" + alpha1_name + "\" label=\"" + alpha1_name + "\"/>";
 			node_attr_xml += "<node id=\"" + alpha1_name + "\" label=\"" + alpha1_name + "\">\n" +
 						" <attvalues>\n" +
 						"  <attvalue for=\"D-value\" value=\"" + std::to_string(alpha1_D) + "\"/>\n" +
@@ -50,7 +46,7 @@ void Gexf::run( DataSet& dataset )
 			for(const auto& edge_list : edges) {
 				alpha2_name = (edge_list.first)->get_name();
 				p_value = edge_list.second;
-				edge_weight = ((1-p_value)*2)+1; //TODO- make this more comprehensive
+				edge_weight = ((1-p_value)*2);
 				//push edge to edge array for gexf
 				edge_attr_xml += "<edge id=\"" + std::to_string(edge_counter) + "\" label=\"" + std::to_string(p_value)
 					+ "\" source=\"" + alpha1_name + "\" target=\"" + alpha2_name + "\" weight=\"" + std::to_string(edge_weight) + "\">" +

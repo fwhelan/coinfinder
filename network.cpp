@@ -6,10 +6,13 @@
 #include "elements.h"
 #include "parameters.h"
 /**
- * Calculates the level of lineage-dependence per gene in the output gene_list
+ * Prunes the dataset based on D-value and draws a network and heatmap of the pruned dataset.
  */
 
 void Network::run( DataSet& dataset )
 {
-	std::cerr << "hello, world --network." << std::endl;
+	//Call R to draw heatmap and network
+	std::cerr << "Call network.R..." << std::endl;
+	system("Rscript network.R");
+	std::cerr << "Return from network.R..." << std::endl;
 }

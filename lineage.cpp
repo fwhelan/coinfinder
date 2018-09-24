@@ -11,27 +11,30 @@
 
 void Lineage::run( DataSet&  dataset)
 {
-	std::cerr << "hello, world --lineage." << std::endl;
-	std::cerr << "dataset has " << dataset.get_num_coincident_edges() << " coincident edges" << std::endl;
-
 	//Identify alphas with coincident edges & output to file
+	//Write an edges file while I'm at it for use in Network
 	std::ofstream nodefile;
+	std::ofstream edgefile;
         nodefile.open("coincident_nodes_in.csv");
+	edgefile.open("coincident_edges.csv");
 	const id_lookup<Alpha>& alpha_table = dataset.get_alphas();
 	for (const auto& alpha_list : alpha_table.get_table()) {
         	Alpha& alpha = *alpha_list.second;
 		if (alpha.get_num_coincident_edges() > 0) {
 			nodefile << alpha.get_name() << ",";
-			std::cerr << alpha.get_name() << ",";
+			const std::map<const Alpha*, double>& coincident_edges = alpha.get_coincident_edges();
+			for (const auto& edge_list : coincident_edges) {
+				edgefile << alpha.get_name() << "," << (edge_list.first)->get_name() << "," << edge_list.second << std::endl;
+			}
 		}
 	}
 	nodefile << std::endl;
 	nodefile.close();
-	std::cerr << std::endl;
+	edgefile.close();
 
 	//Call R to calculate D
 	std::cerr << "Call lineage.R..." << std::endl;
-	//system("Rscript lineage.R");
+	system("Rscript lineage.R");
 	std::cerr << "Return from lineage.R..." << std::endl;
 	
 	//Save D to alpha as an attribute
@@ -64,9 +67,6 @@ void Lineage::run( DataSet&  dataset)
                 if (Dvalues.count(alpha.get_name()) > 0) {
                         alpha.register_D(Dvalues[alpha.get_name()]);
 			count++;
-			std::cerr << alpha.get_name() << ",";
                 }
         }
-	std::cerr << std::endl;
-	std::cerr << "There are " << count << " alphas with coincident edges." << std::endl;
 }
