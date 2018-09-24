@@ -145,10 +145,17 @@ int main( int argc, const char** argv )
 
         case EMethod::COINCIDENCE:
 	{
+	    int retval = 0;
             Coincidence::run( dataset, options.phylogeny, result );
-	    Lineage::run( dataset );
+	    retval = Lineage::run( dataset );
+	    if(retval != 0) {
+		return(-1);
+	    }
 	    Gexf::run( dataset );
-	    Network::run( dataset );
+	    retval = Network::run( dataset );
+	    if(retval != 0) {
+		return(-1);
+	    }
             break;
 	}
 

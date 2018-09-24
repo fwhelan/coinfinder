@@ -9,7 +9,7 @@
  * Calculates the level of lineage-dependence per gene in the dataset
  */
 
-void Lineage::run( DataSet&  dataset)
+int Lineage::run( DataSet&  dataset)
 {
 	//Identify alphas with coincident edges & output to file
 	//Write an edges file while I'm at it for use in Network
@@ -33,9 +33,13 @@ void Lineage::run( DataSet&  dataset)
 	edgefile.close();
 
 	//Call R to calculate D
-	std::cerr << "Call lineage.R..." << std::endl;
-	system("Rscript lineage.R");
-	std::cerr << "Return from lineage.R..." << std::endl;
+	std::cerr << "Calculating lineage dependence..." << std::endl;
+	std::string out = systemSTDOUT("Rscript lineage.R");
+	if (out.find("Error") != std::string::npos) {
+		std::cerr << "ERROR MESSAGE FROM R: " << std::endl;
+		std::cerr << out.substr(out.find("Error")) << std::endl;
+		return(-1);
+	}
 	
 	//Save D to alpha as an attribute
 	std::ifstream file_in;
@@ -69,4 +73,28 @@ void Lineage::run( DataSet&  dataset)
 			count++;
                 }
         }
+	return(0);
+}
+
+/**
+ * Execute a command and get the result.
+ *
+ * @param   cmd - The system command to run.
+ * @return  The string command line output of the command.
+ */
+std::string Lineage::systemSTDOUT(std::string cmd) {
+
+    std::string data;
+    FILE * stream;
+    const int max_buffer = 256;
+    char buffer[max_buffer];
+    cmd.append(" 2>&1"); // Do we want STDERR?
+
+    stream = popen(cmd.c_str(), "r");
+    if (stream) {
+        while (!feof(stream))
+            if (fgets(buffer, max_buffer, stream) != NULL) data.append(buffer);
+        pclose(stream);
+    }
+    return data;
 }
