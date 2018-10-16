@@ -20,6 +20,7 @@ struct TParameters
     EMaxMode coin_max_mode;
     bool verbose;
     bool permit_filter;
+    bool Rmsgs;
     std::string alpha_name;
     std::string beta_name;
     std::string gamma_name;
@@ -27,6 +28,7 @@ struct TParameters
     std::string beta_file_name;
     std::string combined_file_name;
     std::string phylogeny;
+    int num_cores;
     double upper_filt_thres;
     double filt_thres;
     std::string deep_query_alpha;

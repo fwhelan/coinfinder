@@ -9,7 +9,7 @@
  * Calculates the level of lineage-dependence per gene in the dataset
  */
 
-int Lineage::run( DataSet&  dataset)
+int Lineage::run( DataSet&  dataset, std::string source_path, std::string call_path, const std::string& phylogeny, int num_cores, bool Rmsgs)
 {
 	//Identify alphas with coincident edges & output to file
 	//Write an edges file while I'm at it for use in Network
@@ -34,11 +34,21 @@ int Lineage::run( DataSet&  dataset)
 
 	//Call R to calculate D
 	std::cerr << "Calculating lineage dependence..." << std::endl;
-	std::string out = systemSTDOUT("Rscript lineage.R");
-	if (out.find("Error") != std::string::npos) {
-		std::cerr << "ERROR MESSAGE FROM R: " << std::endl;
-		std::cerr << out.substr(out.find("Error")) << std::endl;
-		return(-1);
+	std::string syscall = "Rscript " + source_path + "/lineage.R -p " + call_path + " -t " + phylogeny + " -c " + std::to_string(num_cores);
+	if (Rmsgs) {
+		system(syscall.c_str());
+	} else {
+		std::string out = systemSTDOUT(syscall);
+		if ((out.find("Error") != std::string::npos) || (out.find("error") != std::string::npos)) {
+			std::cerr << "ERROR MESSAGE FROM R: " << std::endl;
+			if (out.find("Error") != std::string::npos) {
+				std::cerr << out.substr(out.find("Error")) << std::endl;
+			}
+			if (out.find("error") != std::string::npos) {
+				std::cerr << out.substr(out.find("error")) << std::endl;
+			}
+			return(-1);
+		}
 	}
 	
 	//Save D to alpha as an attribute
