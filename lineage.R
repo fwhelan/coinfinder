@@ -1,12 +1,17 @@
 library(caper)
 library(phytools)
+library(getopt)
 
-setwd("~/pCloud\ Drive/pCloud\ Sync/postdoc-research/18.01-Networks-pangenomes/18.01-PES/roary_out_s_e_n/")
+#Get call input
+spec <- matrix(c('path', 'p', 1, "character", 'phylogeny', 't', 1, "character", 'cores', 'c', 1, "integer"), byrow=TRUE, ncol=4)
+opt <- getopt(spec)
+setwd(opt$path)
+
 #Read in
 genes  <- read.csv("coincident_nodes_in.csv")
 genes[,length(genes)] <- NULL #remove the last comma in csv file
 genepa <- read.csv("gene_presence_absence.csv", header=T, row.names=1) #TODO
-tree <- read.tree("PES-core_gene_aln.newick") #TODO
+tree <- read.tree(opt$phylogeny)
 #Make annot table
 genepa[,1:14] <- NULL
 rownames(genepa) <- gsub(" ", "", rownames(genepa))
@@ -42,7 +47,7 @@ dataset <- comparative.data(phy = treeRt,
                             names.col = Id,
                             vcv = TRUE, na.omit = FALSE, warn.dropped = TRUE)
 #Estimate D (Fritz & Purvis 2010) for all columns in annot
-parallelCluster <- parallel::makeCluster(parallel::detectCores()) #**TODO update this to a user defined set of cores
+parallelCluster <- parallel::makeCluster(opt$cores)
 mkWorker <- function(dataset) {
   library(caper)
   #Make sure each value is passed
@@ -70,5 +75,5 @@ for(a in 1:length(results)) {
       genes2[results[[a]]$binvar,1] <- results[[a]]$DEstimate
   }
 }
-setwd("~/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/")
+
 write.table(genes2, "coincident_nodes.csv", sep="\t", col.names=FALSE, quote=FALSE)

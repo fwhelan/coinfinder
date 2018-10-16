@@ -9,16 +9,26 @@
  * Prunes the dataset based on D-value and draws a network and heatmap of the pruned dataset.
  */
 
-int Network::run( DataSet& dataset )
+int Network::run( DataSet& dataset, std::string source_path, std::string call_path, const std::string& phylogeny, bool Rmsgs )
 {
 	//Call R to draw heatmap and network
 	std::cerr << "Generate network and coincidence heatmap..." << std::endl;
-	std::string out = systemSTDOUT("Rscript network.R");
-	if (out.find("Error") != std::string::npos) {
-                std::cerr << "ERROR MESSAGE FROM R: " << std::endl;
-                std::cerr << out.substr(out.find("Error")) << std::endl;
-		return(-1);
-        }
+	std::string syscall = "Rscript " + source_path + "/network.R -p " + call_path + " -t " + phylogeny;
+	if (Rmsgs) {
+		system(syscall.c_str());
+	} else {
+		std::string out = systemSTDOUT(syscall);
+		if ((out.find("Error") != std::string::npos) || (out.find("error") != std::string::npos)) {
+                	std::cerr << "ERROR MESSAGE FROM R: " << std::endl;
+			if (out.find("Error") != std::string::npos) {
+                		std::cerr << out.substr(out.find("Error")) << std::endl;
+			}
+			if (out.find("error") != std::string::npos) {
+				std::cerr << out.substr(out.find("error")) << std::endl;
+			}
+			return(-1);
+        	}
+	}
 	return(0);
 }
 

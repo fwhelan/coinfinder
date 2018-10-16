@@ -14,6 +14,10 @@
 #include <array>
 
 #include "bugfix.h"
+
+#include "boost/filesystem.hpp"
+#include "boost/algorithm/string/replace.hpp"
+
 /**
  * Entry point, boom!
  * 
@@ -87,7 +91,8 @@ int main( int argc, const char** argv )
 		std::cerr << "    -o or --accompany      Overlap; identify groups that tend to coincide." << std::endl;
 		std::cerr << "    -s or --avoid          Separation; identify groups that tend to avoid." << std::endl;
 		std::cerr << "Miscellaneous:" << std::endl;
-		std::cerr << "    -p or --phylogeny      Phylogeny of Betas in Newick format (mandatory)" << std::endl;
+		std::cerr << "    -p or --phylogeny      Phylogeny of Betas in Newick format (required)" << std::endl;
+		std::cerr << "    -x or --num_cores      The number of cores to use (default: 2)" << std::endl;
 		std::cerr << "    -v or --verbose        Verbose output." << std::endl;
 		std::cerr << "    -i or --filter         Permit filtering of saturated and low-abundance data." << std::endl;
 		std::cerr << "    -U or --upfilthreshold Upper filter threshold for high-abundance data filtering (default: 1.0 i.e. any alpha in >=100/% of betas." << std::endl;
@@ -111,22 +116,30 @@ int main( int argc, const char** argv )
     //
     std::string command("which coinfinder");
     std::array<char, 128> buffer;
-    std::string result;
+    std::string source_path;
     FILE* pipe = popen(command.c_str(), "r");
     if (!pipe) {
 	std::cerr << "Couldn't start command." << std::endl;
 	return 1;
     }
     while (fgets(buffer.data(), 128, pipe) != NULL) {
- 	result += buffer.data();
+ 	source_path += buffer.data();
     }
-    std::cerr << "Result of which coinfinder: " << result << std::endl;
+    std::cerr << "Result of which coinfinder: " << source_path << std::endl;
     //Strip off the trailing "/coinfinder"
-    result = result.substr(0,result.length()-11);
+    source_path = source_path.substr(0,source_path.length()-11);
     //Deal with coinfinder not being set
-    if (result == "") {
-	result = ".";
+    if (source_path == "") {
+	source_path = ".";
     }
+
+    //
+    // Save directory of coinfinder call to pass to R
+    //
+    boost::filesystem::path ll_path = boost::filesystem::initial_path();
+    std::string call_path = ll_path.string();
+    //Replace any possible spaces with backslashes
+    boost::replace_all(call_path, " ", "\\ ");
 
     //
     // Load in relations
@@ -146,13 +159,13 @@ int main( int argc, const char** argv )
         case EMethod::COINCIDENCE:
 	{
 	    int retval = 0;
-            Coincidence::run( dataset, options.phylogeny, result );
-	    retval = Lineage::run( dataset );
+            Coincidence::run( dataset, options.phylogeny, source_path );
+	    retval = Lineage::run( dataset, source_path, call_path, options.phylogeny, options.num_cores, options.Rmsgs );
 	    if(retval != 0) {
 		return(-1);
 	    }
 	    Gexf::run( dataset );
-	    retval = Network::run( dataset );
+	    retval = Network::run( dataset, source_path, call_path, options.phylogeny, options.Rmsgs );
 	    if(retval != 0) {
 		return(-1);
 	    }

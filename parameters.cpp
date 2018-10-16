@@ -34,6 +34,8 @@ TParameters::TParameters()
 	  , upper_filt_thres( 1.0 )
 	  , filt_thres( 0.05 )
           , combined_file_name( "" )
+	  , num_cores ( 2 )
+	  , Rmsgs ( false )
 {
     // pass
 }
@@ -101,6 +103,7 @@ TParameters TParameters::parse( int arg_count, const char** arg_vals )
             GAMMA_N,
             SIG_LEVEL,
 	    PHYLO,
+	    CORES,
 	    UPFILT,
 	    FILT,
             QUERY,
@@ -124,6 +127,7 @@ TParameters TParameters::parse( int arg_count, const char** arg_vals )
     commands.emplace_back( "--avoid", 's', [ &result ]() { SET_ONCE( coin_max_mode, EMaxMode::AVOID ); } );
     commands.emplace_back( "--verbose", 'v', [ &result ]() { SET_ONCE( verbose, true ); } );
     commands.emplace_back( "--filter", 'i', [ &result ]() { SET_ONCE( permit_filter, true ); } );
+    commands.emplace_back( "--Rmsgs", 'R', [ &result ]() { SET_ONCE( Rmsgs, true); } );
     commands.emplace_back( "--upfilthreshold", 'U', [ &next_command ]() { next_command = ECommand::UPFILT; } );
     commands.emplace_back( "--filthreshold", 'F', [ &next_command ]() { next_command = ECommand::FILT; } );
     commands.emplace_back( "--level", 'L', [ &next_command ]() { next_command = ECommand::SIG_LEVEL; } );
@@ -134,6 +138,7 @@ TParameters TParameters::parse( int arg_count, const char** arg_vals )
     commands.emplace_back( "--beta", 'B', [ &next_command ]() { next_command = ECommand::BETA_N; } );
     commands.emplace_back( "--gamma", 'C', [ &next_command ]() { next_command = ECommand::GAMMA_N; } );
     commands.emplace_back( "--phylogeny", 'p', [ &next_command ]() { next_command = ECommand::PHYLO; } );
+    commands.emplace_back( "--num_cores", 'x', [ &next_command ]() { next_command = ECommand::CORES; } );
     commands.emplace_back( "--query", 'q', [ &next_command ]() { next_command = ECommand::QUERY; } );
     commands.emplace_back( "--all", 'E', [ &result ]() { SET_ONCE( output_all, true ); } );
     commands.emplace_back( "--test", 'T', &test_cases );
@@ -264,6 +269,13 @@ TParameters TParameters::parse( int arg_count, const char** arg_vals )
 		std::cerr << "command=parser: Phylogeny '" << arg << "' specified." << std::endl;
 #endif
 		result.phylogeny = arg;
+		next_command = ECommand::FLAGS;
+		break;
+	    case ECommand::CORES:
+#ifndef NDEBUG
+		std::cerr << "command=parser: Number of cores '" << arg << '" specified." << std::endl;
+#endif
+		result.num_cores = stoi(arg);
 		next_command = ECommand::FLAGS;
 		break;
 	    case ECommand::UPFILT:

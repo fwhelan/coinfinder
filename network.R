@@ -4,15 +4,20 @@ library(cowplot)
 library(data.table)
 library(ggtree)
 library(ggraph)
+library(getopt)
 
-setwd("~/pCloud\ Drive/pCloud\ Sync/postdoc-research/18.01-Networks-pangenomes/18.01-PES/roary_out_s_e_n/")
+#Get call input
+spec <- matrix(c('path', 'p', 1, "character", 'phylogeny', 't', 1, "character"), byrow=TRUE, ncol=4)
+opt <- getopt(spec)
+
+setwd(opt$path)
 #Read in
-nodes  <- read.csv("coincident_nodes.csv", header=FALSE)
-colnames(nodes) <-c("alphas", "D")
+nodes  <- read.table("coincident_nodes.csv", header=FALSE, sep="\t")
+colnames(nodes) <- c("alphas", "D")
 edges <- read.csv("coincident_edges.csv", header=FALSE)
 colnames(edges) <- c("alpha1", "alpha2", "p")
 genepa <- read.csv("gene_presence_absence.csv", header=T, row.names=1) #TODO
-tree <- read.newick("PES-core_gene_aln.newick")
+tree <- read.newick(opt$phylogeny)
 #Remove any nodes that do not have a value for D and edges which don't have a p-value
 nodes <- nodes[complete.cases(nodes),]
 edges <- edges[complete.cases(edges),]
@@ -51,6 +56,17 @@ for(i in c(1:length(CC.size))){
 node.order <- unique(ord.CC$alphas)
 names(node.colour) <- node.order
 node.order <- factor(node.order, levels=node.order)
+
+#Write CCs to coincident_components.csv
+CC_out <- data.frame(id = character(0), stringsAsFactors = FALSE)
+for(i in c(1:nrow(CCs))) {
+  if (is.na(CC_out[CCs$CC[i],1])) {
+    CC_out[CCs$CC[i],1] <- CCs$alphas[i]
+  } else {
+    CC_out[CCs$CC[i],1] <- paste(CC_out[CCs$CC[i],1], ",", CCs$alphas[i], sep="")
+  }
+}
+write.table(CC_out, file="coincident_components.csv", sep="\t", quote=FALSE, row.names=TRUE, col.names=FALSE)
 
 #Create annot
 genepa[,1:14] <- NULL
