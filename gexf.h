@@ -10,7 +10,7 @@ struct TParameters;
 class Gexf
 {
     public:
-        static void run( DataSet& dataset);
+        static void run( DataSet& dataset, const std::string& prefix);
         
     private:
 };

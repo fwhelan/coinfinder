@@ -62,11 +62,12 @@ int main( int argc, const char** argv )
 	if (arg == help) {
 		std::cerr << "./confinder [OPTIONS]" << std::endl;
 		std::cerr << "File input- specify either: " << std::endl;
-		std::cerr << "    -a or --a              The path to the Gamma-to-Alpha family file with (gamma)(TAB)(alpha)" << std::endl;
-		std::cerr << "    -b or --b              The path to the Gamma-to-Beta family file with (gamma)(TAB)(beta)" << std::endl;
+		//std::cerr << "    -a or --a              The path to the Gamma-to-Alpha family file with (gamma)(TAB)(alpha)" << std::endl;
+		//std::cerr << "    -b or --b              The path to the Gamma-to-Beta family file with (gamma)(TAB)(beta)" << std::endl;
 
-		std::cerr << "  or" << std::endl;
-		std::cerr << "    -d or --d              The path of the Alpha-to-Beta file with (alpha)(TAB)(beta)" << std::endl;
+		//std::cerr << "  or" << std::endl;
+		//std::cerr << "    -d or --d              The path of the Alpha-to-Beta file with (alpha)(TAB)(beta)" << std::endl;
+		std::cerr << "    -d or --d              The path to the gene_presence_absence.csv output from Roary" << std::endl;
 		std::cerr << "Significance- specify: " << std::endl;
 		std::cerr << "    -L or --level          Specify the significnace level cutoff" << std::endl;
 		std::cerr << "Naming (optional): " << std::endl;
@@ -88,9 +89,10 @@ int main( int argc, const char** argv )
 		std::cerr << "    -f or --full           Full; consider all data." << std::endl;
 		std::cerr << "    -u or --union          Union; only consider the edges which pertain to the groups being analysed." << std::endl;
 		std::cerr << "Max mode (mandatory for coincidence analysis):" << std::endl;
-		std::cerr << "    -o or --accompany      Overlap; identify groups that tend to coincide." << std::endl;
+		std::cerr << "    -a or --accompany      Overlap; identify groups that tend to coincide." << std::endl;
 		std::cerr << "    -s or --avoid          Separation; identify groups that tend to avoid." << std::endl;
 		std::cerr << "Miscellaneous:" << std::endl;
+		std::cerr << "    -o or --output         The prefix of all output files (default: coincident)." << std::endl;
 		std::cerr << "    -p or --phylogeny      Phylogeny of Betas in Newick format (required)" << std::endl;
 		std::cerr << "    -x or --num_cores      The number of cores to use (default: 2)" << std::endl;
 		std::cerr << "    -v or --verbose        Verbose output." << std::endl;
@@ -125,7 +127,6 @@ int main( int argc, const char** argv )
     while (fgets(buffer.data(), 128, pipe) != NULL) {
  	source_path += buffer.data();
     }
-    std::cerr << "Result of which coinfinder: " << source_path << std::endl;
     //Strip off the trailing "/coinfinder"
     source_path = source_path.substr(0,source_path.length()-11);
     //Deal with coinfinder not being set
@@ -141,11 +142,45 @@ int main( int argc, const char** argv )
     //Replace any possible spaces with backslashes
     boost::replace_all(call_path, " ", "\\ ");
 
+    // 
+    // Check for existence of input files
+    //
+    if ( !boost::filesystem::exists(options.combined_file_name) ) {
+	std::cerr << "Input file " << options.combined_file_name << " does not exist." << std::endl;
+	std::cerr << "Exiting..." << std::endl;
+	return(-1);
+    }
+    if ( !boost::filesystem::exists(options.phylogeny) ) {
+	std::cerr << "Input phylogeny " << options.phylogeny << " does not exist." << std::endl;
+	std::cerr << "Exiting..." << std::endl;
+	return(-1);
+    }
+
+    //
+    // Format gene_p_a to classic coinfinder input file
+    //
+    std::cerr << "Formating Roary output for input into coinfinder..." << std::endl;
+    std::string sysStr = "python3 " + source_path + "/format_roary.py -i " + options.combined_file_name;
+    //system(sysStr.c_str());
+    std::string out = Lineage::systemSTDOUT(sysStr);
+    if ((out.find("Error") != std::string::npos) || (out.find("error") != std::string::npos)) {
+    	std::cerr << "ERROR MESSAGE FROM Python: " << std::endl;
+	std::cerr << out << std::endl;
+        //if (out.find("Error") != std::string::npos) {
+        //	std::cerr << out.substr(out.find("Error")) << std::endl;
+        //}
+        //if (out.find("error") != std::string::npos) {
+        //        std::cerr << out.substr(out.find("error")) << std::endl;
+        //}
+        return(-1);
+    }
+
     //
     // Load in relations
     //
     DataSet dataset = DataSet( options );
-    dataset.read_files( options.alpha_file_name, options.beta_file_name, options.combined_file_name, options.phylogeny, options.filt_thres, options.upper_filt_thres );
+    //dataset.read_files( options.alpha_file_name, options.beta_file_name, options.combined_file_name, options.phylogeny, options.filt_thres, options.upper_filt_thres );
+    dataset.read_files( options.alpha_file_name, options.beta_file_name, "concident-input-edges.csv", options.phylogeny, options.filt_thres, options.upper_filt_thres );
 
     //
     // Do what it is that needs to be done
@@ -159,13 +194,13 @@ int main( int argc, const char** argv )
         case EMethod::COINCIDENCE:
 	{
 	    int retval = 0;
-            Coincidence::run( dataset, options.phylogeny, source_path );
-	    retval = Lineage::run( dataset, source_path, call_path, options.phylogeny, options.num_cores, options.Rmsgs );
+            Coincidence::run( dataset, options.phylogeny, source_path, options.prefix );
+	    retval = Lineage::run( dataset, source_path, call_path, options.phylogeny, options.combined_file_name, options.num_cores, options.Rmsgs, options.prefix );
 	    if(retval != 0) {
 		return(-1);
 	    }
-	    Gexf::run( dataset );
-	    retval = Network::run( dataset, source_path, call_path, options.phylogeny, options.Rmsgs );
+	    Gexf::run( dataset, options.prefix );
+	    retval = Network::run( dataset, source_path, call_path, options.phylogeny, options.combined_file_name, options.Rmsgs, options.prefix );
 	    if(retval != 0) {
 		return(-1);
 	    }

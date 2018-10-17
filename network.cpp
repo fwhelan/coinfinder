@@ -9,11 +9,11 @@
  * Prunes the dataset based on D-value and draws a network and heatmap of the pruned dataset.
  */
 
-int Network::run( DataSet& dataset, std::string source_path, std::string call_path, const std::string& phylogeny, bool Rmsgs )
+int Network::run( DataSet& dataset, const std::string& source_path, const std::string& call_path, const std::string& phylogeny, const std::string& gene_pa, bool Rmsgs, const std::string& prefix )
 {
 	//Call R to draw heatmap and network
 	std::cerr << "Generate network and coincidence heatmap..." << std::endl;
-	std::string syscall = "Rscript " + source_path + "/network.R -p " + call_path + " -t " + phylogeny;
+	std::string syscall = "Rscript " + source_path + "/network.R -p " + call_path + " -t " + phylogeny + " -g " + gene_pa + " -o " + prefix; 
 	if (Rmsgs) {
 		system(syscall.c_str());
 	} else {

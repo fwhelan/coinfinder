@@ -21,9 +21,10 @@
  */
 void Coincidence::run( DataSet& dataset, /**< Dataset */
 		       const std::string& phylogeny,
-		       const std::string path )
+		       const std::string& path,
+		       const std::string& prefix )
 {
-    Coincidence::_write_header(dataset);
+    //Coincidence::_write_header(dataset);
     const TParameters& options = dataset.get_options();
 
     std::cerr << "Iterating matrix..." << std::endl;
@@ -70,6 +71,13 @@ void Coincidence::run( DataSet& dataset, /**< Dataset */
     // Iterate first alpha
     //
     std::cerr << "Running analyses..." << std::endl;
+    //Open output file to write to
+    std::ofstream analysis;
+    std::string analyname = prefix + "_pairs.csv";
+    analysis.open(analyname);
+    //Write header
+    Coincidence::_write_header(dataset, analysis);
+
     for (const auto& kvp_yain : alpha_table.get_table())
     {
         Alpha& alpha_yain = *kvp_yain.second;
@@ -126,13 +134,14 @@ void Coincidence::run( DataSet& dataset, /**< Dataset */
 	    // Count total range
             int total_range = num_edges_yain + num_edges_tain - overlaps;
             //Coincidence::_coincidence_to_p( dataset, phylogeny, alpha_yain, alpha_tain, cor_sig, overlaps, total_range, num_edges_yain, num_edges_tain, phylo_dists, edge_table, max_phylo_dist, edges_ovlp, edges_union, path );
-	    double signif = Coincidence::_coincidence_to_p( dataset, alpha_yain, alpha_tain, cor_sig, overlaps, total_range, num_edges_yain, num_edges_tain, edge_table, edges_ovlp, edges_union, path );
+	    double signif = Coincidence::_coincidence_to_p( dataset, analysis, alpha_yain, alpha_tain, cor_sig, overlaps, total_range, num_edges_yain, num_edges_tain, edge_table, edges_ovlp, edges_union, path );
 	    // If result is significant, add genes to gene_list to pass to lineage code
 	    if (signif == signif) { //way of checking if signif is NAN
 		dataset._generate_coincident_edge(alpha_yain, alpha_tain, signif);;
 	    }
         }
     }
+    analysis.close();
 }
 
 /**
@@ -299,6 +308,7 @@ double Coincidence::calc_secondaries(
 
 /** Calculates a p-value of coincicidence.                                                               */
 double Coincidence::_coincidence_to_p( const DataSet& dataset,        /**< Dataset                         */
+				     std::ofstream& analysis,	
 				     //const std::string& phylogeny,
                                      const Alpha& alpha_yain,       /**< First alpha                     */
                                      const Alpha& alpha_tain,       /**< Second alpha                    */
@@ -467,7 +477,7 @@ double Coincidence::_coincidence_to_p( const DataSet& dataset,        /**< Datas
 		//use Pagel's test to determine whether the genes share a phylogenetic history (statistically speaking)
 		//double pagels_pvalue = calc_pagels(phylogeny, );
 
-    		std::cout << alpha_yain.get_name()
+    		analysis << alpha_yain.get_name()
         	      << "\t" << alpha_tain.get_name()
         	      << "\t" << p_value
 		      //<< "\t" << max_obs_phylodist
@@ -492,7 +502,7 @@ double Coincidence::_coincidence_to_p( const DataSet& dataset,        /**< Datas
         {
 		//TODO- are there any interesting secondaries to do for avoidance data?
 
-		std::cout << alpha_yain.get_name()
+		analysis << alpha_yain.get_name()
 		     << "\t" << alpha_tain.get_name()
                      << "\t" << p_value
                      << "\t" << successes
@@ -520,7 +530,7 @@ double Coincidence::_coincidence_to_p( const DataSet& dataset,        /**< Datas
 /**
  * Writes the header
  */
-void Coincidence::_write_header(const DataSet& dataset)
+void Coincidence::_write_header(const DataSet& dataset, std::ofstream& analysis)
 {
     const TParameters& options = dataset.get_options();
 
@@ -528,7 +538,7 @@ void Coincidence::_write_header(const DataSet& dataset)
     {
     	case EMaxMode::ACCOMPANY:
     	{
-    		std::cout << "Source"
+    		analysis << "Source"
         		<< "\t" << "Target"
         	      	<< "\t" << "p"
 		      	//<< "\t" << "Max phylogenetic distance"
@@ -548,7 +558,7 @@ void Coincidence::_write_header(const DataSet& dataset)
 	}
 	case EMaxMode::AVOID:
 	{
-		std::cout << "Source"
+		analysis << "Source"
                         << "\t" << "Target"
                         << "\t" << "p"
                         << "\t" << "successes"

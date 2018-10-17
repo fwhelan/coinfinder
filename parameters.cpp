@@ -36,6 +36,7 @@ TParameters::TParameters()
           , combined_file_name( "" )
 	  , num_cores ( 2 )
 	  , Rmsgs ( false )
+	  , prefix ( "coincident" )
 {
     // pass
 }
@@ -102,6 +103,7 @@ TParameters TParameters::parse( int arg_count, const char** arg_vals )
             BETA_N,
             GAMMA_N,
             SIG_LEVEL,
+	    PREFIX,
 	    PHYLO,
 	    CORES,
 	    UPFILT,
@@ -123,7 +125,7 @@ TParameters TParameters::parse( int arg_count, const char** arg_vals )
     commands.emplace_back( "--twotailed", 't', [ &result ]() { SET_ONCE( alt_hypothesis, EHypothesis::TWOTAILED ); } );
     commands.emplace_back( "--full", 'f', [ &result ]() { SET_ONCE( coin_set_mode, ESetMode::FULL ); } );
     commands.emplace_back( "--union", 'u', [ &result ]() { SET_ONCE( coin_set_mode, ESetMode::INTERSECTION ); } );
-    commands.emplace_back( "--accompany", 'o', [ &result ]() { SET_ONCE( coin_max_mode, EMaxMode::ACCOMPANY ); } );
+    commands.emplace_back( "--accompany", 'a', [ &result ]() { SET_ONCE( coin_max_mode, EMaxMode::ACCOMPANY ); } );
     commands.emplace_back( "--avoid", 's', [ &result ]() { SET_ONCE( coin_max_mode, EMaxMode::AVOID ); } );
     commands.emplace_back( "--verbose", 'v', [ &result ]() { SET_ONCE( verbose, true ); } );
     commands.emplace_back( "--filter", 'i', [ &result ]() { SET_ONCE( permit_filter, true ); } );
@@ -134,9 +136,10 @@ TParameters TParameters::parse( int arg_count, const char** arg_vals )
     commands.emplace_back( "--a", 'a', [ &next_command ]() { next_command = ECommand::ALPHA_FN; } );
     commands.emplace_back( "--b", 'b', [ &next_command ]() { next_command = ECommand::BETA_FN; } );
     commands.emplace_back( "--d", 'd', [ &next_command ]() { next_command = ECommand::COMBINED_FN; } );
-    commands.emplace_back( "--alpha", 'A', [ &next_command ]() { next_command = ECommand::ALPHA_N; } );
-    commands.emplace_back( "--beta", 'B', [ &next_command ]() { next_command = ECommand::BETA_N; } );
-    commands.emplace_back( "--gamma", 'C', [ &next_command ]() { next_command = ECommand::GAMMA_N; } );
+    //commands.emplace_back( "--alpha", 'A', [ &next_command ]() { next_command = ECommand::ALPHA_N; } );
+    //commands.emplace_back( "--beta", 'B', [ &next_command ]() { next_command = ECommand::BETA_N; } );
+    //commands.emplace_back( "--gamma", 'C', [ &next_command ]() { next_command = ECommand::GAMMA_N; } );
+    commands.emplace_back( "--output", 'o', [ &next_command ]() { next_command = ECommand::PREFIX; } );
     commands.emplace_back( "--phylogeny", 'p', [ &next_command ]() { next_command = ECommand::PHYLO; } );
     commands.emplace_back( "--num_cores", 'x', [ &next_command ]() { next_command = ECommand::CORES; } );
     commands.emplace_back( "--query", 'q', [ &next_command ]() { next_command = ECommand::QUERY; } );
@@ -264,6 +267,14 @@ TParameters TParameters::parse( int arg_count, const char** arg_vals )
                 next_command = ECommand::FLAGS;
                 break;
 
+	    case ECommand::PREFIX:
+#ifndef NDEBUG
+		std::cerr << "command-parser: Output prefix '" << arg << "' specified." << std::endl;
+#endif
+		result.prefix = arg;
+		next_command = ECommand::FLAGS;
+		break;
+
 	    case ECommand::PHYLO:
 #ifndef NDEBUG
 		std::cerr << "command=parser: Phylogeny '" << arg << "' specified." << std::endl;
@@ -271,6 +282,7 @@ TParameters TParameters::parse( int arg_count, const char** arg_vals )
 		result.phylogeny = arg;
 		next_command = ECommand::FLAGS;
 		break;
+
 	    case ECommand::CORES:
 #ifndef NDEBUG
 		std::cerr << "command=parser: Number of cores '" << arg << '" specified." << std::endl;
@@ -278,6 +290,7 @@ TParameters TParameters::parse( int arg_count, const char** arg_vals )
 		result.num_cores = stoi(arg);
 		next_command = ECommand::FLAGS;
 		break;
+
 	    case ECommand::UPFILT:
 #ifndef NDEBUG
 		std::cerr << "command-parser: Upper filter threshold '" << arg << "' specified." << std::endl;
