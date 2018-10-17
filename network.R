@@ -7,16 +7,21 @@ library(ggraph)
 library(getopt)
 
 #Get call input
-spec <- matrix(c('path', 'p', 1, "character", 'phylogeny', 't', 1, "character"), byrow=TRUE, ncol=4)
+spec <- matrix(c('path', 'p', 1, "character",
+                 'phylogeny', 't', 1, "character",
+                 'gene_pa', 'g', 1, "character",
+                 'output', 'o', 1, "character"), byrow=TRUE, ncol=4)
 opt <- getopt(spec)
 
 setwd(opt$path)
 #Read in
-nodes  <- read.table("coincident_nodes.csv", header=FALSE, sep="\t")
+nodstr <- paste(opt$output, "_nodes.csv", sep="")
+nodes  <- read.table(nodstr, header=FALSE, sep="\t")
 colnames(nodes) <- c("alphas", "D")
-edges <- read.csv("coincident_edges.csv", header=FALSE)
+edgstr <- paste(opt$output, "_edges.csv", sep="")
+edges <- read.csv(edgstr, header=FALSE)
 colnames(edges) <- c("alpha1", "alpha2", "p")
-genepa <- read.csv("gene_presence_absence.csv", header=T, row.names=1) #TODO
+genepa <- read.csv(opt$gene_pa, header=T, row.names=1)
 tree <- read.newick(opt$phylogeny)
 #Remove any nodes that do not have a value for D and edges which don't have a p-value
 nodes <- nodes[complete.cases(nodes),]
@@ -66,7 +71,8 @@ for(i in c(1:nrow(CCs))) {
     CC_out[CCs$CC[i],1] <- paste(CC_out[CCs$CC[i],1], ",", CCs$alphas[i], sep="")
   }
 }
-write.table(CC_out, file="coincident_components.csv", sep="\t", quote=FALSE, row.names=TRUE, col.names=FALSE)
+outstr <- paste(opt$output, "_components.csv", sep="")
+write.table(CC_out, file=outstr, sep="\t", quote=FALSE, row.names=TRUE, col.names=FALSE)
 
 #Create annot
 genepa[,1:14] <- NULL
@@ -107,7 +113,8 @@ p.arc <- ggraph(grp, layout="linear") +
 p.blank <- ggplot(data.frame()) + geom_point() + xlim(0, 10) + ylim(0, 100) + theme(axis.line = element_blank(), axis.text = element_blank(), axis.ticks = element_blank())
 p.first <- plot_grid(p.blank,p.arc,nrow=1, rel_widths=c(1/7,1))
 p.out   <- plot_grid(p.heat,p.first,ncol=1, axis="l", rel_heights=c(1,1/4)) #scale=c(1,0.9)
-pdf("coincident_heatmap.pdf",height=58,width=55)
+outstr <- paste(opt$output, "_heatmap.pdf", sep="")
+pdf(outstr,height=58,width=55)
 print(p.out)
 dev.off()
 
@@ -126,6 +133,7 @@ p.net <- ggraph(net.layout) +
   theme_graph() +
   theme(legend.position="none") + #bottom
   theme(plot.margin = unit(c(0, 0, 0, 0), "cm"))
-pdf("coincident_network.pdf",height=58,width=55)
+outstr <- paste(opt$output, "_network.pdf", sep="")
+pdf(outstr,height=58,width=55)
 print(p.net)
 dev.off()

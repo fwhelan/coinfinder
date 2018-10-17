@@ -3,14 +3,19 @@ library(phytools)
 library(getopt)
 
 #Get call input
-spec <- matrix(c('path', 'p', 1, "character", 'phylogeny', 't', 1, "character", 'cores', 'c', 1, "integer"), byrow=TRUE, ncol=4)
+spec <- matrix(c('path', 'p', 1, "character",
+                 'phylogeny', 't', 1, "character",
+                 'gene_pa', 'g', 1, "character",
+                 'cores', 'c', 1, "integer",
+                 'output', 'o', 1, "character"), byrow=TRUE, ncol=4)
 opt <- getopt(spec)
 setwd(opt$path)
 
 #Read in
-genes  <- read.csv("coincident_nodes_in.csv")
+outstr <- paste(opt$output, "_nodes_in.csv", sep="")
+genes  <- read.csv(outstr) #"coincident_nodes_in.csv")
 genes[,length(genes)] <- NULL #remove the last comma in csv file
-genepa <- read.csv("gene_presence_absence.csv", header=T, row.names=1) #TODO
+genepa <- read.csv(opt$gene_pa, header=T, row.names=1)
 tree <- read.tree(opt$phylogeny)
 #Make annot table
 genepa[,1:14] <- NULL
@@ -75,5 +80,5 @@ for(a in 1:length(results)) {
       genes2[results[[a]]$binvar,1] <- results[[a]]$DEstimate
   }
 }
-
-write.table(genes2, "coincident_nodes.csv", sep="\t", col.names=FALSE, quote=FALSE)
+outstr <- paste(opt$output, "_nodes.csv", sep="")
+write.table(genes2, outstr, sep="\t", col.names=FALSE, quote=FALSE) #"coincident_nodes.csv"

@@ -9,10 +9,11 @@
  * Calculates the level of lineage-dependence per gene in the output gene_list
  */
 
-void Gexf::run( DataSet& dataset )
+void Gexf::run( DataSet& dataset, const std::string& prefix )
 {
 	std::ofstream gexf;
-        gexf.open("coincident_network.gexf");
+	std::string gexfname = prefix + "_network.gexf";
+        gexf.open(gexfname);
 	std::string node_attr_xml = "";
 	std::string edge_attr_xml = "";
 	//Cycle through nodes and edges to output to gexf format

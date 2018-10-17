@@ -9,14 +9,16 @@
  * Calculates the level of lineage-dependence per gene in the dataset
  */
 
-int Lineage::run( DataSet&  dataset, std::string source_path, std::string call_path, const std::string& phylogeny, int num_cores, bool Rmsgs)
+int Lineage::run( DataSet&  dataset, const std::string& source_path, const std::string& call_path, const std::string& phylogeny, const std::string& gene_pa, int num_cores, bool Rmsgs, const std::string& prefix)
 {
 	//Identify alphas with coincident edges & output to file
 	//Write an edges file while I'm at it for use in Network
 	std::ofstream nodefile;
+	std::string nodename = prefix + "_nodes_in.csv";
 	std::ofstream edgefile;
-        nodefile.open("coincident_nodes_in.csv");
-	edgefile.open("coincident_edges.csv");
+	std::string edgename = prefix + "_edges.csv";
+        nodefile.open(nodename);
+	edgefile.open(edgename);
 	const id_lookup<Alpha>& alpha_table = dataset.get_alphas();
 	for (const auto& alpha_list : alpha_table.get_table()) {
         	Alpha& alpha = *alpha_list.second;
@@ -34,7 +36,7 @@ int Lineage::run( DataSet&  dataset, std::string source_path, std::string call_p
 
 	//Call R to calculate D
 	std::cerr << "Calculating lineage dependence..." << std::endl;
-	std::string syscall = "Rscript " + source_path + "/lineage.R -p " + call_path + " -t " + phylogeny + " -c " + std::to_string(num_cores);
+	std::string syscall = "Rscript " + source_path + "/lineage.R -p " + call_path + " -t " + phylogeny + " -g " + gene_pa + " -c " + std::to_string(num_cores) + " -o " + prefix;
 	if (Rmsgs) {
 		system(syscall.c_str());
 	} else {
@@ -53,7 +55,8 @@ int Lineage::run( DataSet&  dataset, std::string source_path, std::string call_p
 	
 	//Save D to alpha as an attribute
 	std::ifstream file_in;
-    	file_in.open( "coincident_nodes.csv" );
+	std::string filename = prefix + "_nodes.csv";
+    	file_in.open(filename);
 	std::string cell;
 	bool left = true;
 	std::string name;
@@ -73,7 +76,7 @@ int Lineage::run( DataSet&  dataset, std::string source_path, std::string call_p
 		}
 		file_in.close();
 	} else {
-		std::cerr << "Error: unable to open coincident_nodes.csv" << std::endl;
+		std::cerr << "Error: unable to open " << prefix << "_nodes.csv" << std::endl;
 	}
 	int count = 0;
 	for (const auto& alpha_list : alpha_table.get_table()) {

@@ -10,7 +10,7 @@ struct TParameters;
 class Network
 {
     public:
-        static int run( DataSet& dataset, std::string source_path, std::string call_path, const std::string& phylogeny, bool Rmsgs );
+        static int run( DataSet& dataset, const std::string& source_path, const std::string& call_path, const std::string& phylogeny, const std::string& gene_pa,  bool Rmsgs, const std::string& prefix );
         
     private:
 	static std::string systemSTDOUT(std::string cmd);
