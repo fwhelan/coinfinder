@@ -80,5 +80,7 @@ for(a in 1:length(results)) {
       genes2[results[[a]]$binvar,1] <- results[[a]]$DEstimate
   }
 }
+genes2$ID <- rownames(genes2)
+genes2 <- genes2[,c(2,1)]
 outstr <- paste(opt$output, "_nodes.csv", sep="")
-write.table(genes2, outstr, sep="\t", col.names=FALSE, quote=FALSE) #"coincident_nodes.csv"
+write.table(genes2, outstr, sep="\t", row.names=FALSE, col.names=TRUE, quote=FALSE) #"coincident_nodes.csv"
