@@ -19,6 +19,8 @@ int Lineage::run( DataSet&  dataset, const std::string& source_path, const std::
 	std::string edgename = prefix + "_edges.csv";
         nodefile.open(nodename);
 	edgefile.open(edgename);
+	//Write header to edge table for input into gephi
+	edgefile << "Source,Target,weight" << std::endl;
 	const id_lookup<Alpha>& alpha_table = dataset.get_alphas();
 	for (const auto& alpha_list : alpha_table.get_table()) {
         	Alpha& alpha = *alpha_list.second;
@@ -67,7 +69,7 @@ int Lineage::run( DataSet&  dataset, const std::string& source_path, const std::
         		if (left) {
        				name = cell;
 			} else {
-				if (cell != "NA") {
+				if ((cell != "NA") & (cell != "Result")) {
 					D = std::stod(cell);
 					Dvalues[ name ] = D;
 				}
