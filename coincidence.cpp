@@ -15,6 +15,7 @@
 #include "math.h"
 
 #include <Python.h>
+#include "omp.h"
 
 /**
  * Runs coincidence analysis
@@ -81,11 +82,18 @@ void Coincidence::run( DataSet& dataset, /**< Dataset */
     //
     // *** Parallelize ***
     //
-#pragma omp parallel
+#pragma omp parallel num_threads(4)
 {
     #pragma omp for
+    for(int n=0; n<30; ++n) {
+	std::cerr << "n on thread " << omp_get_thread_num() << ": " << n << std::endl;
+    }
+}
+#pragma omp parallel
+{
     for (const auto& kvp_yain : alpha_table.get_table())
     {
+	std::cerr << "count: " << count << std::endl;
         Alpha& alpha_yain = *kvp_yain.second;
         count++;
 	if (( count % 1000 ) == 0)
