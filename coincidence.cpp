@@ -17,6 +17,8 @@
 #include <Python.h>
 #include "omp.h"
 
+#include <iterator>
+
 /**
  * Runs coincidence analysis
  */
@@ -46,28 +48,6 @@ void Coincidence::run( DataSet& dataset, /**< Dataset */
     //
     std::map<double, std::pair<std::string, std::string>> phylo_dists;
     double max_phylo_dist = 0;
-    switch (options.coin_max_mode)
-    {
-        case EMaxMode::ACCOMPANY:
-	{
-    		//std::cerr << "Calculating phylogenetic distance information..." << std::endl;
-    		//phylo_dists = Coincidence::calc_phylogenetic_distances( phylogeny, path );
-    		//std::cerr << "Calculating the maximum phylogenetic distance..." << std::endl;
-    		//if(!phylo_dists.empty()) {
-    		//	max_phylo_dist = phylo_dists.rbegin()->first;
-    		//}
-		//max_phylo_dist = 0;
-		break;
-	}
-	case EMaxMode::AVOID:
-	{
-		break;
-	}
-	default:
-        {
-            throw std::logic_error( "Invalid options around MAX_MODE_MASK." );
-        }
-    }
     //
     // Iterate first alpha
     //
@@ -82,34 +62,22 @@ void Coincidence::run( DataSet& dataset, /**< Dataset */
     //
     // *** Parallelize ***
     //
-#pragma omp parallel num_threads(4)
-{
-    #pragma omp for
-    for(int n=0; n<30; ++n) {
-	std::cerr << "n on thread " << omp_get_thread_num() << ": " << n << std::endl;
-    }
-}
-#pragma omp parallel
-{
-    for (const auto& kvp_yain : alpha_table.get_table())
+    int size_alpha_table = alpha_table.get_table().size();
+    #pragma omp parallel for collapse(2)
+    for(int yain_count=0; yain_count<size_alpha_table; ++yain_count)
     {
-	std::cerr << "count: " << count << std::endl;
-        Alpha& alpha_yain = *kvp_yain.second;
-        count++;
-	if (( count % 1000 ) == 0)
+	for(int tain_count=0; tain_count<size_alpha_table; ++tain_count)
         {
-            std::cerr << "- Row " << count << " of " << num_alphas << std::endl;
-        }
-        
-	const std::map<const Beta*, int>& edges_yain = alpha_yain.get_edges();
-        int num_edges_yain = static_cast<int>(edges_yain.size());
-	
-	//
-        // Iterate second alpha
-        //
-        for (const auto& kvp_tain : alpha_table.get_table())
-        {
-            Alpha& alpha_tain = *kvp_tain.second;
+	    auto kvp_yain = alpha_table.get_table().begin();
+	    auto kvp_tain = alpha_table.get_table().begin();
+	    std::advance(kvp_yain, yain_count);
+	    std::advance(kvp_tain, tain_count);
+
+	    Alpha& alpha_yain = *kvp_yain->second;
+	    const std::map<const Beta*, int>& edges_yain = alpha_yain.get_edges();
+	    int num_edges_yain = static_cast<int>(edges_yain.size());
+
+            Alpha& alpha_tain = *kvp_tain->second;
             
 	    if (alpha_tain.get_name().compare( alpha_yain.get_name()) <= 0)
             {
@@ -147,23 +115,9 @@ void Coincidence::run( DataSet& dataset, /**< Dataset */
 
 	    // Count total range
             int total_range = num_edges_yain + num_edges_tain - overlaps;
-	    //double signif = Coincidence::_coincidence_to_p( dataset, analysis, alpha_yain, alpha_tain, cor_sig, overlaps, total_range, num_edges_yain, num_edges_tain, edge_table, edges_ovlp, edges_union, path );
-
-//	    // If result is significant, add genes to gene_list to pass to lineage code
-//	    if (signif == signif) { //way of checking if signif is NAN
-//		dataset._generate_coincident_edge(alpha_yain, alpha_tain, signif);;
-//	    }
-//        }
-//    }
-//    analysis.close();
-//}
-
-    		int       num_observations;
-    		double retval = NAN;
-    		const int max_coincidence = dataset.get_betas().size();
-
-    		//const TParameters& options = dataset.get_options();
-
+    	    int       num_observations;
+    	    double retval = NAN;
+    	    const int max_coincidence = dataset.get_betas().size();
 
     		switch (options.coin_set_mode)
     		{
@@ -233,37 +187,41 @@ void Coincidence::run( DataSet& dataset, /**< Dataset */
 
     		if (options.verbose)
     		{
-        		std::cerr << "*******************************" << std::endl;
-        		std::cerr << "* yain                " << alpha_yain.get_name() << "." << std::endl;
-        		std::cerr << "* tain                " << alpha_tain.get_name() << "." << std::endl;
-        		std::cerr << "*------------------------------" << std::endl;
-        		std::cerr << "* any_yain            " << num_edges_yain << "." << std::endl;
-        		std::cerr << "* any_tain            " << num_edges_tain << "." << std::endl;
-        		std::cerr << "* both_of             " << overlaps << "." << std::endl;
-        		std::cerr << "* one_of              " << total_range << "." << std::endl;
-        		std::cerr << "* max_coincidence     " << max_coincidence << "." << std::endl;
-        		std::cerr << "*------------------------------" << std::endl;
+			#pragma omp critical
+			{
+        			std::cerr << "*******************************" << std::endl;
+        			std::cerr << "* yain                " << alpha_yain.get_name() << "." << std::endl;
+        			std::cerr << "* tain                " << alpha_tain.get_name() << "." << std::endl;
+        			std::cerr << "*------------------------------" << std::endl;
+        			std::cerr << "* any_yain            " << num_edges_yain << "." << std::endl;
+        			std::cerr << "* any_tain            " << num_edges_tain << "." << std::endl;
+        			std::cerr << "* both_of             " << overlaps << "." << std::endl;
+        			std::cerr << "* one_of              " << total_range << "." << std::endl;
+        			std::cerr << "* max_coincidence     " << max_coincidence << "." << std::endl;
+        			std::cerr << "*------------------------------" << std::endl;
 
-        		std::cerr << "*------------------------------" << std::endl;
-        		std::cerr << "* chance_i            " << chance_i << "." << std::endl;
-        		std::cerr << "* chance_j            " << chance_j << "." << std::endl;
-        		std::cerr << "* not_cross_1_chance  " << not_cross_1_chance << "." << std::endl;
-        		std::cerr << "* not_cross_2_chance  " << not_cross_2_chance << "." << std::endl;
-        		std::cerr << "*------------------------------" << std::endl;
-        		std::cerr << "* rate                " << rate << "." << std::endl;
-        		std::cerr << "* successes           " << successes << "." << std::endl;
-        		std::cerr << "* num_observations    " << num_observations << "." << std::endl;
-        		std::cerr << "*------------------------------" << std::endl;
-        		std::cerr << "* p_value LESS        " << Binomial::one_sided_less( successes, num_observations, rate ) << "." << std::endl;
-        		std::cerr << "* p_value GREATER     " << Binomial::one_sided_greater( successes, num_observations, rate ) << "." << std::endl;
-        		std::cerr << "* p_value TWOTAILED   " << Binomial::two_sided( static_cast<uint32_t>(successes), static_cast<uint32_t>(num_observations), rate ) << "." << std::endl;
-        		std::cerr << "*******************************" << std::endl;
+        			std::cerr << "*------------------------------" << std::endl;
+        			std::cerr << "* chance_i            " << chance_i << "." << std::endl;
+        			std::cerr << "* chance_j            " << chance_j << "." << std::endl;
+        			std::cerr << "* not_cross_1_chance  " << not_cross_1_chance << "." << std::endl;
+        			std::cerr << "* not_cross_2_chance  " << not_cross_2_chance << "." << std::endl;
+        			std::cerr << "*------------------------------" << std::endl;
+        			std::cerr << "* rate                " << rate << "." << std::endl;
+        			std::cerr << "* successes           " << successes << "." << std::endl;
+        			std::cerr << "* num_observations    " << num_observations << "." << std::endl;
+        			std::cerr << "*------------------------------" << std::endl;
+        			std::cerr << "* p_value LESS        " << Binomial::one_sided_less( successes, num_observations, rate ) << "." << std::endl;
+        			std::cerr << "* p_value GREATER     " << Binomial::one_sided_greater( successes, num_observations, rate ) << "." << std::endl;
+        			std::cerr << "* p_value TWOTAILED   " << Binomial::two_sided( static_cast<uint32_t>(successes), static_cast<uint32_t>(num_observations), rate ) << "." << std::endl;
+        			std::cerr << "*******************************" << std::endl;
+			}
     		}
 
     		if (p_value > cor_sig)
     		{
         		if (options.verbose)
         		{
+				#pragma omp critical
             			std::cerr << "Rejected (" << alpha_yain.get_name() << ", " << alpha_tain.get_name() << ") because it isn't significant with p = " << p_value << "." << std::endl;
         		}
 
@@ -276,6 +234,7 @@ void Coincidence::run( DataSet& dataset, /**< Dataset */
     		{
         		if (options.verbose)
         		{
+				#pragma omp critical
             			std::cerr << "Accepted (" << alpha_yain.get_name() << ", " << alpha_tain.get_name() << ") because it is significant with p = " << p_value << "." << std::endl;
         		}
     		}
@@ -301,21 +260,25 @@ void Coincidence::run( DataSet& dataset, /**< Dataset */
 				if (options.verbose) {
 					std::cerr << "Returning: calc_secondaries" << std::endl;
 				}
-
-    				analysis << alpha_yain.get_name()
-        	      		<< "\t" << alpha_tain.get_name()
-        	      		<< "\t" << p_value
-		      		<< "\t" << avg_syndist
-        	      		<< "\t" << successes
-        	      		<< "\t" << num_observations
-        	      		<< "\t" << rate
-        	      		<< "\t" << static_cast<int>(rate * num_observations + 0.5)
-        	      		<< "\t" << num_edges_yain
-        	      		<< "\t" << num_edges_tain
-        	      		<< "\t" << chance_i
-        	      		<< "\t" << chance_j
-        	      		<< std::endl;
+				
+				#pragma omp critical
+				{
+    					analysis << alpha_yain.get_name()
+        	      			<< "\t" << alpha_tain.get_name()
+        	      			<< "\t" << p_value
+		      			<< "\t" << avg_syndist
+        	      			<< "\t" << successes
+        	      			<< "\t" << num_observations
+        	      			<< "\t" << rate
+        	      			<< "\t" << static_cast<int>(rate * num_observations + 0.5)
+        	      			<< "\t" << num_edges_yain
+        	      			<< "\t" << num_edges_tain
+        	      			<< "\t" << chance_i
+        	      			<< "\t" << chance_j
+        	      			<< std::endl;
+				}
 				if (options.verbose) {
+					#pragma omp critical
 					std::cerr << "All done; next case." << std::endl;
 				}
 				break;
@@ -323,42 +286,36 @@ void Coincidence::run( DataSet& dataset, /**< Dataset */
 			case EMaxMode::AVOID:
         		{
 				//TODO- are there any interesting secondaries to do for avoidance data?
-
-				analysis << alpha_yain.get_name()
-		     		<< "\t" << alpha_tain.get_name()
-                     		<< "\t" << p_value
-                     		<< "\t" << successes
-                     		<< "\t" << num_observations
-                     		<< "\t" << rate
-                     		<< "\t" << static_cast<int>(rate * num_observations + 0.5)
-                     		<< "\t" << num_edges_yain
-                     		<< "\t" << num_edges_tain
-                     		<< "\t" << chance_i
-                     		<< "\t" << chance_j
-                     		<< std::endl;
+				#pragma omp critical
+				{
+					analysis << alpha_yain.get_name()
+		     			<< "\t" << alpha_tain.get_name()
+                     			<< "\t" << p_value
+                     			<< "\t" << successes
+                     			<< "\t" << num_observations
+                     			<< "\t" << rate
+                     			<< "\t" << static_cast<int>(rate * num_observations + 0.5)
+                     			<< "\t" << num_edges_yain
+                     			<< "\t" << num_edges_tain
+                     			<< "\t" << chance_i
+                     			<< "\t" << chance_j
+                     			<< std::endl;
+				}
 				break;
 			}
 			default:
-        		{   
+        		{
+				#pragma omp critical
             			throw std::logic_error( "Invalid options around MAX_MODE_MASK." );
         		}
    		}
 
-   		//Adjust both Beta's _coin_status with status update
-   		//TODO- this might be overkill- just do it on the output files?
-   		//return(retval);
-                //double signif = Coincidence::_coincidence_to_p( dataset, analysis, alpha_yain, alpha_tain, cor_sig, overlaps, total_range, num_edges_yain, num_edges_tain, edge_table, edges_ovlp, edges_union, path );
-	        // If result is significant, add genes to gene_list to pass to lineage code
-	        //if (retval == retval) { //way of checking if signif is NAN
                 dataset._generate_coincident_edge(alpha_yain, alpha_tain, retval);;
-		//}
 	}
     }
-   }
     //
     // *** End parallelize ***
     //
-
     analysis.close();
 }
 

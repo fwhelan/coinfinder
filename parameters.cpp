@@ -17,7 +17,7 @@
 
 
 TParameters::TParameters()
-        : sig_level( -1 )
+        : sig_level( 0.05 )
           , correction( ECorrection::_INVALID )
           , alt_hypothesis( EHypothesis::_INVALID )
           , method( EMethod::_INVALID )
