@@ -69,7 +69,7 @@ int main( int argc, const char** argv )
 		//std::cerr << "    -d or --d              The path of the Alpha-to-Beta file with (alpha)(TAB)(beta)" << std::endl;
 		std::cerr << "    -d or --d              The path to the gene_presence_absence.csv output from Roary" << std::endl;
 		std::cerr << "Significance- specify: " << std::endl;
-		std::cerr << "    -L or --level          Specify the significnace level cutoff" << std::endl;
+		std::cerr << "    -L or --level          Specify the significnace level cutoff (default: 0.05)" << std::endl;
 		std::cerr << "Naming (optional): " << std::endl;
 		std::cerr << "    -A or --alpha          Specify the name of the Alpha group" << std::endl;
 		std::cerr << "    -B or --beta           Specify the name of the Beta group" << std::endl;
