@@ -21,6 +21,7 @@ colnames(nodes) <- c("alphas", "D")
 edgstr <- paste(opt$output, "_edges.csv", sep="")
 edges <- read.csv(edgstr, header=TRUE)
 colnames(edges) <- c("alpha1", "alpha2", "p")
+edges$p <- as.numeric(as.character(edges$p))
 genepa <- read.csv(opt$gene_pa, header=T, row.names=1)
 tree <- read.newick(opt$phylogeny)
 #Remove any nodes that do not have a value for D and edges which don't have a p-value
@@ -95,19 +96,22 @@ p.heat <- gheatmap(p.tree, annot, offset=0.009, width=8, font.size=2, colnames_a
   theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
   theme(plot.margin = unit(c(0, 0, 0, 0), "cm"))
 #Create arced network
-arc.breaks = c(0, 0.000001, 0.00001, 0.0001, 0.001, 1)
+#arc.breaks = c(0, 0.000001, 0.00001, 0.0001, 0.001, 1)
+arc.breaks = as.numeric(c(0, 0.005, 1))
 grp <- graph_from_data_frame(d = edges, vertices = node.order, directed = FALSE)
 p.arc <- ggraph(grp, layout="linear") +
-  geom_edge_arc(aes(width=(1-E(grp)$p), colour=(1-E(grp)$p)), alpha = 0.8, curvature=-1) +
-  scale_edge_color_gradient(low = "#f0f0f0",
-                            high = "black",
-                            trans = "log",
-                            breaks=arc.breaks,
-                            labels=arc.breaks) +
+  geom_edge_arc(aes(edge_colour=(1-E(grp)$p), label=p), width=1.5, alpha = 1, curvature=-1) + #width=E(grp)$p,
+  scale_edge_colour_gradient2(low = "#f0f0f0",
+                              mid = "gray",
+                              high = "black",
+                              midpoint = 0.005,
+                              #trans = "log",
+                              breaks=arc.breaks,
+                              labels=arc.breaks) +
   geom_node_point(color="gray") +
-  geom_node_text(aes(label = V(g)$name), angle = 90, hjust=0.8) +
+  geom_node_text(aes(label = node.order), angle = 90, hjust=0.8) +
   theme_graph() +
-  theme(legend.position="none") + #bottom
+  theme(legend.position="bottom") + #bottom #none
   theme(plot.margin = unit(c(0, 0, 0, 0), "cm"))
 #Output
 p.blank <- ggplot(data.frame()) + geom_point() + xlim(0, 10) + ylim(0, 100) + theme(axis.line = element_blank(), axis.text = element_blank(), axis.ticks = element_blank())
@@ -120,16 +124,19 @@ dev.off()
 
 #Draw network
 net.layout <- create_layout(grp, layout='igraph', algorithm='fr') #dh, graphopt
+node.colour.order <- sort(node.colour)
 p.net <- ggraph(net.layout) +
-  geom_edge_link(aes(width=(1-E(grp)$p), colour=(1-E(grp)$p)), alpha = 0.8) +
-  scale_edge_color_gradient(low = "#f0f0f0",
+  geom_edge_link(aes(colour=(1-E(grp)$p)), width=2, alpha = 0.8) + #width=(1-E(grp)$p), 
+  scale_edge_color_gradient2(low = "#f0f0f0",
+                            mid = "gray",
                             high = "gray",
-                            trans = "log",
+                            midpoint = 0.005,
+                            #trans = "log",
                             breaks=arc.breaks,
                             labels=arc.breaks) +
   geom_node_point(aes(color=node.colour), size=10) +
-  scale_color_manual(values=unique(node.colour)) +
-  geom_node_text(aes(label = V(g)$name), vjust=-1.2) +
+  scale_color_manual(values=unique(node.colour.order)) +
+  geom_node_text(aes(label = node.order), vjust=-1.2) +
   theme_graph() +
   theme(legend.position="none") + #bottom
   theme(plot.margin = unit(c(0, 0, 0, 0), "cm"))
