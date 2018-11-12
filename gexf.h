@@ -13,4 +13,6 @@ class Gexf
         static void run( DataSet& dataset, const std::string& prefix);
         
     private:
+        static std::string systemSTDOUT(std::string cmd);
+	static std::string componentLookup(int ret);
 };

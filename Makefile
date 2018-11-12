@@ -39,19 +39,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/local/bin/cmake
+CMAKE_COMMAND = /usr/bin/cmake
 
 # The command to remove a file.
-RM = /usr/local/bin/cmake -E remove -f
+RM = /usr/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus
+CMAKE_SOURCE_DIR = /home/evolsuper/software/coinfinder-plus
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus
+CMAKE_BINARY_DIR = /home/evolsuper/software/coinfinder-plus
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -59,7 +59,7 @@ CMAKE_BINARY_DIR = /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/usr/local/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/usr/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -69,8 +69,8 @@ rebuild_cache/fast: rebuild_cache
 
 # Special rule for the target edit_cache
 edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
-	/usr/local/bin/ccmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/CMakeFiles /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/evolsuper/software/coinfinder-plus/CMakeFiles /home/evolsuper/software/coinfinder-plus/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/s23410fw/Documents/software/coinfinder/coinfinder-plus/coinfinder-plus/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/evolsuper/software/coinfinder-plus/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -508,8 +508,8 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... edit_cache"
 	@echo "... coinfinder"
+	@echo "... edit_cache"
 	@echo "... binomial_test.o"
 	@echo "... binomial_test.i"
 	@echo "... binomial_test.s"

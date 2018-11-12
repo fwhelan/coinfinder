@@ -90,39 +90,43 @@ setcolorder(annot, as.character(names(node.colour)))
 heatmap.breaks <- colnames(annot)
 heatmap.breaks <- factor(heatmap.breaks, levels=node.order)
 p.tree <- ggtree(tree) + geom_tiplab(size=7, hjust=0.1)
-p.heat <- gheatmap(p.tree, annot, offset=0.009, width=8, font.size=2, colnames_angle=-90, hjust=0) +
-  guides(fill=FALSE) +
-  scale_fill_manual(breaks=heatmap.breaks, values=node.colour) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  theme(plot.margin = unit(c(0, 0, 0, 0), "cm"))
-#Create arced network
-#arc.breaks = c(0, 0.000001, 0.00001, 0.0001, 0.001, 1)
-arc.breaks = as.numeric(c(0, 0.005, 1))
-grp <- graph_from_data_frame(d = edges, vertices = node.order, directed = FALSE)
-p.arc <- ggraph(grp, layout="linear") +
-  geom_edge_arc(aes(edge_colour=(1-E(grp)$p), label=p), width=1.5, alpha = 1, curvature=-1) + #width=E(grp)$p,
-  scale_edge_colour_gradient2(low = "#f0f0f0",
-                              mid = "gray",
-                              high = "black",
-                              midpoint = 0.005,
-                              #trans = "log",
-                              breaks=arc.breaks,
-                              labels=arc.breaks) +
-  geom_node_point(color="gray") +
-  geom_node_text(aes(label = node.order), angle = 90, hjust=0.8) +
-  theme_graph() +
-  theme(legend.position="bottom") + #bottom #none
-  theme(plot.margin = unit(c(0, 0, 0, 0), "cm"))
-#Output
-p.blank <- ggplot(data.frame()) + geom_point() + xlim(0, 10) + ylim(0, 100) + theme(axis.line = element_blank(), axis.text = element_blank(), axis.ticks = element_blank())
-p.first <- plot_grid(p.blank,p.arc,nrow=1, rel_widths=c(1/7,1))
-p.out   <- plot_grid(p.heat,p.first,ncol=1, axis="l", rel_heights=c(1,1/4)) #scale=c(1,0.9)
-outstr <- paste(opt$output, "_heatmap.pdf", sep="")
-pdf(outstr,height=58,width=55)
-print(p.out)
-dev.off()
+for(i in seq(0,length(colnames(annot)), by=500)) {
+	j <- min(i+500, length(colnames(annot)))
+	p.heat <- gheatmap(p.tree, annot[i:j], offset=0.009, width=8, font.size=2, colnames_angle=-90, hjust=0) +
+	  guides(fill=FALSE) +
+	  scale_fill_manual(breaks=heatmap.breaks, values=node.colour) +
+	  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+	  theme(plot.margin = unit(c(0, 0, 0, 0), "cm"))
+	#Create arced network
+	#arc.breaks = c(0, 0.000001, 0.00001, 0.0001, 0.001, 1)
+	arc.breaks = as.numeric(c(0, 0.005, 1))
+	grp <- graph_from_data_frame(d = subset(edges, (edges$alpha1 %in% node.order[i:j] & edges$alpha2 %in% node.order[i:j])), vertices = node.order[i:j], directed = FALSE)
+	p.arc <- ggraph(grp, layout="linear") +
+	  geom_edge_arc(aes(edge_colour=(1-E(grp)$p), label=p), width=1.5, alpha = 1, curvature=-1) + #width=E(grp)$p,
+	  scale_edge_colour_gradient2(low = "#f0f0f0",
+        	                      mid = "gray",
+        	                      high = "black",
+        	                      midpoint = 0.005,
+        	                      #trans = "log",
+        	                      breaks=arc.breaks,
+        	    	               labels=arc.breaks) +
+  	geom_node_point(color="gray") +
+  	geom_node_text(aes(label = node.order[i:j]), angle = 90, hjust=0.8) +
+  	theme_graph() +
+  	theme(legend.position="bottom") + #bottom #none
+  	theme(plot.margin = unit(c(0, 0, 0, 0), "cm"))
+	#Output
+	p.blank <- ggplot(data.frame()) + geom_point() + xlim(0, 10) + ylim(0, 100) + theme(axis.line = element_blank(), axis.text = element_blank(), axis.ticks = element_blank())
+	p.first <- plot_grid(p.blank,p.arc,nrow=1, rel_widths=c(1/7,1))
+	p.out   <- plot_grid(p.heat,p.first,ncol=1, axis="l", rel_heights=c(1,1/4)) #scale=c(1,0.9)
+	outstr <- paste(opt$output, "_heatmap", i, ".pdf", sep="")
+	pdf(outstr,height=58,width=55)
+	print(p.out)
+	dev.off()
+}
 
 #Draw network
+grp <- graph_from_data_frame(d = edges, vertices = node.order, directed = FALSE)
 net.layout <- create_layout(grp, layout='igraph', algorithm='fr') #dh, graphopt
 node.colour.order <- sort(node.colour)
 p.net <- ggraph(net.layout) +
