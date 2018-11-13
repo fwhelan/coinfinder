@@ -157,6 +157,33 @@ int main( int argc, const char** argv )
     }
 
     //
+    // Check to be sure no branches in phylogeny have branch length of zero (caper::phylo.d cannot deal with this)
+    //
+    //std::string syscall = "Rscript " + source_path + "/check-branches.R -p " + call_path + " -t " + options.phylogeny;
+    //std::string tex = Lineage::systemSTDOUT(syscall);
+    //if (tex.find("Zerobranchlengths") != std::string::npos) {
+//	std::cerr << "Error: Input phylogeny contains branch lengths which equal zero." << std::endl;
+//        std::cerr << "The R function caper::phylo.d, which coinfinder uses to define lineage dependence, cannot handle zero length branches." << std::endl;
+//	std::cerr << "Please adjust your phylogeny before continuing." << std::endl;
+//        std::cerr << "Exiting..." << std::endl;
+//        return(-1);
+//    }
+//    else if ((tex.find("Error") != std::string::npos) || (tex.find("error") != std::string::npos)) {
+//    	std::cerr << "ERROR MESSAGE FROM R: " << std::endl;
+//        if (tex.find("Error") != std::string::npos) {
+//        	std::cerr << tex.substr(tex.find("Error")) << std::endl;
+//        }
+//        if (tex.find("error") != std::string::npos) {
+//        	std::cerr << tex.substr(tex.find("error")) << std::endl;
+//        }
+//	std::cerr << "Exiting..." << std::endl;
+//        return(-1);
+//    }
+//    else {
+//	//continue;
+//    }
+    
+    //
     // Format gene_p_a to classic coinfinder input file
     //
     std::cerr << "Formating Roary output for input into coinfinder..." << std::endl;

@@ -34,9 +34,14 @@ void Gexf::run( DataSet& dataset, const std::string& prefix )
 			alpha1_size = 20+(alpha1_D*2);
 			//Colour node by component number
 			std::string compname = prefix + "_components.csv";
-        		std::string syscall = "grep \"" + alpha1_name + "\" " + compname + " | cut -f 1";
+        		std::string syscall = "grep -E \"," + alpha1_name + ",|," + alpha1_name + "$|\\s" + alpha1_name + ",|\\s" + alpha1_name + "$\" " + compname + " | cut -f 1";
                 	std::string ret = systemSTDOUT(syscall);
-			alpha1_col = componentLookup(stoi(ret));
+			if(ret != "") {
+				alpha1_col = componentLookup(std::stoi(ret));
+			} else {
+				std::cerr << "Error: Gexf could not find the alpha name in the components file." << std::endl;
+				return;
+			}
 			//push node to node array for gexf "<viz:color r=\"" + std::to_string(alpha1_col) + "\" g=\"173\" b=\"66\"/>" +
 			node_attr_xml += "<node id=\"" + alpha1_name + "\" label=\"" + alpha1_name + "\">\n" +
 						" <attvalues>\n" +

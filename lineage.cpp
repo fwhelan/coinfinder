@@ -43,6 +43,13 @@ int Lineage::run( DataSet&  dataset, const std::string& source_path, const std::
 		system(syscall.c_str());
 	} else {
 		std::string out = systemSTDOUT(syscall);
+		if (out.find("Phylogeny contains pairs of tips on zero branch lengths, cannot currently simulate") != std::string::npos) {
+			std::cerr << "Error: Input phylogeny contains branch lengths which equal zero." << std::endl;
+        		std::cerr << "The R function caper::phylo.d, which coinfinder uses to define lineage dependence, cannot handle zero length branches." << std::endl;
+        		std::cerr << "Please adjust your phylogeny before continuing." << std::endl;
+        		std::cerr << "Exiting..." << std::endl;
+        		return(-1);
+		}
 		if ((out.find("Error") != std::string::npos) || (out.find("error") != std::string::npos)) {
 			std::cerr << "ERROR MESSAGE FROM R: " << std::endl;
 			if (out.find("Error") != std::string::npos) {
