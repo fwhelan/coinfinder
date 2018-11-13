@@ -89,11 +89,11 @@ setcolorder(annot, as.character(names(node.colour)))
 #Draw heatmap
 heatmap.breaks <- colnames(annot)
 heatmap.breaks <- factor(heatmap.breaks, levels=node.order)
-p.tree <- ggtree(tree) + geom_tiplab(size=7, hjust=0.1)
+p.tree <- ggtree(tree) + geom_tiplab(size=7, hjust=0) #hjust=0.1
 arc.breaks = as.numeric(c(0, 0.005, 1))
 for(i in seq(0,length(colnames(annot)), by=500)) {
 	j <- min(i+500, length(colnames(annot)))
-	p.heat <- gheatmap(p.tree, annot[i:j], offset=0.009, width=8, font.size=2, colnames_angle=-90, hjust=0) +
+	p.heat <- gheatmap(p.tree, annot[i:j], offset=1, width=8, font.size=2, colnames_angle=-90, hjust=0) + #offset=0.009
 	  guides(fill=FALSE) +
 	  scale_fill_manual(breaks=heatmap.breaks, values=node.colour) +
 	  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
