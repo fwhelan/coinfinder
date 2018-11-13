@@ -40,6 +40,7 @@ CCs$alphas <- gsub(" ", "", CCs$alphas)
 nodes <- merge(nodes,CCs, by="alphas")
 #Reorder by D, then by CC
 ord    <- nodes %>% arrange(D) %>% mutate(ord=order(D))
+ord <- ord %>% arrange(rev(rownames(.))) #reverse order for larger D (more dispersed) are first.
 ord2   <- ord %>% group_by(CC) %>% summarize(min_ord=min(ord))
 ord.CC <- merge(ord,ord2)
 ord.CC <- ord.CC %>% arrange(min_ord,ord)
@@ -119,7 +120,7 @@ for(i in seq(0,length(colnames(annot)), by=500)) {
 	p.blank <- ggplot(data.frame()) + geom_point() + xlim(0, 10) + ylim(0, 100) + theme(axis.line = element_blank(), axis.text = element_blank(), axis.ticks = element_blank())
 	p.first <- plot_grid(p.blank,p.arc,nrow=1, rel_widths=c(1/7,1))
 	p.out   <- plot_grid(p.heat,p.first,ncol=1, axis="l", rel_heights=c(1,1/4)) #scale=c(1,0.9)
-	outstr <- paste(opt$output, "_heatmap", i, ".pdf", sep="")
+	outstr <- paste(opt$output, "_heatmap", as.integer(i/500), ".pdf", sep="")
 	pdf(outstr,height=58,width=55)
 	print(p.out)
 	dev.off()
