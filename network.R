@@ -39,8 +39,7 @@ CCs$alphas <- gsub(" ", "", CCs$alphas)
 #Add CC information to nodes table
 nodes <- merge(nodes,CCs, by="alphas")
 #Reorder by D, then by CC
-ord    <- nodes %>% arrange(D) %>% mutate(ord=order(D))
-ord <- ord %>% arrange(rev(rownames(.))) #reverse order for larger D (more dispersed) are first.
+ord    <- nodes %>% arrange(D) %>% mutate(ord=order(D, decreasing=TRUE))
 ord2   <- ord %>% group_by(CC) %>% summarize(min_ord=min(ord))
 ord.CC <- merge(ord,ord2)
 ord.CC <- ord.CC %>% arrange(min_ord,ord)
@@ -91,6 +90,7 @@ setcolorder(annot, as.character(names(node.colour)))
 heatmap.breaks <- colnames(annot)
 heatmap.breaks <- factor(heatmap.breaks, levels=node.order)
 p.tree <- ggtree(tree) + geom_tiplab(size=7, hjust=0.1)
+arc.breaks = as.numeric(c(0, 0.005, 1))
 for(i in seq(0,length(colnames(annot)), by=500)) {
 	j <- min(i+500, length(colnames(annot)))
 	p.heat <- gheatmap(p.tree, annot[i:j], offset=0.009, width=8, font.size=2, colnames_angle=-90, hjust=0) +
@@ -99,18 +99,17 @@ for(i in seq(0,length(colnames(annot)), by=500)) {
 	  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
 	  theme(plot.margin = unit(c(0, 0, 0, 0), "cm"))
 	#Create arced network
-	#arc.breaks = c(0, 0.000001, 0.00001, 0.0001, 0.001, 1)
-	arc.breaks = as.numeric(c(0, 0.005, 1))
 	grp <- graph_from_data_frame(d = subset(edges, (edges$alpha1 %in% node.order[i:j] & edges$alpha2 %in% node.order[i:j])), vertices = node.order[i:j], directed = FALSE)
 	p.arc <- ggraph(grp, layout="linear") +
-	  geom_edge_arc(aes(edge_colour=(1-E(grp)$p), label=p), width=1.5, alpha = 1, curvature=-1) + #width=E(grp)$p,
-	  scale_edge_colour_gradient2(low = "#f0f0f0",
-        	                      mid = "gray",
-        	                      high = "black",
-        	                      midpoint = 0.005,
-        	                      #trans = "log",
-        	                      breaks=arc.breaks,
-        	    	               labels=arc.breaks) +
+	  geom_edge_arc(width=1.5, alpha = 1, curvature=-1) + #width=E(grp)$p, label=p aes(edge_colour=(1-E(grp)$p))
+	  #scale_edge_colour_gradient2(low = "#f0f0f0",
+       	  #                           mid = "gray",
+          #                           high = "black",
+          #                           midpoint = 0.005,
+          #	                      #trans = "log",
+          #	                      breaks=arc.breaks,
+          #	    	              labels=arc.breaks
+	  #			      ) +
   	geom_node_point(color="gray") +
   	geom_node_text(aes(label = node.order[i:j]), angle = 90, hjust=0.8) +
   	theme_graph() +
@@ -138,7 +137,8 @@ p.net <- ggraph(net.layout) +
                             midpoint = 0.005,
                             #trans = "log",
                             breaks=arc.breaks,
-                            labels=arc.breaks) +
+                            labels=arc.breaks
+			    ) +
   geom_node_point(aes(color=node.colour), size=10) +
   scale_color_manual(values=unique(node.colour.order)) +
   geom_node_text(aes(label = node.order), vjust=-1.2) +
