@@ -22,7 +22,7 @@
 /**
  * Runs coincidence analysis
  */
-void Coincidence::run( DataSet& dataset, /**< Dataset */
+int Coincidence::run( DataSet& dataset, /**< Dataset */
 		       const std::string& phylogeny,
 		       const std::string& path,
 		       const std::string& prefix )
@@ -58,6 +58,9 @@ void Coincidence::run( DataSet& dataset, /**< Dataset */
     analysis.open(analyname);
     //Write header
     Coincidence::_write_header(dataset, analysis);
+
+    //Set retval; adjust to 0 if/when a coincident pair is identified.
+    int returnflag = -1;
 
     //
     // *** Parallelize ***
@@ -241,6 +244,7 @@ void Coincidence::run( DataSet& dataset, /**< Dataset */
 
     		//Result is significant: calculate secondaries for coincidence or avoidance, depending on what the user called for
     		retval = p_value;
+		returnflag = 0;
     		switch (options.coin_max_mode)
     		{
         		case EMaxMode::ACCOMPANY:
@@ -317,6 +321,7 @@ void Coincidence::run( DataSet& dataset, /**< Dataset */
     // *** End parallelize ***
     //
     analysis.close();
+    return(returnflag);
 }
 
 
