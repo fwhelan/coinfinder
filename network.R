@@ -105,8 +105,6 @@ while (countie < length(colnames(annot))) {
   	j.loc <- which.min(abs(CC.cumsum - (countie+500)))
   	j <- CC.cumsum[j.loc]
   	countie <- j+1
-	print(i)
-	print(j)
 	p.heat <- gheatmap(p.tree, annot[i:j], offset=1, width=8, font.size=2, colnames_angle=-90, hjust=0) + #offset=0.009
 	  guides(fill=FALSE) +
 	  scale_fill_manual(breaks=heatmap.breaks, values=node.colour) +
