@@ -91,8 +91,22 @@ heatmap.breaks <- colnames(annot)
 heatmap.breaks <- factor(heatmap.breaks, levels=node.order)
 p.tree <- ggtree(tree) + geom_tiplab(size=7, hjust=0) #hjust=0.1
 arc.breaks = as.numeric(c(0, 0.005, 1))
-for(i in seq(0,length(colnames(annot)), by=500)) {
-	j <- min(i+500, length(colnames(annot)))
+#Split the heatmap into sections that equal roughly 500 genes each;
+#however, must be sure not to split a cluster into parts so must look
+#at the size of the clusters and split the input at a location close
+#to multiples of 500 based on the cluster size.
+CC.cumsum <- cumsum(CC.size)
+countie <- 1
+a <- 0
+while (countie < length(colnames(annot))) {
+#for(i in seq(0,length(colnames(annot)), by=500)) {
+#	j <- min(i+500, length(colnames(annot)))
+	i <- countie
+  	j.loc <- which.min(abs(CC.cumsum - (countie+500)))
+  	j <- CC.cumsum[j.loc]
+  	countie <- j+1
+	print(i)
+	print(j)
 	p.heat <- gheatmap(p.tree, annot[i:j], offset=1, width=8, font.size=2, colnames_angle=-90, hjust=0) + #offset=0.009
 	  guides(fill=FALSE) +
 	  scale_fill_manual(breaks=heatmap.breaks, values=node.colour) +
@@ -119,7 +133,8 @@ for(i in seq(0,length(colnames(annot)), by=500)) {
 	p.blank <- ggplot(data.frame()) + geom_point() + xlim(0, 10) + ylim(0, 100) + theme(axis.line = element_blank(), axis.text = element_blank(), axis.ticks = element_blank())
 	p.first <- plot_grid(p.blank,p.arc,nrow=1, rel_widths=c(1/7,1))
 	p.out   <- plot_grid(p.heat,p.first,ncol=1, axis="l", rel_heights=c(1,1/4)) #scale=c(1,0.9)
-	outstr <- paste(opt$output, "_heatmap", as.integer(i/500), ".pdf", sep="")
+	outstr <- paste(opt$output, "_heatmap", a, ".pdf", sep="")
+	a <- a + 1
 	pdf(outstr,height=58,width=55)
 	print(p.out)
 	dev.off()
