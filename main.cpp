@@ -95,7 +95,6 @@ int main( int argc, const char** argv )
 		std::cerr << "    -a or --accompany      Overlap; identify groups that tend to coincide." << std::endl;
 		std::cerr << "    -s or --avoid          Separation; identify groups that tend to avoid." << std::endl;
 		std::cerr << "Miscellaneous:" << std::endl;
-		std::cerr << "    -o or --output         The prefix of all output files (default: coincident)." << std::endl;
 		std::cerr << "    -p or --phylogeny      Phylogeny of Betas in Newick format (required)" << std::endl;
 		std::cerr << "    -x or --num_cores      The number of cores to use (default: 2)" << std::endl;
 		std::cerr << "    -v or --verbose        Verbose output." << std::endl;
@@ -105,6 +104,8 @@ int main( int argc, const char** argv )
 		std::cerr << "    -q or --query          Query a specific Alpha family." << std::endl;
 		std::cerr << "    -T or --test           Runs the test cases and exits." << std::endl;
 		std::cerr << "    -E or --all            Outputs all results, regardless of significance." << std::endl;
+		std::cerr << "Output:" << std::endl;
+		std::cerr << "    -o or --output         The prefix of all output files (default: coincident)." << std::endl;
 		return 1;
 	}
     }
