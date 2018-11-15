@@ -1,13 +1,22 @@
 # README #
 
+Coinfinder is a tool for the identification of coincident relationships between two input datasets.  
+
 ### Quick installation instructions: ###
+
 ```
 cmake -DCMAKE_BUILD_TYPE=Release .  
 cmake --build .  
 ./coinfinder  
 ```
 
-This README would normally document whatever steps are necessary to get your application up and running.
+### Dependencies: ###
+
+* Cmake3.6 or greater
+* Python3.6 or greater
+* Boost1.66 or greater 
+* OpenMP
+* R libraries: `caper, phytools, getopt, igraph, dplyr, cowplot, data.table, ggtree (from Bioconductor), ggraph`
 
 ### What is this repository for? ###
 
