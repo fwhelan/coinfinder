@@ -673,7 +673,10 @@ void DataSet::_phylo_check( const std::string& phylogeny_file_name )
 		const std::string& name = kvp.first;
                 if (phylo.find(name) == std::string::npos ) {
                 	std::stringstream ss;
-        		ss << std::endl << "The beta group called '" << name << "' is not in your phylogeny input file. Please correct this error and try using coinfinder again. Note that there may also be additional betas following '" << name << "' in the input but I am stopping here. Exiting...";
+        		ss << std::endl << "The beta group called '" << name << "' is not in your phylogeny input file. Please correct this error and try using coinfinder again." << std::endl
+		           << "Note that there may also be additional betas following '" << name << "' in the input but I am stopping here." << std::endl << std::endl
+			   << "It's possible you're seeing this error if you provided data in Roary format, but forgot to include the -D flag." << std::endl
+			   << "Exiting..." << std::endl;
         		throw std::logic_error( ss.str().c_str());
 		}
         }

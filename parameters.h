@@ -34,6 +34,7 @@ struct TParameters
     double filt_thres;
     std::string deep_query_alpha;
     bool output_all;
+    bool roary;
     
     TParameters();
     void print_and_assert() const;

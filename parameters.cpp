@@ -37,6 +37,7 @@ TParameters::TParameters()
 	  , num_cores ( 2 )
 	  , Rmsgs ( false )
 	  , prefix ( "coincident" )
+	  , roary( false )
 {
     // pass
 }
@@ -135,7 +136,8 @@ TParameters TParameters::parse( int arg_count, const char** arg_vals )
     commands.emplace_back( "--level", 'L', [ &next_command ]() { next_command = ECommand::SIG_LEVEL; } );
     commands.emplace_back( "--a", 'a', [ &next_command ]() { next_command = ECommand::ALPHA_FN; } );
     commands.emplace_back( "--b", 'b', [ &next_command ]() { next_command = ECommand::BETA_FN; } );
-    commands.emplace_back( "--d", 'd', [ &next_command ]() { next_command = ECommand::COMBINED_FN; } );
+    commands.emplace_back( "--input", 'd', [ &next_command ]() { next_command = ECommand::COMBINED_FN; } );
+    commands.emplace_back( "--roary", 'D', [ &result ]() { SET_ONCE( roary, true); } );
     //commands.emplace_back( "--alpha", 'A', [ &next_command ]() { next_command = ECommand::ALPHA_N; } );
     //commands.emplace_back( "--beta", 'B', [ &next_command ]() { next_command = ECommand::BETA_N; } );
     //commands.emplace_back( "--gamma", 'C', [ &next_command ]() { next_command = ECommand::GAMMA_N; } );
@@ -285,7 +287,7 @@ TParameters TParameters::parse( int arg_count, const char** arg_vals )
 
 	    case ECommand::CORES:
 #ifndef NDEBUG
-		std::cerr << "command=parser: Number of cores '" << arg << '" specified." << std::endl;
+		std::cerr << "command=parser: Number of cores '" << arg << "' specified." << std::endl;
 #endif
 		result.num_cores = stoi(arg);
 		next_command = ECommand::FLAGS;

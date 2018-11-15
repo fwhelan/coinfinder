@@ -67,7 +67,10 @@ int main( int argc, const char** argv )
 
 		//std::cerr << "  or" << std::endl;
 		//std::cerr << "    -d or --d              The path of the Alpha-to-Beta file with (alpha)(TAB)(beta)" << std::endl;
-		std::cerr << "    -d or --d              The path to the gene_presence_absence.csv output from Roary" << std::endl;
+		std::cerr << "    -d or --input          The path to the gene_presence_absence.csv output from Roary" << std::endl;
+		std::cerr << "                           -or-" << std::endl;
+		std::cerr << "                           The path of the Alpha-to-Beta file with (alpha)(TAB)(beta)" << std::endl;
+		std::cerr << "    -D or --roary          Set if -d is in the gene_presence_absence.csv format from Roary" << std::endl;
 		std::cerr << "Significance- specify: " << std::endl;
 		std::cerr << "    -L or --level          Specify the significnace level cutoff (default: 0.05)" << std::endl;
 		std::cerr << "Naming (optional): " << std::endl;
@@ -157,30 +160,29 @@ int main( int argc, const char** argv )
     }
     
     //
-    // Format gene_p_a to classic coinfinder input file
+    // Format gene_p_a to classic coinfinder input file, if necessary
     //
-    std::cerr << "Formating Roary output for input into coinfinder..." << std::endl;
-    std::string sysStr = "python3 " + source_path + "/format_roary.py -i " + options.combined_file_name;
-    //system(sysStr.c_str());
-    std::string out = Lineage::systemSTDOUT(sysStr);
-    if ((out.find("Error") != std::string::npos) || (out.find("error") != std::string::npos)) {
-    	std::cerr << "ERROR MESSAGE FROM Python: " << std::endl;
-	std::cerr << out << std::endl;
-        //if (out.find("Error") != std::string::npos) {
-        //	std::cerr << out.substr(out.find("Error")) << std::endl;
-        //}
-        //if (out.find("error") != std::string::npos) {
-        //        std::cerr << out.substr(out.find("error")) << std::endl;
-        //}
-        return(-1);
-    }
+    if (options.roary) {
+    	std::cerr << "Formating Roary output for input into coinfinder..." << std::endl;
+    	std::string sysStr = "python3 " + source_path + "/format_roary.py -i " + options.combined_file_name;
+    	std::string out = Lineage::systemSTDOUT(sysStr);
+    	if ((out.find("Error") != std::string::npos) || (out.find("error") != std::string::npos)) {
+    		std::cerr << "ERROR MESSAGE FROM Python: " << std::endl;
+		std::cerr << out << std::endl;
+        	return(-1);
+	}
+    } 
 
     //
     // Load in relations
     //
     DataSet dataset = DataSet( options );
     //dataset.read_files( options.alpha_file_name, options.beta_file_name, options.combined_file_name, options.phylogeny, options.filt_thres, options.upper_filt_thres );
-    dataset.read_files( options.alpha_file_name, options.beta_file_name, "concident-input-edges.csv", options.phylogeny, options.filt_thres, options.upper_filt_thres );
+    if (options.roary) {
+    	dataset.read_files( options.alpha_file_name, options.beta_file_name, "concident-input-edges.csv", options.phylogeny, options.filt_thres, options.upper_filt_thres );
+    } else {
+	dataset.read_files( options.alpha_file_name, options.beta_file_name, options.combined_file_name, options.phylogeny, options.filt_thres, options.upper_filt_thres );
+    }
 
     //
     // Do what it is that needs to be done
