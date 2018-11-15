@@ -12,11 +12,11 @@ cmake --build .
 
 ### Dependencies: ###
 
-* Cmake3.6 or greater
-* Python3.6 or greater
-* Boost1.66 or greater 
-* OpenMP
-* R libraries: `caper, phytools, getopt, igraph, dplyr, cowplot, data.table, ggtree (from Bioconductor), ggraph`
+* `Cmake3.6` or greater
+* `Python3.6` or greater
+* `Boost1.66` or greater 
+* `OpenMP`
+* `R` libraries: `caper, phytools, getopt, igraph, dplyr, cowplot, data.table, ggtree (from Bioconductor), ggraph`
 
 ### What is this repository for? ###
 
