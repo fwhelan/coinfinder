@@ -1,8 +1,10 @@
 # README #
 
-cmake -DCMAKE_BUILD_TYPE=Release .
-cmake --build .
-./coinfinder
+### Quick installation instructions: ###
+
+cmake -DCMAKE_BUILD_TYPE=Release .\\
+cmake --build .\\
+./coinfinder\\
 
 This README would normally document whatever steps are necessary to get your application up and running.
 
