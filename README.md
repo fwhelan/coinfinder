@@ -16,30 +16,15 @@ cmake --build .
 * `Python3.6` or greater
 * `Boost1.66` or greater 
 * `OpenMP`
-* `R` libraries: `caper, phytools, getopt, igraph, dplyr, cowplot, data.table, ggtree (from Bioconductor), ggraph`
+* `R` libraries: `caper, phytools, getopt, igraph, dplyr, cowplot, data.table, ggtree` (from Bioconductor), `ggraph`
 
-### What is this repository for? ###
+### Example usage: ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+Coming soon...  
 
-### How do I get set up? ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+### What if I find a bug or have an issue running coinfinder? ###
 
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+If you run into any issues with coinfinder, we want to hear about it! Please log an Issue using the toolbar to the left. In the Issue report please include as many of the following as possible:  
+* The exact command that you used to call coinfinder (helps us identify the parts of the code that the bug might reside in).
+* A reproducible example of the issue with a small dataset that you can share (helps us identify whether the issue is specific to a particular computer and/or operating system).
