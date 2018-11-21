@@ -51,7 +51,7 @@ with open(args.input) as f:
             x = gen_hash[gen]
             #Append current entry to array
             if (genomeloc[x] == ""):
-                genomeloc[x] = geneID+"_"+gen
+                genomeloc[x] = gen+"_"+geneID
             else:
                 geneomeloc[x] = genomeloc[x]+" "+geneID+"_"+gen
             line = f.readline()
