@@ -11,7 +11,7 @@ parser.add_argument("--input", "-i", type=str, required=True)
 args = parser.parse_args()
 
 #Ensure roary-style output file doesn't already exist
-exists = os.path.isfile('gene-presence-absence.csv')
+exists = os.path.isfile('gene_presence_absence.csv')
 if (exists):
     print("gene-presence-absence.csv already exists; I don't want to overwrite it.")
     print("Exiting...")
