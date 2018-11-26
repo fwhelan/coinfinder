@@ -60,6 +60,11 @@ int Lineage::run( DataSet&  dataset, const std::string& source_path, const std::
 			}
 			return(-1);
 		}
+		if ((out.find("Killed") != std::string::npos)) {
+			std::cerr << "ERROR MESSAGE FROM R: " << std::endl;
+			std::cerr << out.substr(out.find("Killed")) << std::endl;
+			return(-1);
+		}
 	}
 	
 	//Save D to alpha as an attribute
