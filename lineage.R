@@ -1,6 +1,7 @@
 library(caper)
 library(phytools)
 library(getopt)
+library(future)
 
 #Get call input
 spec <- matrix(c('path', 'p', 1, "character",
@@ -52,7 +53,15 @@ dataset <- comparative.data(phy = treeRt,
                             names.col = Id,
                             vcv = TRUE, na.omit = FALSE, warn.dropped = TRUE)
 #Estimate D (Fritz & Purvis 2010) for all columns in annot
-parallelCluster <- parallel::makeCluster(opt$cores)
+#Detect available cores and decrease the number of parallel runs to that if its < opt$cores
+availcores <- availableCores()
+cores <- 1
+if (availcores < opt$cores) {
+	cores <- availcores
+} else {
+	cores <- opt$cores
+}
+parallelCluster <- parallel::makeCluster(cores)
 mkWorker <- function(dataset) {
   library(caper)
   #Make sure each value is passed
