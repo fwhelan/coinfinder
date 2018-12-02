@@ -16,13 +16,44 @@ setwd(opt$path)
 outstr <- paste(opt$output, "_nodes_in.csv", sep="")
 genes  <- read.csv(outstr) #"coincident_nodes_in.csv")
 genes[,length(genes)] <- NULL #remove the last comma in csv file
-genepa <- read.csv(opt$gene_pa, header=T, row.names=1)
+#genepa <- read.csv(opt$gene_pa, header=T, row.names=1)
+#load in line by line; if rowname of line %in% names(genes), put into annot
+con = file(opt$gene_pa, "r")
+header=readLines(con, n=1) #read in line
+header.sp = strsplit(header,"\",\"") #split line into list
+header.sp[[1]][1] = gsub("\"", "", header.sp[[1]][1]) #remove first \" from line
+header.sp[[1]][length(header.sp)] = gsub("\"", "", header.sp[[1]][length(header.sp)]) #and last
+annot <- matrix(ncol=length(header.sp[[1]]))
+colnames(annot) <- header.sp[[1]]
+flag <- 1
+while(TRUE) {
+  line=readLines(con, n=1) #read in line
+  line.sp = strsplit(line,"\",\"") #split line into list
+  line.sp[[1]][1] = gsub("\"", "", line.sp[[1]][1]) #remove first \" from line
+  line.sp[[1]][length(line.sp)] = gsub("\"", "", line.sp[[1]][length(line.sp)]) #and last
+  if (length(line)==0) {
+    break #file done
+  }
+  if (line.sp[[1]][1] %in% names(genes)) { #its a gene of interest, keep around
+    if (flag == 1) {
+      annot[1,] <- as.character(line.sp[[1]])
+      flag <- 0
+    } else {
+      annot <- rbind(annot, as.character(line.sp[[1]]))#, stringsAsFactors=FALSE)
+    }
+  }
+  count <- count + 1
+}
+close(con)
+annot <- as.data.frame(annot)
+annot[,1:14] <- NULL
+#Read in tree
 tree <- read.tree(opt$phylogeny)
 #Make annot table
-genepa[,1:14] <- NULL
-rownames(genepa) <- gsub(" ", "", rownames(genepa))
-annot <- genepa[(rownames(genepa) %in% names(genes)),]
-genepa <- NULL
+#genepa[,1:14] <- NULL
+#rownames(genepa) <- gsub(" ", "", rownames(genepa))
+#annot <- genepa[(rownames(genepa) %in% names(genes)),]
+#genepa <- NULL
 annot <- t(annot)
 annot[annot!=""] <- "1"
 annot[annot==""] <- "0"
@@ -57,10 +88,12 @@ dataset <- comparative.data(phy = treeRt,
 availcores <- availableCores()
 cores <- 1
 if (availcores < opt$cores) {
-	cores <- availcores
+	cores <- as.integer(availcores)
 } else {
 	cores <- opt$cores
 }
+print("Cores is set to:")
+print(cores)
 parallelCluster <- parallel::makeCluster(cores)
 mkWorker <- function(dataset) {
   library(caper)
