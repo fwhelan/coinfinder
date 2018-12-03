@@ -22,7 +22,7 @@ edgstr <- paste(opt$output, "_edges.csv", sep="")
 edges <- read.csv(edgstr, header=TRUE)
 colnames(edges) <- c("alpha1", "alpha2", "p")
 edges$p <- as.numeric(as.character(edges$p))
-genepa <- read.csv(opt$gene_pa, header=T, row.names=1)
+#genepa <- read.csv(opt$gene_pa, header=T, row.names=1)
 tree <- read.newick(opt$phylogeny)
 #Remove any nodes that do not have a value for D and edges which don't have a p-value
 nodes <- nodes[complete.cases(nodes),]
@@ -76,10 +76,40 @@ outstr <- paste(opt$output, "_components.csv", sep="")
 write.table(CC_out, file=outstr, sep="\t", quote=FALSE, row.names=TRUE, col.names=FALSE)
 
 #Create annot
-genepa[,1:14] <- NULL
-rownames(genepa) <- gsub(" ", "", rownames(genepa))
-annot <- genepa[(rownames(genepa) %in% as.character(names(node.colour))),]
+#genepa[,1:14] <- NULL
+#rownames(genepa) <- gsub(" ", "", rownames(genepa))
+#annot <- genepa[(rownames(genepa) %in% as.character(names(node.colour))),]
 #genepa <- NULL
+con = file(opt$gene_pa, "r")
+header=readLines(con, n=1) #read in line
+header.sp = strsplit(header,"\",\"") #split line into list
+header.sp[[1]][1] = gsub("\"", "", header.sp[[1]][1]) #remove first \" from line
+header.sp[[1]][length(header.sp)] = gsub("\"", "", header.sp[[1]][length(header.sp)]) #and last
+annot <- matrix(ncol=length(header.sp[[1]]))
+colnames(annot) <- header.sp[[1]]
+flag <- 1
+while(TRUE) {
+  line=readLines(con, n=1) #read in line
+  if (length(line)==0) {
+    break #file done
+  }
+  line.sp = strsplit(line,"\",\"") #split line into list
+  line.sp[[1]][1] = gsub("\"", "", line.sp[[1]][1]) #remove first \" from line
+  line.sp[[1]][length(line.sp)] = gsub("\"", "", line.sp[[1]][length(line.sp)]) #and last
+  if (line.sp[[1]][1] %in% names(node.colour)) { #its a gene of interest, keep around
+    if (flag == 1) {
+      annot[1,] <- as.character(line.sp[[1]])
+      flag <- 0
+    } else {
+      annot <- rbind(annot, as.character(line.sp[[1]]))#, stringsAsFactors=FALSE)
+    }
+  }
+}
+close(con)
+annot <- as.data.frame(annot)
+rownames(annot) <- annot[,1]
+annot[,1:14] <- NULL
+
 annot <- as.data.frame(t(annot), stringsAsFactors = FALSE)
 for(a in 1:ncol(annot)) {
   annot[,a][annot[,a]!=""] <- as.character(colnames(annot)[a])

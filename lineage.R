@@ -4,7 +4,7 @@ library(getopt)
 library(future)
 
 #Get call input
-spec <- matrix(c('path', 'p', 1, "character",
+spec <- matrix(c('path', 'a', 1, "character",
                  'phylogeny', 't', 1, "character",
                  'gene_pa', 'g', 1, "character",
                  'cores', 'c', 1, "integer",
@@ -28,12 +28,12 @@ colnames(annot) <- header.sp[[1]]
 flag <- 1
 while(TRUE) {
   line=readLines(con, n=1) #read in line
-  line.sp = strsplit(line,"\",\"") #split line into list
-  line.sp[[1]][1] = gsub("\"", "", line.sp[[1]][1]) #remove first \" from line
-  line.sp[[1]][length(line.sp)] = gsub("\"", "", line.sp[[1]][length(line.sp)]) #and last
   if (length(line)==0) {
     break #file done
   }
+  line.sp = strsplit(line,"\",\"") #split line into list
+  line.sp[[1]][1] = gsub("\"", "", line.sp[[1]][1]) #remove first \" from line
+  line.sp[[1]][length(line.sp)] = gsub("\"", "", line.sp[[1]][length(line.sp)]) #and last
   if (line.sp[[1]][1] %in% names(genes)) { #its a gene of interest, keep around
     if (flag == 1) {
       annot[1,] <- as.character(line.sp[[1]])
@@ -42,10 +42,10 @@ while(TRUE) {
       annot <- rbind(annot, as.character(line.sp[[1]]))#, stringsAsFactors=FALSE)
     }
   }
-  count <- count + 1
 }
 close(con)
 annot <- as.data.frame(annot)
+rownames(annot) <- annot[,1]
 annot[,1:14] <- NULL
 #Read in tree
 tree <- read.tree(opt$phylogeny)
@@ -92,8 +92,8 @@ if (availcores < opt$cores) {
 } else {
 	cores <- opt$cores
 }
-print("Cores is set to:")
-print(cores)
+#print("Cores is set to:")
+#print(cores)
 parallelCluster <- parallel::makeCluster(cores)
 mkWorker <- function(dataset) {
   library(caper)
