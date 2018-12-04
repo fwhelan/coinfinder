@@ -26,6 +26,7 @@ header.sp[[1]][length(header.sp)] = gsub("\"", "", header.sp[[1]][length(header.
 annot <- matrix(ncol=length(header.sp[[1]]))
 colnames(annot) <- header.sp[[1]]
 flag <- 1
+print("Read in gene_pa file..")
 while(TRUE) {
   line=readLines(con, n=1) #read in line
   if (length(line)==0) {
@@ -92,8 +93,8 @@ if (availcores < opt$cores) {
 } else {
 	cores <- opt$cores
 }
-#print("Cores is set to:")
-#print(cores)
+print("Cores is set to:")
+print(cores)
 parallelCluster <- parallel::makeCluster(cores)
 mkWorker <- function(dataset) {
   library(caper)
