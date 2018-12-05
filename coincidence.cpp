@@ -25,6 +25,7 @@
 int Coincidence::run( DataSet& dataset, /**< Dataset */
 		       const std::string& phylogeny,
 		       const std::string& path,
+		       int num_cores,
 		       const std::string& prefix )
 {
     //Coincidence::_write_header(dataset);
@@ -66,7 +67,7 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
     // *** Parallelize ***
     //
     int size_alpha_table = alpha_table.get_table().size();
-    #pragma omp parallel for collapse(2)
+    #pragma omp parallel for collapse(2) num_threads(num_cores)
     for(int yain_count=0; yain_count<size_alpha_table; ++yain_count)
     {
 	for(int tain_count=0; tain_count<size_alpha_table; ++tain_count)
