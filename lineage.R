@@ -19,14 +19,14 @@ genes[,length(genes)] <- NULL #remove the last comma in csv file
 
 #Read in tree
 tree <- read.tree(opt$phylogeny)
+#Ensure no zero branch lengths
+if (!is.na(match(0, tree$edge.length))) {
+        print("Phylogeny contains pairs of tips on zero branch lengths, cannot currently simulate")
+        quit()
+}
 #Root phylogeny for input into comparative.data
 treeRt <- midpoint.root(tree)
 treeRt <- makeLabel(treeRt)
-#Ensure no zero branch lengths
-if (treeRt$edge.lengths %in% 0) {
-        print("Phylogeny contains pairs of tips on zero branch lengths, cannot currently simulate")
-        exit
-}
 
 #Gene_pa read in
 #genepa <- read.csv(opt$gene_pa, header=T, row.names=1)
@@ -104,7 +104,7 @@ if (availcores < opt$cores) {
 }
 print("Cores is set to:")
 print(cores)
-parallelCluster <- parallel::makeCluster(cores)
+parallelCluster <- parallel::makeCluster(cores, type="FORK")
 mkWorker <- function(dataset) {
   #Make sure each value is passed
   force(dataset)
@@ -121,6 +121,7 @@ mkWorker <- function(dataset) {
   return(worker)
 }
 results <- parallel::parLapply(parallelCluster, colnames(annot), mkWorker(dataset))
+stopCluster(parallelCluster)
 #Update genes to be a data.frame
 genes2 <- as.data.frame(cbind(names(genes), rep(NA,length(genes))), stringsAsFactors=FALSE)
 colnames(genes2) <- c("ID", "Result")

@@ -55,7 +55,7 @@ node.colour <- NULL
 for(i in c(1:length(CC.size))){
   if(i > length(colour.array)) {
     print("Error: Add more colours to colour.array")
-    exit
+    quit()
   }
   node.colour <- c(node.colour,rep(colour.array[i],CC.size[i]))
 }
