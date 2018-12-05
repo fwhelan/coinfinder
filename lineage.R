@@ -16,6 +16,19 @@ setwd(opt$path)
 outstr <- paste(opt$output, "_nodes_in.csv", sep="")
 genes  <- read.csv(outstr) #"coincident_nodes_in.csv")
 genes[,length(genes)] <- NULL #remove the last comma in csv file
+
+#Read in tree
+tree <- read.tree(opt$phylogeny)
+#Root phylogeny for input into comparative.data
+treeRt <- midpoint.root(tree)
+treeRt <- makeLabel(treeRt)
+#Ensure no zero branch lengths
+if (treeRt$edge.lengths %in% 0) {
+        print("Phylogeny contains pairs of tips on zero branch lengths, cannot currently simulate")
+        exit
+}
+
+#Gene_pa read in
 #genepa <- read.csv(opt$gene_pa, header=T, row.names=1)
 #load in line by line; if rowname of line %in% names(genes), put into annot
 con = file(opt$gene_pa, "r")
@@ -48,8 +61,7 @@ close(con)
 annot <- as.data.frame(annot)
 rownames(annot) <- annot[,1]
 annot[,1:14] <- NULL
-#Read in tree
-tree <- read.tree(opt$phylogeny)
+
 #Make annot table
 #genepa[,1:14] <- NULL
 #rownames(genepa) <- gsub(" ", "", rownames(genepa))
@@ -76,9 +88,6 @@ if (length(remove)>0) {
     annot[remove[a]] <- NULL
   }
 }
-#Root phylogeny for input into comparative.data
-treeRt <- midpoint.root(tree)
-treeRt <- makeLabel(treeRt)
 #Make comparative data object
 dataset <- comparative.data(phy = treeRt,
                             data = annot,
@@ -97,7 +106,6 @@ print("Cores is set to:")
 print(cores)
 parallelCluster <- parallel::makeCluster(cores)
 mkWorker <- function(dataset) {
-  library(caper)
   #Make sure each value is passed
   force(dataset)
   #Define function

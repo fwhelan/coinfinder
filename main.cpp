@@ -197,7 +197,7 @@ int main( int argc, const char** argv )
         case EMethod::COINCIDENCE:
 	{
 	    int retval = 0;
-            retval = Coincidence::run( dataset, options.phylogeny, source_path, options.prefix );
+            retval = Coincidence::run( dataset, options.phylogeny, source_path, options.num_cores, options.prefix );
 	    if (retval != 0) {
 		std::cerr << "Coinfinder did not find any significant coinciding pairs in the input." << std::endl;
 		std::cerr << "Exiting..." << std::endl;
