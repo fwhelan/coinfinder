@@ -197,7 +197,7 @@ int main( int argc, const char** argv )
         case EMethod::COINCIDENCE:
 	{
 	    int retval = 0;
-            retval = Coincidence::run( dataset, options.phylogeny, source_path, options.num_cores, options.prefix );
+	    retval = Coincidence::run( dataset, options.phylogeny, source_path, options.num_cores, options.prefix );
 	    if (retval != 0) {
 		std::cerr << "Coinfinder did not find any significant coinciding pairs in the input." << std::endl;
 		std::cerr << "Exiting..." << std::endl;
@@ -207,11 +207,12 @@ int main( int argc, const char** argv )
 	    if(retval != 0) {
 		return(-1);
 	    }
-	    Gexf::run( dataset, options.prefix );
+	    //Gexf::run( dataset, options.prefix );
 	    retval = Network::run( dataset, source_path, call_path, options.phylogeny, options.combined_file_name, options.Rmsgs, options.prefix );
 	    if(retval != 0) {
 		return(-1);
 	    }
+	    Gexf::run( dataset, options.prefix );
             break;
 	}
 
