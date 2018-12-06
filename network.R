@@ -141,30 +141,31 @@ while (countie < length(colnames(annot))) {
 	  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
 	  theme(plot.margin = unit(c(0, 0, 0, 0), "cm"))
 	#Create arced network
-	grp <- graph_from_data_frame(d = subset(edges, (edges$alpha1 %in% node.order[i:j] & edges$alpha2 %in% node.order[i:j])), vertices = node.order[i:j], directed = FALSE)
-	p.arc <- ggraph(grp, layout="linear") +
-	  geom_edge_arc(width=1.5, alpha = 1, curvature=-1) + #width=E(grp)$p, label=p aes(edge_colour=(1-E(grp)$p))
-	  #scale_edge_colour_gradient2(low = "#f0f0f0",
-       	  #                           mid = "gray",
-          #                           high = "black",
-          #                           midpoint = 0.005,
-          #	                      #trans = "log",
-          #	                      breaks=arc.breaks,
-          #	    	              labels=arc.breaks
-	  #			      ) +
-  	geom_node_point(color="gray") +
-  	geom_node_text(aes(label = node.order[i:j]), angle = 90, hjust=0.8) +
-  	theme_graph() +
-  	theme(legend.position="bottom") + #bottom #none
-  	theme(plot.margin = unit(c(0, 0, 0, 0), "cm"))
+	#grp <- graph_from_data_frame(d = subset(edges, (edges$alpha1 %in% node.order[i:j] & edges$alpha2 %in% node.order[i:j])), vertices = node.order[i:j], directed = FALSE)
+	#p.arc <- ggraph(grp, layout="linear") +
+	#  geom_edge_arc(width=1.5, alpha = 1, curvature=-1) + #width=E(grp)$p, label=p aes(edge_colour=(1-E(grp)$p))
+	#  #scale_edge_colour_gradient2(low = "#f0f0f0",
+       	#  #                           mid = "gray",
+        #  #                           high = "black",
+        #  #                           midpoint = 0.005,
+        #  #	                      #trans = "log",
+        #  #	                      breaks=arc.breaks,
+        #  #	    	              labels=arc.breaks
+	#  #			      ) +
+  	#geom_node_point(color="gray") +
+  	#geom_node_text(aes(label = node.order[i:j]), angle = 90, hjust=0.8) +
+  	#theme_graph() +
+  	#theme(legend.position="bottom") + #bottom #none
+  	#theme(plot.margin = unit(c(0, 0, 0, 0), "cm"))
 	#Output
-	p.blank <- ggplot(data.frame()) + geom_point() + xlim(0, 10) + ylim(0, 100) + theme(axis.line = element_blank(), axis.text = element_blank(), axis.ticks = element_blank())
-	p.first <- plot_grid(p.blank,p.arc,nrow=1, rel_widths=c(1/7,1))
-	p.out   <- plot_grid(p.heat,p.first,ncol=1, axis="l", rel_heights=c(1,1/4)) #scale=c(1,0.9)
+	#p.blank <- ggplot(data.frame()) + geom_point() + xlim(0, 10) + ylim(0, 100) + theme(axis.line = element_blank(), axis.text = element_blank(), axis.ticks = element_blank())
+	#p.first <- plot_grid(p.blank,p.arc,nrow=1, rel_widths=c(1/7,1))
+	#p.out   <- plot_grid(p.heat,p.first,ncol=1, axis="l", rel_heights=c(1,1/4)) #scale=c(1,0.9)
 	outstr <- paste(opt$output, "_heatmap", a, ".pdf", sep="")
 	a <- a + 1
 	pdf(outstr,height=58,width=55)
-	print(p.out)
+	#print(p.out)
+	print(p.heat)
 	dev.off()
 }
 
