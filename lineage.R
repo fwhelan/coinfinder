@@ -2,6 +2,7 @@ library(caper)
 library(phytools)
 library(getopt)
 library(future)
+library(flock)
 
 #Get call input
 spec <- matrix(c('path', 'a', 1, "character",
@@ -104,14 +105,22 @@ if (availcores < opt$cores) {
 }
 print("Cores is set to:")
 print(cores)
+outstr <- paste(opt$output, "_nodes.csv", sep="")
+write(paste("ID","Result",sep="\t"),file=outstr,append=FALSE)
 parallelCluster <- parallel::makeCluster(cores, type="FORK")
 mkWorker <- function(dataset) {
+  library(flock)
   #Make sure each value is passed
-  force(dataset)
+  #force(dataset)
   #Define function
   calcD <- function(dataset, binvarry) {
     if(binvarry != "Id") {
       result <- eval(parse(text=paste("caper::phylo.d(data=dataset, binvar=",binvarry,", permut=1000)", sep="")))
+      line <- paste(binvarry,result$DEstimate, sep="\t")
+      locked_towrite <- flock::lock("./.lock")
+      write(line,file=outstr,append=TRUE)
+      flock::unlock(locked_towrite)
+      rm(result)
     }
   }
   #Define & return worker function
@@ -120,19 +129,24 @@ mkWorker <- function(dataset) {
   }
   return(worker)
 }
-results <- parallel::parLapply(parallelCluster, colnames(annot), mkWorker(dataset))
-stopCluster(parallelCluster)
-#Update genes to be a data.frame
-genes2 <- as.data.frame(cbind(names(genes), rep(NA,length(genes))), stringsAsFactors=FALSE)
-colnames(genes2) <- c("ID", "Result")
-rownames(genes2) <- genes2$ID
-genes2$ID <- NULL
-for(a in 1:length(results)) {
-  if(!is.null(results[[a]])) {
-      genes2[results[[a]]$binvar,1] <- results[[a]]$DEstimate
-  }
+#results <- parallel::parLapply(parallelCluster, colnames(annot), mkWorker(dataset))
+parallel::parLapply(parallelCluster, colnames(annot), mkWorker(dataset))
+# Shutdown cluster neatly
+if(!is.null(parallelCluster)) {
+  parallel::stopCluster(parallelCluster)
+  parallelCluster <- c()
 }
-genes2$ID <- rownames(genes2)
-genes2 <- genes2[,c(2,1)]
-outstr <- paste(opt$output, "_nodes.csv", sep="")
-write.table(genes2, outstr, sep="\t", row.names=FALSE, col.names=TRUE, quote=FALSE) #"coincident_nodes.csv"
+#Update genes to be a data.frame
+#genes2 <- as.data.frame(cbind(names(genes), rep(NA,length(genes))), stringsAsFactors=FALSE)
+#colnames(genes2) <- c("ID", "Result")
+#rownames(genes2) <- genes2$ID
+#genes2$ID <- NULL
+#for(a in 1:length(results)) {
+#  if(!is.null(results[[a]])) {
+#      genes2[results[[a]]$binvar,1] <- results[[a]]$DEstimate
+#  }
+#}
+#genes2$ID <- rownames(genes2)
+#genes2 <- genes2[,c(2,1)]
+#outstr <- paste(opt$output, "_nodes.csv", sep="")
+#write.table(genes2, outstr, sep="\t", row.names=FALSE, col.names=TRUE, quote=FALSE) #"coincident_nodes.csv"
