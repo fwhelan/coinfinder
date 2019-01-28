@@ -65,6 +65,7 @@ node.order <- factor(node.order, levels=node.order)
 
 #Write CCs to coincident_components.csv
 CC_out <- data.frame(id = character(0), stringsAsFactors = FALSE)
+CCs$alpha <- make.names(CCs$alpha)
 for(i in c(1:nrow(CCs))) {
   if (is.na(CC_out[CCs$CC[i],1])) {
     CC_out[CCs$CC[i],1] <- CCs$alphas[i]
