@@ -39,7 +39,7 @@ void Gexf::run( DataSet& dataset, const std::string& prefix )
 			if(ret != "") {
 				alpha1_col = componentLookup(std::stoi(ret));
 			} else {
-				std::cerr << "Error: Gexf could not find the alpha name in the components file." << std::endl;
+				std::cerr << "Error: Gexf could not find the alpha name " << alpha1_name << " in the components file." << std::endl;
 				return;
 			}
 			//push node to node array for gexf "<viz:color r=\"" + std::to_string(alpha1_col) + "\" g=\"173\" b=\"66\"/>" +
