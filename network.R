@@ -127,13 +127,17 @@ arc.breaks = as.numeric(c(0, 0.005, 1))
 #to multiples of 500 based on the cluster size.
 CC.cumsum <- cumsum(CC.size)
 countie <- 1
-a <- 0
+#a <- 0
 while (countie < length(colnames(annot))) {
-#for(i in seq(0,length(colnames(annot)), by=500)) {
-#	j <- min(i+500, length(colnames(annot)))
+	#for(i in seq(0,length(colnames(annot)), by=500)) {
+	#j <- min(i+500, length(colnames(annot)))
 	i <- countie
   	j.loc <- which.min(abs(CC.cumsum - (countie+500)))
   	j <- CC.cumsum[j.loc]
+	#However, if there is an element with >500 elements heatmap creation will spin. Inforce j > i.
+	if (j<i) {
+		j <- CC.cumsum[j.loc+1]
+	}
   	countie <- j+1
 	p.heat <- gheatmap(p.tree, annot[i:j], offset=1, width=8, font.size=2, colnames_angle=-90, hjust=0) + #offset=0.009
 	  guides(fill=FALSE) +
@@ -168,6 +172,15 @@ while (countie < length(colnames(annot))) {
 	print(p.heat)
 	dev.off()
 }
+#p.heat <- gheatmap(p.tree, annot, offset=1, width=8, font.size=2, colnames_angle=-90, hjust=0) + #offset=0.009
+#         guides(fill=FALSE) +
+#         scale_fill_manual(breaks=heatmap.breaks, values=node.colour) +
+#         theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+#         theme(plot.margin = unit(c(0, 0, 0, 0), "cm"))
+#outstr <- paste(opt$output, "_heatmap.pdf", sep="")
+#pdf(outstr,height=58,width=55)
+#print(p.heat)
+#dev.off()
 
 #Draw network
 grp <- graph_from_data_frame(d = edges, vertices = node.order, directed = FALSE)
