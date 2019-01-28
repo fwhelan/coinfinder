@@ -15,7 +15,7 @@ setwd(opt$path)
 
 #Read in
 outstr <- paste(opt$output, "_nodes_in.csv", sep="")
-genes  <- read.csv(outstr) #"coincident_nodes_in.csv")
+genes  <- read.csv(outstr, check.names=FALSE) #"coincident_nodes_in.csv")
 genes[,length(genes)] <- NULL #remove the last comma in csv file
 
 #Read in tree
