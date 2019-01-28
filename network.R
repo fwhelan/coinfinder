@@ -183,26 +183,26 @@ while (countie < length(colnames(annot))) {
 #dev.off()
 
 #Draw network
-grp <- graph_from_data_frame(d = edges, vertices = node.order, directed = FALSE)
-net.layout <- create_layout(grp, layout='igraph', algorithm='fr') #dh, graphopt
-node.colour.order <- sort(node.colour)
-p.net <- ggraph(net.layout) +
-  geom_edge_link(aes(colour=(1-E(grp)$p)), width=2, alpha = 0.8) + #width=(1-E(grp)$p), 
-  scale_edge_color_gradient2(low = "#f0f0f0",
-                            mid = "gray",
-                            high = "gray",
-                            midpoint = 0.005,
-                            #trans = "log",
-                            breaks=arc.breaks,
-                            labels=arc.breaks
-			    ) +
-  geom_node_point(aes(color=node.colour), size=10) +
-  scale_color_manual(values=unique(node.colour.order)) +
-  geom_node_text(aes(label = node.order), vjust=-1.2) +
-  theme_graph() +
-  theme(legend.position="none") + #bottom
-  theme(plot.margin = unit(c(0, 0, 0, 0), "cm"))
-outstr <- paste(opt$output, "_network.pdf", sep="")
-pdf(outstr,height=58,width=55)
-print(p.net)
-dev.off()
+#grp <- graph_from_data_frame(d = edges, vertices = node.order, directed = FALSE)
+#net.layout <- create_layout(grp, layout='igraph', algorithm='fr') #dh, graphopt
+#node.colour.order <- sort(node.colour)
+#p.net <- ggraph(net.layout) +
+#  geom_edge_link(aes(colour=(1-E(grp)$p)), width=2, alpha = 0.8) + #width=(1-E(grp)$p), 
+#  scale_edge_color_gradient2(low = "#f0f0f0",
+#                            mid = "gray",
+#                            high = "gray",
+#                            midpoint = 0.005,
+#                            #trans = "log",
+#                            breaks=arc.breaks,
+#                            labels=arc.breaks
+#			    ) +
+#  geom_node_point(aes(color=node.colour), size=10) +
+#  scale_color_manual(values=unique(node.colour.order)) +
+#  geom_node_text(aes(label = node.order), vjust=-1.2) +
+#  theme_graph() +
+#  theme(legend.position="none") + #bottom
+#  theme(plot.margin = unit(c(0, 0, 0, 0), "cm"))
+#outstr <- paste(opt$output, "_network.pdf", sep="")
+#pdf(outstr,height=58,width=55)
+#print(p.net)
+#dev.off()
