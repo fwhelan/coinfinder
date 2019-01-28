@@ -127,7 +127,7 @@ arc.breaks = as.numeric(c(0, 0.005, 1))
 #to multiples of 500 based on the cluster size.
 CC.cumsum <- cumsum(CC.size)
 countie <- 1
-#a <- 0
+a <- 0
 while (countie < length(colnames(annot))) {
 	#for(i in seq(0,length(colnames(annot)), by=500)) {
 	#j <- min(i+500, length(colnames(annot)))
