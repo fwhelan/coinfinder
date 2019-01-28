@@ -71,8 +71,8 @@ annot[,1:14] <- NULL
 #annot <- genepa[(rownames(genepa) %in% names(genes)),]
 #genepa <- NULL
 annot <- t(annot)
-annot[annot!=""] <- "1"
-annot[annot==""] <- "0"
+annot[annot!="X"] <- "1"
+annot[annot=="X"] <- "0"
 annot <- as.data.frame(annot)
 annot$Id <- rownames(annot)
 #Double check that each column has 2 states
