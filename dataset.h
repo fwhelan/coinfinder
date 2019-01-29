@@ -48,9 +48,14 @@ class DataSet
 
 	void _generate_coincident_edge( Alpha& alpha1, Alpha& alpha2, double p_value );
 
+	static bool isForbidden( char c );
+	void _read_alpha_file( const std::string& file_name );
+
         
     private:
-        void _read_alpha_file( const std::string& file_name );
+	//std::string RemoveIllegalChars(std::string cell);
+	//bool isForbidden( char c );
+        //void _read_alpha_file( const std::string& file_name );
         void _read_beta_file( const std::string& file_name );
         void _read_combined_file( const std::string& file_name );
 
