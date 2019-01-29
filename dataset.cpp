@@ -46,6 +46,24 @@ DataSet::~DataSet()
     // pass
 }
 
+/**
+ * Small functiona for removing illegal characters from input string.
+ **/
+//std::string DataSet::RemoveIllegalChars(std::string cell) {
+//	std::string illegals = "\\/:?\",.|-";
+	//for(it = cell->begin(); it < cell->end(); ++it) {
+	//	bool found = illegals.find(*it) != std::string::npos;
+	//	if(found) {
+	//		*it = '.';
+	//	}
+	//}
+//	return cell;
+//}
+bool DataSet::isForbidden( char c ) {
+	static std::string illegals = "\\/:?\",.|-";
+	return std::string::npos != illegals.find( c );
+}
+
 
 /**
  * Reads the BETA file.
@@ -125,6 +143,9 @@ void DataSet::_read_alpha_file( const std::string& file_name )
         else
         {
             // ALPHA--[CONTAINS]->GAMMA
+	    /*Check cell for any illegal charcters first*/
+	    //cell = RemoveIllegalChars(cell);
+	    std::replace_if( cell.begin(), cell.end(), isForbidden, '.');
             Alpha& alpha = this->_alphas.find_id( cell );
 
             if (this->get_options().permit_filter)
@@ -207,6 +228,11 @@ void DataSet::_read_combined_file( const std::string& file_name )
     	{
         	if (left)
         	{
+		/*Check cell for any illegal charcters first*/
+            	//cell = RemoveIllegalChars(cell);
+		//std::cerr << "Cell prior to is: " << cell << std::endl;
+            	std::replace_if( cell.begin(), cell.end(), isForbidden, '.');
+		//std::cerr << "Cell is: " << cell << std::endl;
             	alpha = &this->_alphas.find_id( cell );
 	    	left = false;
 	    	middle = true;
@@ -254,6 +280,9 @@ void DataSet::_read_combined_file( const std::string& file_name )
     	{
         	if (left)
         	{
+		    /*Check cell for any illegal charcters first*/
+            	    //cell = RemoveIllegalChars(cell);
+            	    std::replace_if( cell.begin(), cell.end(), isForbidden, '.');
         	    alpha = &this->_alphas.find_id( cell );
         	}
         	else
