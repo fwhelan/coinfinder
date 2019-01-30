@@ -11,6 +11,7 @@ class Gexf
 {
     public:
         static void run( DataSet& dataset, const std::string& prefix);
+	static bool isForbidden( char c );
         
     private:
         static std::string systemSTDOUT(std::string cmd);
