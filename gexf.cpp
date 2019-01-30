@@ -9,6 +9,11 @@
  * Calculates the level of lineage-dependence per gene in the output gene_list
  */
 
+bool Gexf::isForbidden( char c ) {
+        static std::string illegals = "\\/:?\",.|-()";
+        return std::string::npos != illegals.find( c );
+}
+
 void Gexf::run( DataSet& dataset, const std::string& prefix )
 {
 	std::ofstream gexf;
@@ -27,6 +32,8 @@ void Gexf::run( DataSet& dataset, const std::string& prefix )
                 Alpha& alpha = *alpha_list.second;
 		if (alpha.get_num_coincident_edges() > 0) {
 			alpha1_name = alpha.get_name();
+			/*Check cell for any illegal charcters first*/
+            		std::replace_if( alpha1_name.begin(), alpha1_name.end(), isForbidden, '.');
 			alpha1_D = alpha.get_D();
 			//alpha1_col = 255*alpha1_D; //Most meaningful values of D are between 0 and 1
 			//if (alpha1_col > 255) { alpha1_col = 255; }
