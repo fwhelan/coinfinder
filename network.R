@@ -87,7 +87,8 @@ con = file(opt$gene_pa, "r")
 header=readLines(con, n=1) #read in line
 header.sp = strsplit(header,"\",\"") #split line into list
 header.sp[[1]][1] = gsub("\"", "", header.sp[[1]][1]) #remove first \" from line
-header.sp[[1]][length(header.sp)] = gsub("\"", "", header.sp[[1]][length(header.sp)]) #and last
+header.sp[[1]][length(header.sp[[1]])] = gsub("\"", "", header.sp[[1]][length(header.sp[[1]])]) #and last
+header.sp[[1]] <- make.names(header.sp[[1]])
 annot <- matrix(ncol=length(header.sp[[1]]))
 colnames(annot) <- header.sp[[1]]
 flag <- 1
@@ -98,7 +99,8 @@ while(TRUE) {
   }
   line.sp = strsplit(line,"\",\"") #split line into list
   line.sp[[1]][1] = gsub("\"", "", line.sp[[1]][1]) #remove first \" from line
-  line.sp[[1]][length(line.sp)] = gsub("\"", "", line.sp[[1]][length(line.sp)]) #and last
+  line.sp[[1]][length(line.sp[[1]])] = gsub("\"", "", line.sp[[1]][length(line.sp[[1]])]) #and last
+  line.sp[[1]] <- make.names(line.sp[[1]])
   if (line.sp[[1]][1] %in% names(node.colour)) { #its a gene of interest, keep around
     if (flag == 1) {
       annot[1,] <- as.character(line.sp[[1]])
