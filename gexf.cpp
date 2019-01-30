@@ -63,6 +63,7 @@ void Gexf::run( DataSet& dataset, const std::string& prefix )
 			const std::map<const Alpha*, double>& edges = alpha.get_coincident_edges();
 			for(const auto& edge_list : edges) {
 				alpha2_name = (edge_list.first)->get_name();
+				std::replace_if( alpha2_name.begin(), alpha2_name.end(), isForbidden, '.');
 				p_value = edge_list.second;
 				edge_weight = ((1-p_value)*2);
 				//push edge to edge array for gexf
