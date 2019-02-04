@@ -117,7 +117,7 @@ annot[,1:14] <- NULL
 
 annot <- as.data.frame(t(annot), stringsAsFactors = FALSE)
 for(a in 1:ncol(annot)) {
-  annot[,a][annot[,a]!=""] <- as.character(colnames(annot)[a])
+  annot[,a][annot[,a]!="X"] <- as.character(colnames(annot)[a])
 }
 setcolorder(annot, as.character(names(node.colour)))
 
