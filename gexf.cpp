@@ -66,15 +66,21 @@ void Gexf::run( DataSet& dataset, const std::string& prefix )
 				std::replace_if( alpha2_name.begin(), alpha2_name.end(), isForbidden, '.');
 				p_value = edge_list.second;
 				edge_weight = ((1-p_value)*2);
-				//push edge to edge array for gexf
-				edge_attr_xml += "<edge id=\"" + std::to_string(edge_counter) + "\" label=\"" + std::to_string(p_value)
-					+ "\" source=\"" + alpha1_name + "\" target=\"" + alpha2_name + "\" weight=\"" + std::to_string(edge_weight) + "\">" +
-						" <attvalues>\n" +
-						"  <attvalue for=\"p-value\" value=\"" + std::to_string(p_value) + "\"/>\n" +
-						" </attvalues>\n" +
-						"<viz:color r=\"146\" g=\"142\" b=\"142\"/>" + 
-						"</edge>\n";
-				edge_counter++;
+				//check to see if edge has already been added in the opposite orientation
+				std::string strCheck = "label=\"" + std::to_string(p_value)
+					+ "\" source=\"" + alpha2_name + "\" target=\"" + alpha1_name + "\" weight=\"" + std::to_string(edge_weight) + "\">";
+				std::size_t found = edge_attr_xml.find(strCheck);
+				if (found == std::string::npos) {
+					//push edge to edge array for gexf
+					edge_attr_xml += "<edge id=\"" + std::to_string(edge_counter) + "\" label=\"" + std::to_string(p_value)
+						+ "\" source=\"" + alpha1_name + "\" target=\"" + alpha2_name + "\" weight=\"" + std::to_string(edge_weight) + "\">" +
+							" <attvalues>\n" +
+							"  <attvalue for=\"p-value\" value=\"" + std::to_string(p_value) + "\"/>\n" +
+							" </attvalues>\n" +
+							"<viz:color r=\"146\" g=\"142\" b=\"142\"/>" + 
+							"</edge>\n";
+					edge_counter++;
+				}
 								
 			}
 		}
