@@ -207,7 +207,6 @@ int main( int argc, const char** argv )
 	    if(retval != 0) {
 		return(-1);
 	    }
-	    //Gexf::run( dataset, options.prefix );
 	    retval = Network::run( dataset, source_path, call_path, options.phylogeny, options.combined_file_name, options.Rmsgs, options.prefix );
 	    if(retval != 0) {
 		return(-1);
