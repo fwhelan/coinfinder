@@ -56,5 +56,5 @@ with open(args.input) as f:
                 geneomeloc[x] = genomeloc[x]+" "+geneID+"_"+gen
             line = f.readline()
         bulk = ("".join([',"{}"'.format(genomeloc[n]) for n in range(len(genomeloc))]))
-        roary.write(geneID+"\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\""+bulk+"\n")
+        roary.write("\""+geneID+"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\""+bulk+"\n")
 roary.close()
