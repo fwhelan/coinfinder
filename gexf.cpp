@@ -33,7 +33,6 @@ void Gexf::run( DataSet& dataset, const std::string& prefix )
                 Alpha& alpha = *alpha_list.second;
 		if (alpha.get_num_coincident_edges() > 0) {
 			alpha1_name = alpha.get_name();
-			//std::cerr << "alpha1_name: " << alpha1_name << std::endl;
 			/*Check cell for any illegal charcters first*/
             		std::replace_if( alpha1_name.begin(), alpha1_name.end(), isForbidden, '.');
 			alpha1_D = alpha.get_D();
@@ -69,14 +68,6 @@ void Gexf::run( DataSet& dataset, const std::string& prefix )
 				p_value = edge_list.second;
 				edge_weight = ((1-p_value)*2);
 				//check to see if edge has already been added in the opposite orientation; add edges in alphabetical order
-				//std::string strCheck = "label=\"" + std::to_string(p_value)
-				//	+ "\" source=\"" + alpha2_name + "\" target=\"" + alpha1_name + "\" weight=\"" + std::to_string(edge_weight) + "\">";
-				//std::size_t found = edge_attr_xml.find(strCheck);
-				//std::cerr << "edge_attr_xml: " << edge_attr_xml << std::endl;
-				//std::cerr << "strCheck: " << strCheck << std::endl;
-				//std::cerr << "found: " << found << std::endl;
-				//if ((edge_attr_xml.length()==0) || (found == std::string::npos)) {
-				//if (found == std::string::npos) {
 				if(alpha1_name.compare(alpha2_name) <= 0) {
 					//push edge to edge array for gexf
 					edge_attr_xml += "<edge id=\"" + std::to_string(edge_counter) + "\" label=\"" + std::to_string(p_value)

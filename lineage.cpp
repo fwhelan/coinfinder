@@ -28,7 +28,10 @@ int Lineage::run( DataSet&  dataset, const std::string& source_path, const std::
 			nodefile << alpha.get_name() << ",";
 			const std::map<const Alpha*, double>& coincident_edges = alpha.get_coincident_edges();
 			for (const auto& edge_list : coincident_edges) {
-				edgefile << alpha.get_name() << "," << (edge_list.first)->get_name() << "," << edge_list.second << std::endl;
+				//Check to see if edge has already been added in the opposite orientation; add edges in alphabetical order
+                                if(alpha.get_name().compare((edge_list.first)->get_name()) <= 0) {
+					edgefile << alpha.get_name() << "," << (edge_list.first)->get_name() << "," << edge_list.second << std::endl;
+				}
 			}
 		}
 	}
