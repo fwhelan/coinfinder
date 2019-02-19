@@ -19,8 +19,6 @@
 
 #include <iterator>
 
-#include <boost/algorithm/string.hpp>
-
 /**
  * Runs coincidence analysis
  */
@@ -38,7 +36,7 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
     const id_lookup<Alpha>& alpha_table = dataset.get_alphas();
     const id_lookup<Edge>& edge_table = dataset.get_edges();
 
-    //const double cor_sig = Significance::correct( dataset.get_options().sig_level, dataset.get_options().correction, dataset.get_num_edges());
+    const double cor_sig = Significance::correct( dataset.get_options().sig_level, dataset.get_options().correction, dataset.get_num_edges());
 
     //
     // Create matrix
@@ -58,8 +56,7 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
     std::cerr << "Running analyses..." << std::endl;
     //Open output file to write to
     std::ofstream analysis;
-    //std::string analyname = prefix + "_pairs.csv";
-    std::string analyname = prefix + "_uncorrected_pairs.csv";
+    std::string analyname = prefix + "_pairs.csv";
     analysis.open(analyname);
     //Write header
     Coincidence::_write_header(dataset, analysis);
@@ -226,8 +223,7 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
 			}
     		}
 
-		//if (p_value > cor_sig)
-		if (p_value > dataset.get_options().sig_level)
+    		if (p_value > cor_sig)
     		{
         		if (options.verbose)
         		{
@@ -330,33 +326,6 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
     std::cerr << "P-VALUE COUNTER = " << p_value_counter << std::endl;
     std::cerr << "COR SIG = " << dataset.get_num_edges() << std::endl;
     analysis.close();
-
-    // 
-    // *** Do multiple test correction ***
-    //
-    double cor_sig = Significance::correct( dataset.get_options().sig_level, dataset.get_options().correction, p_value_counter);
-    std::string inputname = prefix + "_uncorrected_pairs.csv";
-    std::string outptname = prefix + "_pairs.csv";
-    std::ifstream inputfil;
-    inputfil.open(inputname);
-    std::ofstream outptfil;;
-    outptfil.open(outptname);
-    //Write header
-    std::string line;
-    std::getline(inputfil, line);
-    outptfil << line << std::endl;
-    //Cycle through each uncorrected pair and see if it passes multiple test correction
-    while(std::getline(inputfil, line)) {
-	std::vector<std::string> results;
-	boost::split(results, line, [](char c){ return c == '\t'; });
-	double pval = std::stod(results[2]);
-	if (pval <= cor_sig) {
-		outptfil << line << std::endl;
-	}
-    }
-    inputfil.close();
-    outptfil.close();
-
     return(returnflag);
 }
 
