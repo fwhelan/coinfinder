@@ -13,11 +13,11 @@ args = parser.parse_args()
 #Ensure roary-style output file doesn't already exist
 exists = os.path.isfile('gene_presence_absence.csv')
 if (exists):
-    print("gene-presence-absence.csv already exists; I don't want to overwrite it.")
+    print("gene_presence_absence.csv already exists; I don't want to overwrite it.")
     print("Exiting...")
     quit()
 #Open roary-style output file
-roary = open('gene-presence-absence.csv', "w")
+roary = open('gene_presence_absence.csv', "w")
 #Sort input file by gene ID
 ret = subprocess.call("sort "+args.input+" > sorted.tmp", shell=True)
 #Collect and count unique genomes
@@ -29,6 +29,7 @@ loc_len = len(gen_list)
 #Make and populate genome->location hash
 hash_count = 0
 header = ""
+#header = "\""
 gen_hash = {}
 for gen in gen_list:
     gen_hash[gen] = hash_count
