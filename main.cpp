@@ -172,7 +172,21 @@ int main( int argc, const char** argv )
 		std::cerr << out << std::endl;
         	return(-1);
 	}
-    } 
+    }
+
+    //
+    // Create gene_p_a for later input into R, if necessary
+    //
+    if (!options.roary) {
+	std::cerr << "Formating input into gene_p_a for input into coinfinder..." << std::endl;
+	std::string sysStr = "python3 " + source_path + "/create_roary.py -i " + options.combined_file_name;
+	std::string out = Lineage::systemSTDOUT(sysStr);
+	if ((out.find("Error") != std::string::npos) || (out.find("error") != std::string::npos)) {
+		std::cerr << "ERROR MESSAGE FROM Python: " << std::endl;
+		std::cerr << out << std::endl;
+		return(-1);
+	}
+    }
 
     //
     // Load in relations
@@ -197,17 +211,23 @@ int main( int argc, const char** argv )
         case EMethod::COINCIDENCE:
 	{
 	    int retval = 0;
+	    std::string gene_pa = "";
+	    if (options.roary) {
+		   gene_pa = options.combined_file_name;
+	    } else {
+		   gene_pa = "gene_presence_absence.csv";
+	    } 
 	    retval = Coincidence::run( dataset, options.phylogeny, source_path, options.num_cores, options.prefix );
 	    if (retval != 0) {
 		std::cerr << "Coinfinder did not find any significant coinciding pairs in the input." << std::endl;
 		std::cerr << "Exiting..." << std::endl;
 		return(-1);
 	    }
-	    retval = Lineage::run( dataset, source_path, call_path, options.phylogeny, options.combined_file_name, options.num_cores, options.Rmsgs, options.prefix );
+	    retval = Lineage::run( dataset, source_path, call_path, options.phylogeny, gene_pa, options.num_cores, options.Rmsgs, options.prefix );
 	    if(retval != 0) {
 		return(-1);
 	    }
-	    retval = Network::run( dataset, source_path, call_path, options.phylogeny, options.combined_file_name, options.Rmsgs, options.prefix );
+	    retval = Network::run( dataset, source_path, call_path, options.phylogeny, gene_pa, options.Rmsgs, options.prefix );
 	    if(retval != 0) {
 		return(-1);
 	    }

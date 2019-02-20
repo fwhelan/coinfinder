@@ -71,6 +71,7 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
     // *** Parallelize ***
     //
     int size_alpha_table = alpha_table.get_table().size();
+    int total_loops = 0;
     #pragma omp parallel for collapse(2) num_threads(num_cores)
     for(int yain_count=0; yain_count<size_alpha_table; ++yain_count)
     {
@@ -80,6 +81,8 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
 	    auto kvp_tain = alpha_table.get_table().begin();
 	    std::advance(kvp_yain, yain_count);
 	    std::advance(kvp_tain, tain_count);
+	    #pragma omp critical
+	    total_loops = total_loops + 1;
 
 	    Alpha& alpha_yain = *kvp_yain->second;
 	    const std::map<const Beta*, int>& edges_yain = alpha_yain.get_edges();
@@ -192,6 +195,7 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
 
     		// Binomial test p-value
     		double p_value = Binomial::test( options.alt_hypothesis, successes, num_observations, rate );
+		#pragma omp critical
 		p_value_counter = p_value_counter + 1;
 
     		if (options.verbose)
@@ -251,7 +255,7 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
 
     		//Result is significant: calculate secondaries for coincidence or avoidance, depending on what the user called for
     		retval = p_value;
-		returnflag = 0;
+		//returnflag = 0;
     		switch (options.coin_max_mode)
     		{
         		case EMaxMode::ACCOMPANY:
@@ -329,6 +333,8 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
     //
     std::cerr << "P-VALUE COUNTER = " << p_value_counter << std::endl;
     std::cerr << "COR SIG = " << dataset.get_num_edges() << std::endl;
+    std::cerr << "size_alpha_table = " << size_alpha_table << std::endl;
+    std::cerr << "total loops = " << total_loops << std::endl;
     analysis.close();
 
     // 
@@ -352,6 +358,8 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
 	double pval = std::stod(results[2]);
 	if (pval <= cor_sig) {
 		outptfil << line << std::endl;
+		//retval = p_value;
+                returnflag = 0;
 	}
     }
     inputfil.close();

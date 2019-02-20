@@ -14,8 +14,16 @@ edge = open('concident-input-edges.csv', "w")
 #Open roary output/coinfinder input file for reading
 with open(args.input) as genefile:
     genereader = csv.reader(genefile)
-    #Skip header
-    next(genereader, None)
+    #Use header to define genome to column # dictionary
+    gendict = dict()
+    genome = 0
+    line = next(genereader)
+    for col in line:
+        if (genome >= 14):
+            #If not empty..
+            if (col != ""):
+                gendict[genome] = col
+        genome = genome + 1
     for line in genereader:
         #Ensure no tabs in geneID
         gene = re.sub(r'\t',r'',line[0])
@@ -31,8 +39,10 @@ with open(args.input) as genefile:
                 splity = line[i].split()
                 for j in range(0,len(splity)):
                     try:
-                        genome = re.search('(.+)_.*', splity[j]).group(1)
-                        geneID = re.search('.+_(.*)', splity[j]).group(1)
+                        #genome = re.search('(.+)_.*', splity[j]).group(1)
+                        #geneID = re.search('.+_(.*)', splity[j]).group(1)
+                        genome = gendict[i]
+                        geneID = splity[j]
                     except AttributeError:
                         genome = ''
                         print("AttributeError caught, genome not defined.")
