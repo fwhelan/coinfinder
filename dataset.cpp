@@ -769,7 +769,9 @@ void DataSet::read_files( const std::string& alpha_file_name, const std::string&
     this->_drop_rare(filt_thres);
     this->_drop_empty();
 
-    this->_phylo_check( phylogeny_file_name);
+    if (!phylogeny_file_name.empty()) {
+    	this->_phylo_check( phylogeny_file_name );
+    }
 }
 
 
