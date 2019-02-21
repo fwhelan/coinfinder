@@ -39,71 +39,75 @@ int Lineage::run( DataSet&  dataset, const std::string& source_path, const std::
 	nodefile.close();
 	edgefile.close();
 
-	//Call R to calculate D
-	std::cerr << "Calculating lineage dependence..." << std::endl;
-	std::string syscall = "Rscript " + source_path + "/lineage.R -a " + call_path + " -t " + phylogeny + " -g " + gene_pa + " -c " + std::to_string(num_cores) + " -o " + prefix;
-	if (Rmsgs) {
-		system(syscall.c_str());
-	} else {
-		std::string out = systemSTDOUT(syscall);
-		if (out.find("Phylogeny contains pairs of tips on zero branch lengths, cannot currently simulate") != std::string::npos) {
-			std::cerr << "Error: Input phylogeny contains branch lengths which equal zero." << std::endl;
-        		std::cerr << "The R function caper::phylo.d, which coinfinder uses to define lineage dependence, cannot handle zero length branches." << std::endl;
-        		std::cerr << "Please adjust your phylogeny before continuing." << std::endl;
-        		std::cerr << "Exiting..." << std::endl;
-        		return(-1);
-		}
-		if ((out.find("Error") != std::string::npos) || (out.find("error") != std::string::npos)) {
-			std::cerr << "ERROR MESSAGE FROM R: " << std::endl;
-			if (out.find("Error") != std::string::npos) {
-				std::cerr << out.substr(out.find("Error")) << std::endl;
+	//Call R to calculate D iff a phylogeny has been provided
+	if (!phylogeny.empty()) {
+		std::cerr << "Calculating lineage dependence..." << std::endl;
+		std::string syscall = "Rscript " + source_path + "/lineage.R -a " + call_path + " -t " + phylogeny + " -g " + gene_pa + " -c " + std::to_string(num_cores) + " -o " + prefix;
+		if (Rmsgs) {
+			system(syscall.c_str());
+		} else {
+			std::string out = systemSTDOUT(syscall);
+			if (out.find("Phylogeny contains pairs of tips on zero branch lengths, cannot currently simulate") != std::string::npos) {
+				std::cerr << "Error: Input phylogeny contains branch lengths which equal zero." << std::endl;
+        			std::cerr << "The R function caper::phylo.d, which coinfinder uses to define lineage dependence, cannot handle zero length branches." << std::endl;
+        			std::cerr << "Please adjust your phylogeny before continuing." << std::endl;
+        			std::cerr << "Exiting..." << std::endl;
+        			return(-1);
 			}
-			if (out.find("error") != std::string::npos) {
-				std::cerr << out.substr(out.find("error")) << std::endl;
-			}
-			return(-1);
-		}
-		if ((out.find("Killed") != std::string::npos)) {
-			std::cerr << "ERROR MESSAGE FROM R: " << std::endl;
-			std::cerr << out.substr(out.find("Killed")) << std::endl;
-			return(-1);
-		}
-	}
-	
-	//Save D to alpha as an attribute
-	std::ifstream file_in;
-	std::string filename = prefix + "_nodes.csv";
-    	file_in.open(filename);
-	std::string cell;
-	bool left = true;
-	std::string name;
-	double D;
-	std::map<std::string, double> Dvalues;
-	if (file_in.is_open()) {
-		while (getline( file_in, cell, left ? static_cast<char>('\t') : static_cast<char>('\n'))) {   
-        		if (left) {
-       				name = cell;
-			} else {
-				if ((cell != "NA") & (cell != "Result")) {
-					D = std::stod(cell);
-					Dvalues[ name ] = D;
+			if ((out.find("Error") != std::string::npos) || (out.find("error") != std::string::npos)) {
+				std::cerr << "ERROR MESSAGE FROM R: " << std::endl;
+				if (out.find("Error") != std::string::npos) {
+					std::cerr << out.substr(out.find("Error")) << std::endl;
 				}
+				if (out.find("error") != std::string::npos) {
+					std::cerr << out.substr(out.find("error")) << std::endl;
+				}
+				return(-1);
 			}
-			left = !left;
+			if ((out.find("Killed") != std::string::npos)) {
+				std::cerr << "ERROR MESSAGE FROM R: " << std::endl;
+				std::cerr << out.substr(out.find("Killed")) << std::endl;
+				return(-1);
+			}
 		}
-		file_in.close();
+	
+		//Save D to alpha as an attribute
+		std::ifstream file_in;
+		std::string filename = prefix + "_nodes.csv";
+    		file_in.open(filename);
+		std::string cell;
+		bool left = true;
+		std::string name;
+		double D;
+		std::map<std::string, double> Dvalues;
+		if (file_in.is_open()) {
+			while (getline( file_in, cell, left ? static_cast<char>('\t') : static_cast<char>('\n'))) {   
+        			if (left) {
+       					name = cell;
+				} else {
+					if ((cell != "NA") & (cell != "Result")) {
+						D = std::stod(cell);
+						Dvalues[ name ] = D;
+					}
+				}
+				left = !left;
+			}
+			file_in.close();
+		} else {
+			std::cerr << "Error: unable to open " << prefix << "_nodes.csv" << std::endl;
+		}
+		int count = 0;
+		for (const auto& alpha_list : alpha_table.get_table()) {
+                	Alpha& alpha = *alpha_list.second;
+                	if (Dvalues.count(alpha.get_name()) > 0) {
+                        	alpha.register_D(Dvalues[alpha.get_name()]);
+				count++;
+                	}
+        	}
+		return(0);
 	} else {
-		std::cerr << "Error: unable to open " << prefix << "_nodes.csv" << std::endl;
+		return(0);
 	}
-	int count = 0;
-	for (const auto& alpha_list : alpha_table.get_table()) {
-                Alpha& alpha = *alpha_list.second;
-                if (Dvalues.count(alpha.get_name()) > 0) {
-                        alpha.register_D(Dvalues[alpha.get_name()]);
-			count++;
-                }
-        }
-	return(0);
 }
 
 /**

@@ -11,26 +11,48 @@
 
 int Network::run( DataSet& dataset, const std::string& source_path, const std::string& call_path, const std::string& phylogeny, const std::string& gene_pa, bool Rmsgs, const std::string& prefix )
 {
-	//Call R to draw heatmap and network
-	//std::cerr << "Generate network and coincidence heatmap..." << std::endl;
-	std::cerr << "Generate coincidence heatmap..." << std::endl;
-	std::string syscall = "Rscript " + source_path + "/network.R -p " + call_path + " -t " + phylogeny + " -g " + gene_pa + " -o " + prefix; 
-	if (Rmsgs) {
-		system(syscall.c_str());
+	//Call R to draw heatmap and network iff phylogeny provided
+	if(!phylogeny.empty()) {
+		//std::cerr << "Generate network and coincidence heatmap..." << std::endl;
+		std::cerr << "Generate coincidence heatmap..." << std::endl;
+		std::string syscall = "Rscript " + source_path + "/network.R -p " + call_path + " -t " + phylogeny + " -g " + gene_pa + " -o " + prefix; 
+		if (Rmsgs) {
+			system(syscall.c_str());
+		} else {
+			std::string out = systemSTDOUT(syscall);
+			if ((out.find("Error") != std::string::npos) || (out.find("error") != std::string::npos)) {
+                		std::cerr << "ERROR MESSAGE FROM R: " << std::endl;
+				if (out.find("Error") != std::string::npos) {
+                			std::cerr << out.substr(out.find("Error")) << std::endl;
+				}
+				if (out.find("error") != std::string::npos) {
+					std::cerr << out.substr(out.find("error")) << std::endl;
+				}
+				return(-1);
+        		}
+		}
+		return(0);
+	//Call R to draw a heatmap and network without a phylogeny
 	} else {
-		std::string out = systemSTDOUT(syscall);
-		if ((out.find("Error") != std::string::npos) || (out.find("error") != std::string::npos)) {
-                	std::cerr << "ERROR MESSAGE FROM R: " << std::endl;
-			if (out.find("Error") != std::string::npos) {
-                		std::cerr << out.substr(out.find("Error")) << std::endl;
-			}
-			if (out.find("error") != std::string::npos) {
-				std::cerr << out.substr(out.find("error")) << std::endl;
-			}
-			return(-1);
-        	}
+		std::cerr << "Generate coincidence heatmap (without phylogeny input)..." << std::endl;
+		std::string syscall = "Rscript " + source_path + "/network_nophylogeny.R -p " + call_path + " -g " + gene_pa + " -o " + prefix;
+		if (Rmsgs) {
+                        system(syscall.c_str());
+                } else {
+                        std::string out = systemSTDOUT(syscall);
+                        if ((out.find("Error") != std::string::npos) || (out.find("error") != std::string::npos)) {
+                                std::cerr << "ERROR MESSAGE FROM R: " << std::endl;
+                                if (out.find("Error") != std::string::npos) {
+                                        std::cerr << out.substr(out.find("Error")) << std::endl;
+                                }
+                                if (out.find("error") != std::string::npos) {
+                                        std::cerr << out.substr(out.find("error")) << std::endl;
+                                }
+                                return(-1);
+                        }
+                }
+                return(0);
 	}
-	return(0);
 }
 
 /**

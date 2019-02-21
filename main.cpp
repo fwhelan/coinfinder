@@ -154,11 +154,11 @@ int main( int argc, const char** argv )
 	std::cerr << "Exiting..." << std::endl;
 	return(-1);
     }
-    if ( !boost::filesystem::exists(options.phylogeny) ) {
-	std::cerr << "Input phylogeny " << options.phylogeny << " does not exist." << std::endl;
-	std::cerr << "Exiting..." << std::endl;
-	return(-1);
-    }
+    //if ( !boost::filesystem::exists(options.phylogeny) ) {
+	//std::cerr << "Input phylogeny " << options.phylogeny << " does not exist." << std::endl;
+	//std::cerr << "Exiting..." << std::endl;
+	//return(-1);
+    //§}
     
     //
     // Format gene_p_a to classic coinfinder input file, if necessary
