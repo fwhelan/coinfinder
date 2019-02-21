@@ -170,7 +170,40 @@ int main( int argc, const char** argv )
 	//std::cerr << "Input phylogeny " << options.phylogeny << " does not exist." << std::endl;
 	//std::cerr << "Exiting..." << std::endl;
 	//return(-1);
-    //§}
+    //}
+
+    //
+    // If phylogeny is provided, ensure that there are no zero length branches
+    //
+    if (!options.phylogeny.empty()) {
+	std::string syscall = "Rscript " + source_path + "/check_zeroes.R -a " + call_path + " -t " + options.phylogeny;
+        if (options.Rmsgs) {
+        	system(syscall.c_str());
+        }
+        std::string out = Lineage::systemSTDOUT(syscall);
+        if (out.find("TRUE") != std::string::npos) {
+               	std::cerr << "Error: Input phylogeny contains branch lengths which equal zero." << std::endl;
+                std::cerr << "The R function caper::phylo.d, which coinfinder uses to define lineage dependence, cannot handle zero length branches." << std::endl;
+                std::cerr << "Please adjust your phylogeny before continuing." << std::endl;
+                std::cerr << "Exiting..." << std::endl;
+                return(-1);
+        }
+        if ((out.find("Error") != std::string::npos) || (out.find("error") != std::string::npos)) {
+               	std::cerr << "ERROR MESSAGE FROM R: " << std::endl;
+                if (out.find("Error") != std::string::npos) {
+                       	std::cerr << out.substr(out.find("Error")) << std::endl;
+                }
+                if (out.find("error") != std::string::npos) {
+                       	std::cerr << out.substr(out.find("error")) << std::endl;
+                }
+                return(-1);
+        }
+        if ((out.find("Killed") != std::string::npos)) {
+               	std::cerr << "ERROR MESSAGE FROM R: " << std::endl;
+                std::cerr << out.substr(out.find("Killed")) << std::endl;
+                return(-1);
+        }
+    }
     
     //
     // Format gene_p_a to classic coinfinder input file, if necessary
