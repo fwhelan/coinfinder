@@ -14,7 +14,7 @@ opt <- getopt(spec)
 
 setwd(opt$path)
 #Read in
-nodstr <- paste(opt$output, "_nodes.csv", sep="")
+nodstr <- paste(opt$output, "_nodes_in.csv", sep="")
 nodes  <- read.csv(nodstr, check.names=TRUE, header=FALSE)
 nodes[,length(nodes)] <- NULL #remove the last comma in csv file
 nodes <- as.data.frame(t(nodes))

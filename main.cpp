@@ -154,7 +154,19 @@ int main( int argc, const char** argv )
 	std::cerr << "Exiting..." << std::endl;
 	return(-1);
     }
-    //if ( !boost::filesystem::exists(options.phylogeny) ) {
+
+    //
+    // If no phylogeny is provided, output a warning to the user
+    //
+    if (options.phylogeny.empty()) {
+	std::cerr << std::endl;
+	std::cerr << "You have not provided a phylogeny. This is okay, coinfinder works just fine without a phylogeny. The steps involving the detection of lineage dependent elements will be skipped." << std::endl;
+	std::cerr << std::endl;
+	std::cerr << "**Please be aware that coinfinder will generate a mock phylogeny for the purposes of data presentation in the output heatmaps.**" << std::endl;
+	std::cerr << std::endl;
+	std::cerr << "Press any key to accept and continue or Ctrl+C to quit." << std::endl;
+	getchar();
+    }
 	//std::cerr << "Input phylogeny " << options.phylogeny << " does not exist." << std::endl;
 	//std::cerr << "Exiting..." << std::endl;
 	//return(-1);
