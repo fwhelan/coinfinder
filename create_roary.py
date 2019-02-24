@@ -38,7 +38,8 @@ for gen in gen_list:
 #Write header line to roary
 roary.write("\"Gene\",\"Non-unique Gene name\",\"Annotation\",\"No. isolates\",\"No. sequences\",\"Avg sequences per isolate\",\"Genome Fragment\",\"Order within Fragment\",\"Accessory Fragment\",\"Accessory Order with Fragment\",\"QC\",\"Min group size nuc\",\"Max group size nuc\",\"Avg group size nuc\""+header+"\n")
 #While input file isn't empty
-with open(args.input) as f:
+#with open(args.input) as f:
+with open("sorted.tmp") as f:
     line = f.readline()
     while True:
         #Make/empty genomeloc array
