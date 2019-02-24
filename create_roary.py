@@ -11,11 +11,11 @@ parser.add_argument("--input", "-i", type=str, required=True)
 args = parser.parse_args()
 
 #Ensure roary-style output file doesn't already exist
-exists = os.path.isfile('gene_presence_absence.csv')
-if (exists):
-    print("gene_presence_absence.csv already exists; I don't want to overwrite it.")
-    print("Exiting...")
-    quit()
+#exists = os.path.isfile('gene_presence_absence.csv')
+#if (exists):
+#    print("gene_presence_absence.csv already exists; I don't want to overwrite it.")
+#    print("Exiting...")
+#    quit()
 #Open roary-style output file
 roary = open('gene_presence_absence.csv', "w")
 #Sort input file by gene ID
@@ -55,7 +55,7 @@ with open("sorted.tmp") as f:
             if (genomeloc[x] == ""):
                 genomeloc[x] = gen+"_"+geneID
             else:
-                genomeloc[x] = genomeloc[x]+" "+geneID+"_"+gen
+                genomeloc[x] = genomeloc[x]+" "+gen+"_"+geneID
             line = f.readline()
         bulk = ("".join([',"{}"'.format(genomeloc[n]) for n in range(len(genomeloc))]))
         roary.write("\""+geneID+"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\""+bulk+"\n")
