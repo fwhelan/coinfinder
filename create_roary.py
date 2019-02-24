@@ -54,7 +54,7 @@ with open(args.input) as f:
             if (genomeloc[x] == ""):
                 genomeloc[x] = gen+"_"+geneID
             else:
-                geneomeloc[x] = genomeloc[x]+" "+geneID+"_"+gen
+                genomeloc[x] = genomeloc[x]+" "+geneID+"_"+gen
             line = f.readline()
         bulk = ("".join([',"{}"'.format(genomeloc[n]) for n in range(len(genomeloc))]))
         roary.write("\""+geneID+"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\""+bulk+"\n")
