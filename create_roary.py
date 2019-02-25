@@ -19,7 +19,8 @@ args = parser.parse_args()
 #Open roary-style output file
 roary = open('gene_presence_absence.csv', "w")
 #Sort input file by gene ID
-ret = subprocess.call("sort "+args.input+" > sorted.tmp", shell=True)
+command="sort -t '\t' -k1,1 "
+ret = subprocess.call("sort -t '\t' -k1,1 "+args.input+" > sorted.tmp", shell=True)
 #Collect and count unique genomes
 ret = subprocess.Popen('cut -f 2 sorted.tmp | sort | uniq', stdout=subprocess.PIPE, shell=True)
 (uniq_gens, err) = ret.communicate()
@@ -42,11 +43,15 @@ roary.write("\"Gene\",\"Non-unique Gene name\",\"Annotation\",\"No. isolates\",\
 with open("sorted.tmp") as f:
     line = f.readline()
     while True:
-        #Make/empty genomeloc array
-        genomeloc = ["" for x in range(loc_len)]
         if not line:
             break #EOF
-        geneID = line.split("\t")[0]
+        #Make/empty genomeloc array
+        genomeloc = ["" for x in range(loc_len)]
+        try:
+            geneID = line.split("\t")[0]
+        except:
+            print("Cannot create geneID from line: " + line)
+            exit()
         while (line.split("\t")[0] == geneID):
             #Get location for corresponding genome
             gen = (line.split("\t")[1]).strip()
