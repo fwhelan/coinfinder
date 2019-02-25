@@ -36,7 +36,6 @@ int Network::run( DataSet& dataset, const std::string& source_path, const std::s
 	} else {
 		std::cerr << "Generate coincidence heatmap (without phylogeny input)..." << std::endl;
 		std::string syscall = "Rscript " + source_path + "/network_nophylogeny.R -p " + call_path + " -g " + gene_pa + " -o " + prefix;
-		std::cerr << syscall << std::endl;
 		if (Rmsgs) {
                         system(syscall.c_str());
                 } else {

@@ -35,6 +35,10 @@ void Gexf::run( DataSet& dataset, const std::string& prefix )
 			alpha1_name = alpha.get_name();
 			/*Check cell for any illegal charcters first*/
             		std::replace_if( alpha1_name.begin(), alpha1_name.end(), isForbidden, '.');
+			/*Check to see if alpha1 begins with a numerical; add an X infront if true*/
+			if(isdigit(alpha1_name.at(0))) {
+				alpha1_name = "X"+alpha1_name;
+			}	
 			alpha1_D = alpha.get_D();
 			//alpha1_col = 255*alpha1_D; //Most meaningful values of D are between 0 and 1
 			//if (alpha1_col > 255) { alpha1_col = 255; }
