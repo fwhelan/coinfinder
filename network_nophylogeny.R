@@ -22,10 +22,10 @@ colnames(nodes) <- c("alphas")
 #Add in dummy D value column
 nodes$D <- rep(0,nrow(nodes))
 edgstr <- paste(opt$output, "_edges.csv", sep="")
-edges <- read.csv(edgstr, header=TRUE)
+edges <- read.csv(edgstr, check.names=TRUE, header=FALSE, skip=1)
 colnames(edges) <- c("alpha1", "alpha2", "p")
-edges$alpha1 <- make.names(edges$alpha1)
-edges$alpha2 <- make.names(edges$alpha2)
+#edges$alpha1 <- make.names(edges$alpha1)
+#edges$alpha2 <- make.names(edges$alpha2)
 edges$p <- as.numeric(as.character(edges$p))
 #genepa <- read.csv(opt$gene_pa, header=T, row.names=1)
 #tree <- read.newick(opt$phylogeny)
@@ -33,6 +33,9 @@ edges$p <- as.numeric(as.character(edges$p))
 nodes <- nodes[complete.cases(nodes),]
 edges <- edges[complete.cases(edges),]
 edges <- subset(edges, (edges$alpha1 %in% nodes$alphas == TRUE) & (edges$alpha2 %in% nodes$alphas == TRUE))
+
+edges$alpha1 <- make.names(edges$alpha1)
+edges$alpha2 <- make.names(edges$alpha2)
 
 #Define CCs and order by D-value
 g <- graph_from_data_frame(d = edges, directed = FALSE)
