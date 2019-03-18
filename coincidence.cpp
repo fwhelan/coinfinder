@@ -59,8 +59,8 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
     std::cerr << "Running analyses..." << std::endl;
     //Open output file to write to
     std::ofstream analysis;
-    //std::string analyname = prefix + "_pairs.csv";
-    std::string analyname = prefix + "_uncorrected_pairs.csv";
+    std::string analyname = prefix + "_pairs.csv";
+    //std::string analyname = prefix + "_uncorrected_pairs.csv";
     analysis.open(analyname);
     //Write header
     Coincidence::_write_header(dataset, analysis);
@@ -290,7 +290,7 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
 
     		//Result is significant: calculate secondaries for coincidence or avoidance, depending on what the user called for
     		retval = p_value;
-		//returnflag = 0;
+		returnflag = 0;
     		switch (options.coin_max_mode)
     		{
         		case EMaxMode::ACCOMPANY:
@@ -366,10 +366,10 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
     //
     // *** End parallelize ***
     //
-    std::cerr << "P-VALUE COUNTER = " << p_value_counter << std::endl;
-    std::cerr << "COR SIG = " << dataset.get_num_edges() << std::endl;
-    std::cerr << "size_alpha_table = " << size_alpha_table << std::endl;
-    std::cerr << "total loops = " << total_loops << std::endl;
+    //std::cerr << "P-VALUE COUNTER = " << p_value_counter << std::endl;
+    //std::cerr << "COR SIG = " << dataset.get_num_edges() << std::endl;
+    //std::cerr << "size_alpha_table = " << size_alpha_table << std::endl;
+    //std::cerr << "total loops = " << total_loops << std::endl;
     analysis.close();
 
     // 
