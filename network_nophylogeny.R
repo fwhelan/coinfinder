@@ -63,8 +63,9 @@ colour.array <- c("#7c0051","#76c3ff","#001106","#01ca10","#e56800","#0005a7","#
 node.colour <- NULL
 for(i in c(1:length(CC.size))){
   if(i > length(colour.array)) {
-    print("Error: Add more colours to colour.array")
-    quit()
+    colour.array <- c(colour.array,colour.array)
+    #print("Error: Add more colours to colour.array")
+    #quit()
   }
   node.colour <- c(node.colour,rep(colour.array[i],CC.size[i]))
 }
@@ -181,7 +182,7 @@ while (countie < length(colnames(annot))) {
 	#p.out   <- plot_grid(p.heat,p.first,ncol=1, axis="l", rel_heights=c(1,1/4)) #scale=c(1,0.9)
 	outstr <- paste(opt$output, "_heatmap", a, ".pdf", sep="")
 	a <- a + 1
-	pdf(outstr,height=58,width=55)
+	pdf(outstr,height=158,width=55)
 	#print(p.out)
 	print(p.heat)
 	dev.off()

@@ -57,6 +57,7 @@ class Alpha
 	int get_num_edges() const;
 	int get_num_coincident_edges() const;
 	double get_D() const;
+	Alpha* get_alpha( std::string );
         const std::map<const Beta*, int>& get_edges() const;
 	const std::map<const Alpha*, double>& get_coincident_edges() const;
 };

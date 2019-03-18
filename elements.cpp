@@ -93,6 +93,10 @@ double Alpha::get_D() const {
 	return this->D;
 }
 
+Alpha* Alpha::get_alpha( std::string name ) {
+	
+}
+
 
 /**
  * Returns the map representing the edges (see `_edges`). 
