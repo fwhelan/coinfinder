@@ -38,7 +38,8 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
     const id_lookup<Alpha>& alpha_table = dataset.get_alphas();
     const id_lookup<Edge>& edge_table = dataset.get_edges();
 
-    //const double cor_sig = Significance::correct( dataset.get_options().sig_level, dataset.get_options().correction, dataset.get_num_edges());
+    int size_alpha_table = alpha_table.get_table().size();
+    const double cor_sig = Significance::correct( dataset.get_options().sig_level, dataset.get_options().correction, (((size_alpha_table)*(size_alpha_table+1))/2));
 
     //
     // Create matrix
@@ -70,7 +71,7 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
     //
     // *** Parallelize ***
     //
-    int size_alpha_table = alpha_table.get_table().size();
+    //int size_alpha_table = alpha_table.get_table().size();
     int total_loops = 0;
     #pragma omp parallel for collapse(2) num_threads(num_cores)
     for(int yain_count=0; yain_count<size_alpha_table; ++yain_count)
@@ -124,6 +125,11 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
 		}
 	    }
 
+	    //Controversial new code addition: only test those pairs which have at least 1 overlap
+	    if (overlaps <= 0) {
+		continue;
+	    }
+
 	    // Count total range
             int total_range = num_edges_yain + num_edges_tain - overlaps;
     	    int       num_observations;
@@ -157,6 +163,11 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
     		double chance_i = static_cast<double>(num_edges_yain) / static_cast<double>(num_observations);
     		double chance_j = static_cast<double>(num_edges_tain) / static_cast<double>(num_observations);
 
+		double not_chance_i = static_cast<double>(num_edges_yain - overlaps) / static_cast<double>(num_observations);
+		double not_chance_j = static_cast<double>(num_edges_tain - overlaps) / static_cast<double>(num_observations);
+
+		double apart = static_cast<double>( (num_edges_yain - overlaps) + (num_edges_tain - overlaps) ) / static_cast<double>(num_observations);
+
     		double not_cross_1_chance = static_cast<double>( num_observations - num_edges_yain ) / static_cast<double>(num_observations);
     		double not_cross_2_chance = static_cast<double>( num_observations - num_edges_tain ) / static_cast<double>(num_observations);
 
@@ -174,7 +185,25 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
         		case EMaxMode::ACCOMPANY:
         		{
             			successes = overlaps;
-            			rate      = chance_i * chance_j;
+				/*The chance of seeing i and j together minus the chance of seeing i without j and j without i*/
+				rate = (chance_i * chance_j); // + apart;
+				/*Division code*/
+				//If the alphas are ever seen apart, take that into account
+				//if (total_range - overlaps > 0) {
+					//rate      = chance_i * chance_j;
+					//double denominator = static_cast<double>(total_range - overlaps) / static_cast<double>(num_observations);
+					//rate = (chance_i * chance_j) / denominator;
+				//	rate = ( chance_i * not_chance_i ) + ( chance_j * not_chance_j );
+					//std::cerr << "rate: " << rate << std::endl;
+				//} else {
+				//	rate = chance_i * chance_j;
+				//}
+				/*Subtraction code*/
+				//double denominator = static_cast<double>(total_range - overlaps) / static_cast<double>(num_observations);
+				//rate = (chance_i * chance_j) - (denominator);
+				//if (rate < 0) {
+				//	rate = 0;
+				//}
             			break;
         		}
         		default:
@@ -184,10 +213,11 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
     		}
 
     		// This causes problems, get rid of it
-    		if (rate == 0 || rate == 1.0)
+		if (rate == 0 || rate == 1.0)
     		{
         		if (options.verbose)
         		{
+				#pragma omp critical
             			std::cerr << "Rejected (" << alpha_yain.get_name() << ", " << alpha_tain.get_name() << ") because the rate is " << rate << "." << std::endl;
         		}
         		continue;
@@ -195,6 +225,11 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
 
     		// Binomial test p-value
     		double p_value = Binomial::test( options.alt_hypothesis, successes, num_observations, rate );
+		// Check if p_value is nan
+		if (p_value != p_value) {
+			std::cerr << "p-value is nan" << std::endl;
+			continue;
+		}
 		#pragma omp critical
 		p_value_counter = p_value_counter + 1;
 
@@ -230,8 +265,8 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
 			}
     		}
 
-		//if (p_value > cor_sig)
-		if (p_value > dataset.get_options().sig_level)
+		if (p_value > cor_sig)
+		//if (p_value > dataset.get_options().sig_level)
     		{
         		if (options.verbose)
         		{
@@ -325,7 +360,7 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
         		}
    		}
 
-                dataset._generate_coincident_edge(alpha_yain, alpha_tain, retval);;
+                dataset._generate_coincident_edge(alpha_yain, alpha_tain, retval);
 	}
     }
     //
@@ -340,7 +375,7 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
     // 
     // *** Do multiple test correction ***
     //
-    double cor_sig = Significance::correct( dataset.get_options().sig_level, dataset.get_options().correction, p_value_counter);
+    /*double cor_sig = Significance::correct( dataset.get_options().sig_level, dataset.get_options().correction, p_value_counter);
     std::string inputname = prefix + "_uncorrected_pairs.csv";
     std::string outptname = prefix + "_pairs.csv";
     std::ifstream inputfil;
@@ -360,10 +395,15 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
 		outptfil << line << std::endl;
 		//retval = p_value;
                 returnflag = 0;
+		std::string alpha1 = results[0];
+		//need to be able to lookup alphai by name alpha1.. not sure to pull all alphas and cycle through or if i can write a get_alpha ( alpha1 ) method... kind of started both and messed up the code a bit....
+		std::string alpha2 = results[1];
+		//dataset._generate_coincident_edge(alpha.get_name(alpha1), alpha_tain, pval);
 	}
     }
     inputfil.close();
     outptfil.close();
+   */
 
     return(returnflag);
 }

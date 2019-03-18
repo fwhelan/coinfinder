@@ -69,6 +69,10 @@ void Gexf::run( DataSet& dataset, const std::string& prefix )
 			for(const auto& edge_list : edges) {
 				alpha2_name = (edge_list.first)->get_name();
 				std::replace_if( alpha2_name.begin(), alpha2_name.end(), isForbidden, '.');
+				/*Check to see if alpha1 begins with a numerical; add an X infront if true*/
+                        	if(isdigit(alpha2_name.at(0))) {
+                                	alpha2_name = "X"+alpha2_name;
+                        	}
 				p_value = edge_list.second;
 				edge_weight = ((1-p_value)*2);
 				//check to see if edge has already been added in the opposite orientation; add edges in alphabetical order
