@@ -184,10 +184,10 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
         		}
         		case EMaxMode::ACCOMPANY:
         		{
-            			successes = overlaps;
+            			successes = overlaps; //MARIA: successes = observed
 				/*The chance of seeing i and j together minus the chance of seeing i without j and j without i*/
-				rate = (chance_i * chance_j); // + apart;
-				/*Division code*/
+				rate = (chance_i * chance_j); // + apart; //MARIA: expected = rate * N (i.e. num_observations)
+				/*Division code*/ 
 				//If the alphas are ever seen apart, take that into account
 				//if (total_range - overlaps > 0) {
 					//rate      = chance_i * chance_j;
