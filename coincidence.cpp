@@ -265,21 +265,23 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
         			std::cerr << "* p_value GREATER     " << Binomial::one_sided_greater( successes, num_observations, rate ) << "." << std::endl;
         			std::cerr << "* p_value TWOTAILED   " << Binomial::two_sided( static_cast<uint32_t>(successes), static_cast<uint32_t>(num_observations), rate ) << "." << std::endl;
         			std::cerr << "*******************************" << std::endl;
-				//Write output to all_pairs file
-				analysis_all << "\t" << alpha_tain.get_name()
-                                        << "\t" << p_value
-                                        << "\t0"
-                                        << "\t" << successes
-                                        << "\t" << num_observations
-                                        << "\t" << rate
-                                        << "\t" << static_cast<int>(rate * num_observations + 0.5)
-                                        << "\t" << num_edges_yain
-                                        << "\t" << num_edges_tain
-                                        << "\t" << chance_i
-                                        << "\t" << chance_j
-                                        << std::endl;
 			}
-    		}
+		}
+
+		//Write output to all_pairs file
+		#pragma omp critical
+		analysis_all << "\t" << alpha_tain.get_name()
+                             << "\t" << p_value
+                             << "\t0"
+                             << "\t" << successes
+                             << "\t" << num_observations
+                             << "\t" << rate
+                             << "\t" << static_cast<int>(rate * num_observations + 0.5)
+                             << "\t" << num_edges_yain
+                             << "\t" << num_edges_tain
+                             << "\t" << chance_i
+                             << "\t" << chance_j
+                             << std::endl;
 
 		if (p_value > cor_sig)
 		//if (p_value > dataset.get_options().sig_level)
