@@ -59,11 +59,14 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
     std::cerr << "Running analyses..." << std::endl;
     //Open output file to write to
     std::ofstream analysis;
+    std::ofstream analysis_all;
     std::string analyname = prefix + "_pairs.csv";
-    //std::string analyname = prefix + "_uncorrected_pairs.csv";
+    std::string analyname_all = prefix + "_all_pairs.csv";
     analysis.open(analyname);
+    analysis_all.open(analyname_all);
     //Write header
     Coincidence::_write_header(dataset, analysis);
+    Coincidence::_write_header(dataset, analysis_all);
 
     //Set retval; adjust to 0 if/when a coincident pair is identified.
     int returnflag = -1;
@@ -262,6 +265,19 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
         			std::cerr << "* p_value GREATER     " << Binomial::one_sided_greater( successes, num_observations, rate ) << "." << std::endl;
         			std::cerr << "* p_value TWOTAILED   " << Binomial::two_sided( static_cast<uint32_t>(successes), static_cast<uint32_t>(num_observations), rate ) << "." << std::endl;
         			std::cerr << "*******************************" << std::endl;
+				//Write output to all_pairs file
+				analysis_all << "\t" << alpha_tain.get_name()
+                                        << "\t" << p_value
+                                        << "\t0"
+                                        << "\t" << successes
+                                        << "\t" << num_observations
+                                        << "\t" << rate
+                                        << "\t" << static_cast<int>(rate * num_observations + 0.5)
+                                        << "\t" << num_edges_yain
+                                        << "\t" << num_edges_tain
+                                        << "\t" << chance_i
+                                        << "\t" << chance_j
+                                        << std::endl;
 			}
     		}
 
@@ -371,6 +387,7 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
     //std::cerr << "size_alpha_table = " << size_alpha_table << std::endl;
     //std::cerr << "total loops = " << total_loops << std::endl;
     analysis.close();
+    analysis_all.close();
 
     // 
     // *** Do multiple test correction ***
