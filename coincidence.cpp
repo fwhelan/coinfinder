@@ -270,7 +270,8 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
 
 		//Write output to all_pairs file
 		#pragma omp critical
-		analysis_all << "\t" << alpha_tain.get_name()
+		analysis_all << alpha_yain.get_name()
+			     << "\t" << alpha_tain.get_name()
                              << "\t" << p_value
                              << "\t0"
                              << "\t" << successes
