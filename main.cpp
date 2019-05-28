@@ -239,7 +239,7 @@ int main( int argc, const char** argv )
     DataSet dataset = DataSet( options );
     //dataset.read_files( options.alpha_file_name, options.beta_file_name, options.combined_file_name, options.phylogeny, options.filt_thres, options.upper_filt_thres );
     if (options.roary) {
-    	dataset.read_files( options.alpha_file_name, options.beta_file_name, "concident-input-edges.csv", options.phylogeny, options.filt_thres, options.upper_filt_thres );
+    	dataset.read_files( options.alpha_file_name, options.beta_file_name, "coincident-input-edges.csv", options.phylogeny, options.filt_thres, options.upper_filt_thres );
     } else {
 	dataset.read_files( options.alpha_file_name, options.beta_file_name, options.combined_file_name, options.phylogeny, options.filt_thres, options.upper_filt_thres );
     }
