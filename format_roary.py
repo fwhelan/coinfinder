@@ -9,7 +9,7 @@ parser.add_argument("--input", "-i", type=str, required=True)
 args = parser.parse_args()
 
 #Open edge output files
-edge = open('concident-input-edges.csv', "w")
+edge = open('coincident-input-edges.csv', "w")
 #Coinfinder won't like to see a header in the edges file
 #Open roary output/coinfinder input file for reading
 with open(args.input) as genefile:
