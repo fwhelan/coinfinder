@@ -85,8 +85,8 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
 	    auto kvp_tain = alpha_table.get_table().begin();
 	    std::advance(kvp_yain, yain_count);
 	    std::advance(kvp_tain, tain_count);
-	    #pragma omp critical
-	    total_loops = total_loops + 1;
+	    //#pragma omp critical
+	    //total_loops = total_loops + 1;
 
 	    Alpha& alpha_yain = *kvp_yain->second;
 	    const std::map<const Beta*, int>& edges_yain = alpha_yain.get_edges();
@@ -131,7 +131,11 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
 	    //Controversial new code addition: only test those pairs which have at least 1 overlap
 	    if (overlaps <= 0) {
 		continue;
-	    }
+	    } 
+
+	    // Count number of total tests: number of distinct alpha pairs with overlapping betas
+	    #pragma omp critical
+	    total_loops = total_loops + 1;
 
 	    // Count total range
             int total_range = num_edges_yain + num_edges_tain - overlaps;
@@ -385,10 +389,10 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
     //
     // *** End parallelize ***
     //
-    //std::cerr << "P-VALUE COUNTER = " << p_value_counter << std::endl;
-    //std::cerr << "COR SIG = " << dataset.get_num_edges() << std::endl;
-    //std::cerr << "size_alpha_table = " << size_alpha_table << std::endl;
-    //std::cerr << "total loops = " << total_loops << std::endl;
+    std::cerr << "P-VALUE COUNTER = " << p_value_counter << std::endl;
+    std::cerr << "COR SIG = " << dataset.get_num_edges() << std::endl;
+    std::cerr << "size_alpha_table = " << size_alpha_table << std::endl;
+    std::cerr << "total loops = " << total_loops << std::endl;
     analysis.close();
     analysis_all.close();
 
