@@ -39,6 +39,7 @@ class DataSet
         const id_lookup<Gamma>& get_gammas() const;
 	const id_lookup<Edge>& get_edges() const;
 	const int get_num_betas() const;
+	const int get_num_alphas() const;
 
 	void read_files( const std::string& alpha_file_name, const std::string& beta_file_name, const std::string& combined_file_name, const std::string& phylogeny_file_name, const double filt_thres, const double upper_filt_thres );
         

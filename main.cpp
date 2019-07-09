@@ -245,6 +245,15 @@ int main( int argc, const char** argv )
     }
 
     //
+    // Check to be sure neither alphas or betas are empty before beginning work.
+    //
+    if (dataset.get_num_alphas() <= 0 || dataset.get_num_betas() <=0) {
+	std::cerr << "Not enough alphas or betas after file load in and dataset trimming to proceed." << std::endl;
+	std::cerr << "Exiting..." << std::endl;
+	return(-1);
+    }
+
+    //
     // Do what it is that needs to be done
     //
     switch (options.method)

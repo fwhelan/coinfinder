@@ -212,7 +212,7 @@ void DataSet::_read_combined_file( const std::string& file_name )
     }
     
     int n = 0;
-    //Check to see if user has added synthetic data; if not, input weights of zero
+    //Check to see if user has added syntentic data; if not, input weights of zero
     bool synDists = false;
     std::string line;
     int pos = file_in.tellg();
@@ -222,7 +222,7 @@ void DataSet::_read_combined_file( const std::string& file_name )
 	synDists = true;
     }
     file_in.seekg(pos, std::ios_base::beg);
-    //Read in with or without synthetic distances
+    //Read in with or without syntentic distances
     if (synDists) {
     	while (getline( file_in, cell, left ? static_cast<char>('\t') : ( middle ? static_cast<char>('\t') : static_cast<char>('\n'))))
     	{
@@ -360,6 +360,11 @@ const id_lookup<Edge>& DataSet::get_edges() const
 const int DataSet::get_num_betas() const
 {
 	return (this->get_betas()).size();
+}
+
+const int DataSet::get_num_alphas() const
+{
+	return (this->get_alphas()).size();
 }
 
 
