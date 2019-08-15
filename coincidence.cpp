@@ -60,13 +60,13 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
     //Open output file to write to
     std::ofstream analysis;
     std::ofstream analysis_all;
-    std::string analyname = prefix + "_pairs.csv";
-    std::string analyname_all = prefix + "_all_pairs.csv";
+    std::string analyname = prefix + "_pairs.tsv";
+    //std::string analyname_all = prefix + "_all_pairs.tsv";
     analysis.open(analyname);
-    analysis_all.open(analyname_all);
+    //analysis_all.open(analyname_all);
     //Write header
     Coincidence::_write_header(dataset, analysis);
-    Coincidence::_write_header(dataset, analysis_all);
+    //Coincidence::_write_header(dataset, analysis_all);
 
     //Set retval; adjust to 0 if/when a coincident pair is identified.
     int returnflag = -1;
@@ -273,20 +273,20 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
 		}
 
 		//Write output to all_pairs file
-		#pragma omp critical
-		analysis_all << alpha_yain.get_name()
-			     << "\t" << alpha_tain.get_name()
-                             << "\t" << p_value
-                             << "\t0"
-                             << "\t" << successes
-                             << "\t" << num_observations
-                             << "\t" << rate
-                             << "\t" << static_cast<int>(rate * num_observations + 0.5)
-                             << "\t" << num_edges_yain
-                             << "\t" << num_edges_tain
-                             << "\t" << chance_i
-                             << "\t" << chance_j
-                             << std::endl;
+		//#pragma omp critical
+		//analysis_all << alpha_yain.get_name()
+		//	     << "\t" << alpha_tain.get_name()
+                //             << "\t" << p_value
+                //             << "\t0"
+                //             << "\t" << successes
+                //             << "\t" << num_observations
+                //             << "\t" << rate
+                //             << "\t" << static_cast<int>(rate * num_observations + 0.5)
+                //             << "\t" << num_edges_yain
+                //             << "\t" << num_edges_tain
+                //             << "\t" << chance_i
+                //             << "\t" << chance_j
+                //             << std::endl;
 
 		if (p_value > cor_sig)
 		//if (p_value > dataset.get_options().sig_level)
@@ -389,19 +389,19 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
     //
     // *** End parallelize ***
     //
-    std::cerr << "P-VALUE COUNTER = " << p_value_counter << std::endl;
-    std::cerr << "COR SIG = " << dataset.get_num_edges() << std::endl;
-    std::cerr << "size_alpha_table = " << size_alpha_table << std::endl;
-    std::cerr << "total loops = " << total_loops << std::endl;
+    //std::cerr << "P-VALUE COUNTER = " << p_value_counter << std::endl;
+    //std::cerr << "COR SIG = " << dataset.get_num_edges() << std::endl;
+    //std::cerr << "size_alpha_table = " << size_alpha_table << std::endl;
+    //std::cerr << "total loops = " << total_loops << std::endl;
     analysis.close();
-    analysis_all.close();
+    //analysis_all.close();
 
     // 
     // *** Do multiple test correction ***
     //
     /*double cor_sig = Significance::correct( dataset.get_options().sig_level, dataset.get_options().correction, p_value_counter);
-    std::string inputname = prefix + "_uncorrected_pairs.csv";
-    std::string outptname = prefix + "_pairs.csv";
+    std::string inputname = prefix + "_uncorrected_pairs.tsv";
+    std::string outptname = prefix + "_pairs.tsv";
     std::ifstream inputfil;
     inputfil.open(inputname);
     std::ofstream outptfil;;
