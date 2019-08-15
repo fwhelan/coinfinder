@@ -45,7 +45,7 @@ void Gexf::run( DataSet& dataset, const std::string& prefix )
 			//if (alpha1_col < 0)   { alpha1_col = 0; }
 			alpha1_size = 20+(alpha1_D*2);
 			//Colour node by component number
-			std::string compname = prefix + "_components.csv";
+			std::string compname = prefix + "_components.tsv";
         		std::string syscall = "grep -E \"," + alpha1_name + ",|," + alpha1_name + "$|\\s" + alpha1_name + ",|\\s" + alpha1_name + "$\" " + compname + " | cut -f 1";
                 	std::string ret = systemSTDOUT(syscall);
 			if(ret != "") {

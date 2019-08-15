@@ -21,8 +21,8 @@ nodes <- as.data.frame(t(nodes))
 colnames(nodes) <- c("alphas")
 #Add in dummy D value column
 nodes$D <- rep(0,nrow(nodes))
-edgstr <- paste(opt$output, "_edges.csv", sep="")
-edges <- read.csv(edgstr, check.names=TRUE, header=FALSE, skip=1)
+edgstr <- paste(opt$output, "_edges.tsv", sep="")
+edges <- read.table(edgstr, sep="\t", check.names=TRUE, header=FALSE, skip=1)
 colnames(edges) <- c("alpha1", "alpha2", "p")
 #edges$alpha1 <- make.names(edges$alpha1)
 #edges$alpha2 <- make.names(edges$alpha2)
@@ -83,7 +83,7 @@ for(i in c(1:nrow(CCs))) {
     CC_out[CCs$CC[i],1] <- paste(CC_out[CCs$CC[i],1], ",", CCs$alphas[i], sep="")
   }
 }
-outstr <- paste(opt$output, "_components.csv", sep="")
+outstr <- paste(opt$output, "_components.tsv", sep="")
 write.table(CC_out, file=outstr, sep="\t", quote=FALSE, row.names=TRUE, col.names=FALSE)
 
 #Create annot

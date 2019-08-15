@@ -16,11 +16,11 @@ int Lineage::run( DataSet&  dataset, const std::string& source_path, const std::
 	std::ofstream nodefile;
 	std::string nodename = prefix + "_nodes_in.csv";
 	std::ofstream edgefile;
-	std::string edgename = prefix + "_edges.csv";
+	std::string edgename = prefix + "_edges.tsv";
         nodefile.open(nodename);
 	edgefile.open(edgename);
 	//Write header to edge table for input into gephi
-	edgefile << "Source,Target,weight" << std::endl;
+	edgefile << "Source\tTarget\tweight" << std::endl;
 	const id_lookup<Alpha>& alpha_table = dataset.get_alphas();
 	for (const auto& alpha_list : alpha_table.get_table()) {
         	Alpha& alpha = *alpha_list.second;
@@ -30,7 +30,7 @@ int Lineage::run( DataSet&  dataset, const std::string& source_path, const std::
 			for (const auto& edge_list : coincident_edges) {
 				//Check to see if edge has already been added in the opposite orientation; add edges in alphabetical order
                                 if(alpha.get_name().compare((edge_list.first)->get_name()) <= 0) {
-					edgefile << alpha.get_name() << "," << (edge_list.first)->get_name() << "," << edge_list.second << std::endl;
+					edgefile << alpha.get_name() << "\t" << (edge_list.first)->get_name() << "\t" << edge_list.second << std::endl;
 				}
 			}
 		}
@@ -73,7 +73,7 @@ int Lineage::run( DataSet&  dataset, const std::string& source_path, const std::
 	
 		//Save D to alpha as an attribute
 		std::ifstream file_in;
-		std::string filename = prefix + "_nodes.csv";
+		std::string filename = prefix + "_nodes.tsv";
     		file_in.open(filename);
 		std::string cell;
 		bool left = true;
@@ -94,7 +94,7 @@ int Lineage::run( DataSet&  dataset, const std::string& source_path, const std::
 			}
 			file_in.close();
 		} else {
-			std::cerr << "Error: unable to open " << prefix << "_nodes.csv" << std::endl;
+			std::cerr << "Error: unable to open " << prefix << "_nodes.tsv" << std::endl;
 		}
 		int count = 0;
 		for (const auto& alpha_list : alpha_table.get_table()) {

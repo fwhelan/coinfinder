@@ -107,7 +107,7 @@ if (availcores < opt$cores) {
 }
 print("Cores is set to:")
 print(cores)
-outstr <- paste(opt$output, "_nodes.csv", sep="")
+outstr <- paste(opt$output, "_nodes.tsv", sep="")
 write(paste("ID","Result",sep="\t"),file=outstr,append=FALSE)
 parallelCluster <- parallel::makeCluster(cores, type="FORK")
 mkWorker <- function(dataset) {
