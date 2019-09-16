@@ -1,6 +1,11 @@
 # README #
 
-Coinfinder is a tool for the identification of coincident relationships between two input datasets.  
+Coinfinder is a tool for the identification of coincident relationships between two input datasets.
+
+<div align="center">
+<p align="center">
+    <img src="coinfinder.png?raw=true?" alt="coinfinder-logo" width="200">
+</p>
 
 ### Quick installation instructions: ###
 
