@@ -6,6 +6,7 @@ Coinfinder is a tool for the identification of coincident relationships between 
 <p align="center">
     <img src="coinfinder.png?raw=true?" alt="coinfinder-logo" width="200">
 </p>
+</div>
 
 ### Quick installation instructions: ###
 
