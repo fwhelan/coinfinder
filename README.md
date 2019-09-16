@@ -1,11 +1,12 @@
 # README #
 
-Coinfinder is a tool for the identification of coincident relationships between two input datasets.
-
 <div align="center">
 <p align="center">
     <img src="coinfinder.png?raw=true?" alt="coinfinder-logo" width="200">
 </p>
+Coinfinder
+A tool for the identification of coincident (co-occurring and avoiding) genes in pangenomes.
+Written in collaboration with <a href="https://github.com/mjr129">Martin Rusilowicz</a>.
 </div>
 
 ### Quick installation instructions: ###
