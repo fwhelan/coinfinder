@@ -19,6 +19,8 @@
 
 #include <iterator>
 
+#include <boost/algorithm/string.hpp>
+
 /**
  * Runs coincidence analysis
  */
@@ -36,7 +38,8 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
     const id_lookup<Alpha>& alpha_table = dataset.get_alphas();
     const id_lookup<Edge>& edge_table = dataset.get_edges();
 
-    const double cor_sig = Significance::correct( dataset.get_options().sig_level, dataset.get_options().correction, dataset.get_num_edges());
+    int size_alpha_table = alpha_table.get_table().size();
+    const double cor_sig = Significance::correct( dataset.get_options().sig_level, dataset.get_options().correction, (((size_alpha_table)*(size_alpha_table+1))/2));
 
     //
     // Create matrix
@@ -56,10 +59,14 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
     std::cerr << "Running analyses..." << std::endl;
     //Open output file to write to
     std::ofstream analysis;
-    std::string analyname = prefix + "_pairs.csv";
+    std::ofstream analysis_all;
+    std::string analyname = prefix + "_pairs.tsv";
+    //std::string analyname_all = prefix + "_all_pairs.tsv";
     analysis.open(analyname);
+    //analysis_all.open(analyname_all);
     //Write header
     Coincidence::_write_header(dataset, analysis);
+    //Coincidence::_write_header(dataset, analysis_all);
 
     //Set retval; adjust to 0 if/when a coincident pair is identified.
     int returnflag = -1;
@@ -67,7 +74,8 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
     //
     // *** Parallelize ***
     //
-    int size_alpha_table = alpha_table.get_table().size();
+    //int size_alpha_table = alpha_table.get_table().size();
+    int total_loops = 0;
     #pragma omp parallel for collapse(2) num_threads(num_cores)
     for(int yain_count=0; yain_count<size_alpha_table; ++yain_count)
     {
@@ -77,6 +85,8 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
 	    auto kvp_tain = alpha_table.get_table().begin();
 	    std::advance(kvp_yain, yain_count);
 	    std::advance(kvp_tain, tain_count);
+	    //#pragma omp critical
+	    //total_loops = total_loops + 1;
 
 	    Alpha& alpha_yain = *kvp_yain->second;
 	    const std::map<const Beta*, int>& edges_yain = alpha_yain.get_edges();
@@ -118,6 +128,15 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
 		}
 	    }
 
+	    //Controversial new code addition: only test those pairs which have at least 1 overlap
+	    if (overlaps <= 0) {
+		continue;
+	    } 
+
+	    // Count number of total tests: number of distinct alpha pairs with overlapping betas
+	    #pragma omp critical
+	    total_loops = total_loops + 1;
+
 	    // Count total range
             int total_range = num_edges_yain + num_edges_tain - overlaps;
     	    int       num_observations;
@@ -151,6 +170,11 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
     		double chance_i = static_cast<double>(num_edges_yain) / static_cast<double>(num_observations);
     		double chance_j = static_cast<double>(num_edges_tain) / static_cast<double>(num_observations);
 
+		double not_chance_i = static_cast<double>(num_edges_yain - overlaps) / static_cast<double>(num_observations);
+		double not_chance_j = static_cast<double>(num_edges_tain - overlaps) / static_cast<double>(num_observations);
+
+		double apart = static_cast<double>( (num_edges_yain - overlaps) + (num_edges_tain - overlaps) ) / static_cast<double>(num_observations);
+
     		double not_cross_1_chance = static_cast<double>( num_observations - num_edges_yain ) / static_cast<double>(num_observations);
     		double not_cross_2_chance = static_cast<double>( num_observations - num_edges_tain ) / static_cast<double>(num_observations);
 
@@ -167,8 +191,26 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
         		}
         		case EMaxMode::ACCOMPANY:
         		{
-            			successes = overlaps;
-            			rate      = chance_i * chance_j;
+            			successes = overlaps; //MARIA: successes = observed
+				/*The chance of seeing i and j together minus the chance of seeing i without j and j without i*/
+				rate = (chance_i * chance_j); // + apart; //MARIA: expected = rate * N (i.e. num_observations)
+				/*Division code*/ 
+				//If the alphas are ever seen apart, take that into account
+				//if (total_range - overlaps > 0) {
+					//rate      = chance_i * chance_j;
+					//double denominator = static_cast<double>(total_range - overlaps) / static_cast<double>(num_observations);
+					//rate = (chance_i * chance_j) / denominator;
+				//	rate = ( chance_i * not_chance_i ) + ( chance_j * not_chance_j );
+					//std::cerr << "rate: " << rate << std::endl;
+				//} else {
+				//	rate = chance_i * chance_j;
+				//}
+				/*Subtraction code*/
+				//double denominator = static_cast<double>(total_range - overlaps) / static_cast<double>(num_observations);
+				//rate = (chance_i * chance_j) - (denominator);
+				//if (rate < 0) {
+				//	rate = 0;
+				//}
             			break;
         		}
         		default:
@@ -178,10 +220,11 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
     		}
 
     		// This causes problems, get rid of it
-    		if (rate == 0 || rate == 1.0)
+		if (rate == 0 || rate == 1.0)
     		{
         		if (options.verbose)
         		{
+				#pragma omp critical
             			std::cerr << "Rejected (" << alpha_yain.get_name() << ", " << alpha_tain.get_name() << ") because the rate is " << rate << "." << std::endl;
         		}
         		continue;
@@ -189,6 +232,12 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
 
     		// Binomial test p-value
     		double p_value = Binomial::test( options.alt_hypothesis, successes, num_observations, rate );
+		// Check if p_value is nan
+		if (p_value != p_value) {
+			std::cerr << "p-value is nan" << std::endl;
+			continue;
+		}
+		#pragma omp critical
 		p_value_counter = p_value_counter + 1;
 
     		if (options.verbose)
@@ -221,9 +270,26 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
         			std::cerr << "* p_value TWOTAILED   " << Binomial::two_sided( static_cast<uint32_t>(successes), static_cast<uint32_t>(num_observations), rate ) << "." << std::endl;
         			std::cerr << "*******************************" << std::endl;
 			}
-    		}
+		}
 
-    		if (p_value > cor_sig)
+		//Write output to all_pairs file
+		//#pragma omp critical
+		//analysis_all << alpha_yain.get_name()
+		//	     << "\t" << alpha_tain.get_name()
+                //             << "\t" << p_value
+                //             << "\t0"
+                //             << "\t" << successes
+                //             << "\t" << num_observations
+                //             << "\t" << rate
+                //             << "\t" << static_cast<int>(rate * num_observations + 0.5)
+                //             << "\t" << num_edges_yain
+                //             << "\t" << num_edges_tain
+                //             << "\t" << chance_i
+                //             << "\t" << chance_j
+                //             << std::endl;
+
+		if (p_value > cor_sig)
+		//if (p_value > dataset.get_options().sig_level)
     		{
         		if (options.verbose)
         		{
@@ -317,15 +383,52 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
         		}
    		}
 
-                dataset._generate_coincident_edge(alpha_yain, alpha_tain, retval);;
+                dataset._generate_coincident_edge(alpha_yain, alpha_tain, retval);
 	}
     }
     //
     // *** End parallelize ***
     //
-    std::cerr << "P-VALUE COUNTER = " << p_value_counter << std::endl;
-    std::cerr << "COR SIG = " << dataset.get_num_edges() << std::endl;
+    //std::cerr << "P-VALUE COUNTER = " << p_value_counter << std::endl;
+    //std::cerr << "COR SIG = " << dataset.get_num_edges() << std::endl;
+    //std::cerr << "size_alpha_table = " << size_alpha_table << std::endl;
+    //std::cerr << "total loops = " << total_loops << std::endl;
     analysis.close();
+    //analysis_all.close();
+
+    // 
+    // *** Do multiple test correction ***
+    //
+    /*double cor_sig = Significance::correct( dataset.get_options().sig_level, dataset.get_options().correction, p_value_counter);
+    std::string inputname = prefix + "_uncorrected_pairs.tsv";
+    std::string outptname = prefix + "_pairs.tsv";
+    std::ifstream inputfil;
+    inputfil.open(inputname);
+    std::ofstream outptfil;;
+    outptfil.open(outptname);
+    //Write header
+    std::string line;
+    std::getline(inputfil, line);
+    outptfil << line << std::endl;
+    //Cycle through each uncorrected pair and see if it passes multiple test correction
+    while(std::getline(inputfil, line)) {
+	std::vector<std::string> results;
+	boost::split(results, line, [](char c){ return c == '\t'; });
+	double pval = std::stod(results[2]);
+	if (pval <= cor_sig) {
+		outptfil << line << std::endl;
+		//retval = p_value;
+                returnflag = 0;
+		std::string alpha1 = results[0];
+		//need to be able to lookup alphai by name alpha1.. not sure to pull all alphas and cycle through or if i can write a get_alpha ( alpha1 ) method... kind of started both and messed up the code a bit....
+		std::string alpha2 = results[1];
+		//dataset._generate_coincident_edge(alpha.get_name(alpha1), alpha_tain, pval);
+	}
+    }
+    inputfil.close();
+    outptfil.close();
+   */
+
     return(returnflag);
 }
 
