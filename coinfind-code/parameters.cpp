@@ -20,8 +20,8 @@ TParameters::TParameters()
         : sig_level( 0.05 )
           , correction( ECorrection::_INVALID )
           , alt_hypothesis( EHypothesis::_INVALID )
-          , method( EMethod::_INVALID )
-          , coin_set_mode( ESetMode::_INVALID )
+          , method( EMethod::COINCIDENCE ) //EMethod::_INVALID )
+          , coin_set_mode( ESetMode::FULL ) //ESetMode::_INVALID )
           , coin_max_mode( EMaxMode::_INVALID )
           , verbose( false )
           , permit_filter( false )
@@ -118,26 +118,26 @@ TParameters TParameters::parse( int arg_count, const char** arg_vals )
 
     commands.emplace_back( "--nocorrection", 'n', [ &result ]() { SET_ONCE( correction, ECorrection::NONE ); } );
     commands.emplace_back( "--bonferroni", 'm', [ &result ]() { SET_ONCE( correction, ECorrection::BONFERRONI ); } );
-    commands.emplace_back( "--fraction", 'r', [ &result ]() { SET_ONCE( correction, ECorrection::FRACTION ); } );
-    commands.emplace_back( "--coincidence", 'c', [ &result ]() { SET_ONCE( method, EMethod::COINCIDENCE ); } );
-    commands.emplace_back( "--connectivity", 'e', [ &result ]() { SET_ONCE( method, EMethod::CONNECTIVITY ); } );
+    commands.emplace_back( "--fraction", 'c', [ &result ]() { SET_ONCE( correction, ECorrection::FRACTION ); } );
+    //commands.emplace_back( "--coincidence", 'c', [ &result ]() { SET_ONCE( method, EMethod::COINCIDENCE ); } );
+    //commands.emplace_back( "--connectivity", 'e', [ &result ]() { SET_ONCE( method, EMethod::CONNECTIVITY ); } );
     commands.emplace_back( "--greater", 'g', [ &result ]() { SET_ONCE( alt_hypothesis, EHypothesis::GREATER ); } );
     commands.emplace_back( "--less", 'l', [ &result ]() { SET_ONCE( alt_hypothesis, EHypothesis::LESS ); } );
     commands.emplace_back( "--twotailed", 't', [ &result ]() { SET_ONCE( alt_hypothesis, EHypothesis::TWOTAILED ); } );
-    commands.emplace_back( "--full", 'f', [ &result ]() { SET_ONCE( coin_set_mode, ESetMode::FULL ); } );
-    commands.emplace_back( "--union", 'u', [ &result ]() { SET_ONCE( coin_set_mode, ESetMode::INTERSECTION ); } );
-    commands.emplace_back( "--accompany", 'a', [ &result ]() { SET_ONCE( coin_max_mode, EMaxMode::ACCOMPANY ); } );
-    commands.emplace_back( "--avoid", 's', [ &result ]() { SET_ONCE( coin_max_mode, EMaxMode::AVOID ); } );
+    //commands.emplace_back( "--full", 'f', [ &result ]() { SET_ONCE( coin_set_mode, ESetMode::FULL ); } );
+    //commands.emplace_back( "--union", 'u', [ &result ]() { SET_ONCE( coin_set_mode, ESetMode::INTERSECTION ); } );
+    commands.emplace_back( "--associate", 'a', [ &result ]() { SET_ONCE( coin_max_mode, EMaxMode::ACCOMPANY ); } );
+    commands.emplace_back( "--dissociate", 'd', [ &result ]() { SET_ONCE( coin_max_mode, EMaxMode::AVOID ); } );
     commands.emplace_back( "--verbose", 'v', [ &result ]() { SET_ONCE( verbose, true ); } );
-    commands.emplace_back( "--filter", 'i', [ &result ]() { SET_ONCE( permit_filter, true ); } );
+    commands.emplace_back( "--filter", 'r', [ &result ]() { SET_ONCE( permit_filter, true ); } );
     commands.emplace_back( "--Rmsgs", 'R', [ &result ]() { SET_ONCE( Rmsgs, true); } );
     commands.emplace_back( "--upfilthreshold", 'U', [ &next_command ]() { next_command = ECommand::UPFILT; } );
     commands.emplace_back( "--filthreshold", 'F', [ &next_command ]() { next_command = ECommand::FILT; } );
     commands.emplace_back( "--level", 'L', [ &next_command ]() { next_command = ECommand::SIG_LEVEL; } );
-    commands.emplace_back( "--a", 'a', [ &next_command ]() { next_command = ECommand::ALPHA_FN; } );
-    commands.emplace_back( "--b", 'b', [ &next_command ]() { next_command = ECommand::BETA_FN; } );
-    commands.emplace_back( "--input", 'd', [ &next_command ]() { next_command = ECommand::COMBINED_FN; } );
-    commands.emplace_back( "--roary", 'D', [ &result ]() { SET_ONCE( roary, true); } );
+    //commands.emplace_back( "--a", 'a', [ &next_command ]() { next_command = ECommand::ALPHA_FN; } );
+    //commands.emplace_back( "--b", 'b', [ &next_command ]() { next_command = ECommand::BETA_FN; } );
+    commands.emplace_back( "--input", 'i', [ &next_command ]() { next_command = ECommand::COMBINED_FN; } );
+    commands.emplace_back( "--inputroary", 'I', [ &result ]() { SET_ONCE( roary, true); } );
     //commands.emplace_back( "--alpha", 'A', [ &next_command ]() { next_command = ECommand::ALPHA_N; } );
     //commands.emplace_back( "--beta", 'B', [ &next_command ]() { next_command = ECommand::BETA_N; } );
     //commands.emplace_back( "--gamma", 'C', [ &next_command ]() { next_command = ECommand::GAMMA_N; } );
