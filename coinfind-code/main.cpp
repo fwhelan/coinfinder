@@ -70,7 +70,7 @@ int main( int argc, const char** argv )
 		std::cerr << "    -i or --input          The path to the gene_presence_absence.csv output from Roary" << std::endl;
 		std::cerr << "                           -or-" << std::endl;
 		std::cerr << "                           The path of the Alpha-to-Beta file with (alpha)(TAB)(beta)" << std::endl;
-		std::cerr << "    -I or --inputroary          Set if -d is in the gene_presence_absence.csv format from Roary" << std::endl;
+		std::cerr << "    -I or --inputroary     Set if -i is in the gene_presence_absence.csv format from Roary" << std::endl;
                 std::cerr << "    -p or --phylogeny      Phylogeny of Betas in Newick format (required)" << std::endl;
                 std::cerr << "Max mode (mandatory for coincidence analysis):" << std::endl;
                 std::cerr << "    -a or --associate      Overlap; identify groups that tend to associate/co-occur." << std::endl;
@@ -176,7 +176,7 @@ int main( int argc, const char** argv )
     // If phylogeny is provided, ensure that there are no zero length branches
     //
     if (!options.phylogeny.empty()) {
-	std::string syscall = "Rscript " + source_path + "/check_zeroes.R -a " + call_path + " -t " + options.phylogeny;
+	std::string syscall = "Rscript " + source_path + "/coinfind-code/check_zeroes.R -a " + call_path + " -t " + options.phylogeny;
         if (options.Rmsgs) {
         	system(syscall.c_str());
         }
@@ -210,7 +210,7 @@ int main( int argc, const char** argv )
     //
     if (options.roary) {
     	std::cerr << "Formating Roary output for input into coinfinder..." << std::endl;
-    	std::string sysStr = "python3 " + source_path + "/format_roary.py -i " + options.combined_file_name;
+    	std::string sysStr = "python3 " + source_path + "/coinfind-code/format_roary.py -i " + options.combined_file_name;
     	std::string out = Lineage::systemSTDOUT(sysStr);
     	if ((out.find("Error") != std::string::npos) || (out.find("error") != std::string::npos)) {
     		std::cerr << "ERROR MESSAGE FROM Python: " << std::endl;
@@ -224,7 +224,7 @@ int main( int argc, const char** argv )
     //
     if (!options.roary) {
 	std::cerr << "Formating input into gene_p_a for input into coinfinder..." << std::endl;
-	std::string sysStr = "python3 " + source_path + "/create_roary.py -i " + options.combined_file_name;
+	std::string sysStr = "python3 " + source_path + "/coinfind-code/create_roary.py -i " + options.combined_file_name;
 	std::string out = Lineage::systemSTDOUT(sysStr);
 	if ((out.find("Error") != std::string::npos) || (out.find("error") != std::string::npos)) {
 		std::cerr << "ERROR MESSAGE FROM Python: " << std::endl;

@@ -37,7 +37,7 @@ cmake --build .
 
 ### Usage: ###
 
-`coinfinder [-d|-D] <gene information> -p <phylogeny> -o <output prefix> [--associate|--dissociate]`
+`coinfinder -i <gene information> [-I] -p <phylogeny> -o <output prefix> [--associate|--dissociate]`
 
 Coinfinder requires gene information and a phylogeny as input. The gene information can be provided in one of two formats: (a) as the `gene_presence_absence.csv` output from <a href="https://sanger-pathogens.github.io/Roary/">Roary</a>; (b) as a tab-delimited list of genes present in each strain. An example of a tab-delimited list of genes:
 

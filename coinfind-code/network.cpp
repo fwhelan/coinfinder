@@ -15,7 +15,7 @@ int Network::run( DataSet& dataset, const std::string& source_path, const std::s
 	if(!phylogeny.empty()) {
 		//std::cerr << "Generate network and coincidence heatmap..." << std::endl;
 		std::cerr << "Generate coincidence heatmap..." << std::endl;
-		std::string syscall = "Rscript " + source_path + "/network.R -p " + call_path + " -t " + phylogeny + " -g " + gene_pa + " -o " + prefix; 
+		std::string syscall = "Rscript " + source_path + "/coinfind-code/network.R -p " + call_path + " -t " + phylogeny + " -g " + gene_pa + " -o " + prefix; 
 		if (Rmsgs) {
 			system(syscall.c_str());
 		} else {

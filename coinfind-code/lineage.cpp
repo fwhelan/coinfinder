@@ -42,7 +42,7 @@ int Lineage::run( DataSet&  dataset, const std::string& source_path, const std::
 	//Call R to calculate D iff a phylogeny has been provided
 	if (!phylogeny.empty()) {
 		std::cerr << "Calculating lineage dependence..." << std::endl;
-		std::string syscall = "Rscript " + source_path + "/lineage.R -a " + call_path + " -t " + phylogeny + " -g " + gene_pa + " -c " + std::to_string(num_cores) + " -o " + prefix;
+		std::string syscall = "Rscript " + source_path + "/coinfind-code/lineage.R -a " + call_path + " -t " + phylogeny + " -g " + gene_pa + " -c " + std::to_string(num_cores) + " -o " + prefix;
 		if (Rmsgs) {
 			system(syscall.c_str());
 		} else {
