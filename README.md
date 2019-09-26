@@ -15,7 +15,7 @@ Coinfinder is an algorithm and software tool that detects genes which associate 
 Coinfinder uses a Bonferroni-corrected Binomial exact test statistic of the expected and observed rates of gene-gene association to evaluate whether a given gene pair is coincident.
 
 ### When and why should I use it? ###
-Coinfinder is designed to take as input a dataset of pangenomes and their genes. Ideally, genes will clustered into homologous gene clusters using a pangenomic tool such as Roary, PIRATE, or Pandora. Coinfinder should be used to identify coincident gene sets within a given pangenomic dataset. Coinfinder was written to identify coincident genes among strains of prokaryote species (i.e. a species pangenome) but can be extended to other pangenomic datasets.
+Coinfinder is designed to take as input a dataset of pangenomes and their genes. Ideally, genes will clustered into homologous gene clusters using a pangenomic tool such as <a href="https://sanger-pathogens.github.io/Roary/">Roary</a>, <a href="https://github.com/SionBayliss/PIRATE">PIRATE</a>, or <a href="https://github.com/rmcolq/pandora">Pandora</a>. Coinfinder should be used to identify coincident gene sets within a given pangenomic dataset. Coinfinder was written to identify coincident genes among strains of prokaryote species (i.e. a species pangenome) but can be extended to other pangenomic datasets.
 
 
 ### Dependencies: ###
@@ -23,7 +23,8 @@ Coinfinder is designed to take as input a dataset of pangenomes and their genes.
 * `Cmake3.6` or greater https://cmake.org/download/
 * `Python3.6` or greater https://www.python.org/downloads/
 * `Boost1.66` or greater https://www.boost.org/users/download/
-* `OpenMP`
+<!-- If there are any issues with Boost, on my new Macbook, I found I had to do brew install boost-python via the below post to get cmake to recognize Boost properly. https://stackoverflow.com/questions/26024878/cmake-cannot-find-boost-on-os-x-with-brew-->
+* `OpenMP` 
 * `R` libraries: `caper, phytools, getopt, igraph, dplyr, cowplot, data.table, ggraph`
 * Bionconductor `R` library: `ggtree` https://bioconductor.org/packages/release/bioc/html/ggtree.html
 
@@ -39,7 +40,7 @@ cmake --build .
 
 `coinfinder [-d|-D] <gene information> -p <phylogeny> -o <output prefix> [--associate|--dissociate]`
 
-Coinfinder requires gene information and a phylogeny as input. The gene information can be provided in one of two formats: (a) as the `gene_presence_absence.csv` output from Roary; (b) as a tab-delimited list of genes present in each strain. An example of a tab-delimited list of genes:
+Coinfinder requires gene information and a phylogeny as input. The gene information can be provided in one of two formats: (a) as the `gene_presence_absence.csv` output from <a href="https://sanger-pathogens.github.io/Roary/">Roary</a>; (b) as a tab-delimited list of genes present in each strain. An example of a tab-delimited list of genes:
 
 ```
 gene_1	genome_1
