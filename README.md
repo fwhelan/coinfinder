@@ -58,7 +58,7 @@ Lastly, the user must decide between running Coinfinder to find associations (ge
 ### Example output: ###
 <div align="center">
 <p align="center">
-    <img src="Figure1.png?raw=true?" alt="example-output" width="1000">
+    <img src="Figure1.png?raw=true?" alt="example-output" width="900">
 </p>
 </div>
 An example association network in which each gene (node) is connected to another gene with a line (edge) iff they statistically co-occur with each other. Nodes are weighted by lineage-independence in the phylogeny (i.e. the larger the node, the more phylogenetically independent the gene) and the edges by the p-value of the association. Nodes are coloured by connected component, or the set of genes with associative relationships with each other. This data can also be shown as a presence/absence heatmap in relation to the phylogeny (note: this heatmap is a subset of all results; in particular, the large wine coloured gene set has been removed for ease of visibility).
