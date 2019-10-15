@@ -18,8 +18,8 @@
 
 TParameters::TParameters()
         : sig_level( 0.05 )
-          , correction( ECorrection::_INVALID )
-          , alt_hypothesis( EHypothesis::_INVALID )
+          , correction( ECorrection::BONFERRONI ) //ECorrection::_INVALID )
+          , alt_hypothesis( EHypothesis::GREATER ) //EHypothesis::_INVALID )
           , method( EMethod::COINCIDENCE ) //EMethod::_INVALID )
           , coin_set_mode( ESetMode::FULL ) //ESetMode::_INVALID )
           , coin_max_mode( EMaxMode::_INVALID )
