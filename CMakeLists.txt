@@ -24,6 +24,8 @@ target_link_libraries(coinfinder ${Boost_LIBRARIES})
 
 #dlopen, dlerror, dlsym undefined reference error fix
 target_link_libraries(coinfinder ${CMAKE_DL_LIBS})
+find_package(Threads)
+target_link_libraries(coinfinder ${CMAKE_THREAD_LIBS_INIT})
 
 # Find OpenMP
 if(APPLE)
