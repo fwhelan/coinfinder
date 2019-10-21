@@ -22,6 +22,9 @@ include_directories(${Boost_INCLUDE_DIR})
 link_directories(${Boost_LIBRARY_DIR})
 target_link_libraries(coinfinder ${Boost_LIBRARIES})
 
+#dlopen, dlerror, dlsym undefined reference error fix
+target_link_libraries(coinfinder ${CMAKE_DL_LIBS})
+
 # Find OpenMP
 if(APPLE)
 #    SET(CMAKE_C_COMPILER "/usr/local/opt/llvm/bin/clang")
