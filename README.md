@@ -24,6 +24,7 @@ Coinfinder is designed to take as input a dataset of pangenomes and their genes.
 * `Python3.6` or greater https://www.python.org/downloads/
 * `Boost1.66` or greater https://www.boost.org/users/download/ (`brew install boost` on a Mac)<!-- If there are any issues with Boost, on my new Macbook, I found I had to do brew install boost-python via the below post to get cmake to recognize Boost properly. https://stackoverflow.com/questions/26024878/cmake-cannot-find-boost-on-os-x-with-brew-->
 * `OpenMP` (`brew install llvm` on a Mac)<!--Mac: brew install libomp; brew install llvm; -->
+* `gcc 5` or greater (default on most new-ish machines)
 * `R` libraries: `caper, phytools, getopt, igraph, dplyr, cowplot, data.table, ggraph`
 * Bionconductor `R` library: `ggtree` https://bioconductor.org/packages/release/bioc/html/ggtree.html
 
