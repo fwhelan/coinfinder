@@ -4,7 +4,6 @@ project(coinfinder)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_MODULE_LINKER_FLAGS "-lutil")
 
 set(Boost_USE_STATIC_LIBS ON)
 
@@ -24,7 +23,10 @@ link_directories(${Boost_LIBRARY_DIR})
 target_link_libraries(coinfinder ${Boost_LIBRARIES})
 
 #dlopen, dlerror, dlsym undefined reference error fix
+#forkpty undefined reference error fix
 target_link_libraries(coinfinder ${CMAKE_DL_LIBS})
+target_link_libraries(coinfinder "-lutil")
+set(CMAKE_MODULE_LINKER_FLAGS "-lutil")
 find_package(Threads)
 target_link_libraries(coinfinder ${CMAKE_THREAD_LIBS_INIT})
 
