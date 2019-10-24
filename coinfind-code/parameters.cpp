@@ -63,12 +63,12 @@ struct CommandArg
 template<typename T>
 void local_assert( T& target, T value, const char* name )
 {
-    if (target != T::_INVALID)
-    {
-        std::stringstream ss;
-        ss << "More than one value for the '" << name << "' setting has been specified." << std::endl;
-        throw std::logic_error( ss.str());
-    }
+    //if (target != T::_INVALID)
+    //{
+    //    std::stringstream ss;
+    //    ss << "More than one value for the '" << name << "' setting has been specified." << std::endl;
+    //    throw std::logic_error( ss.str());
+    //}
 
     target = value;
 }
