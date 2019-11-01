@@ -20,6 +20,7 @@ genes[,length(genes)] <- NULL #remove the last comma in csv file
 
 #Read in tree
 tree <- read.tree(opt$phylogeny)
+tree$tip.label <- make.names(tree$tip.label) #ensure tree tip names will match annot rownames
 #Ensure no zero branch lengths
 if (!is.na(match(0, tree$edge.length))) {
         print("Phylogeny contains pairs of tips on zero branch lengths, cannot currently simulate")
