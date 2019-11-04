@@ -54,10 +54,11 @@ if(APPLE)
     endif()
 endif()
 
-find_package(OPENMP)
+#find_package(OPENMP)
+find_package(OpenMP)
 
 if (OPENMP_FOUND)
-    include_directories("${OPENMP_INCLUDES}")
+    #include_directories("${OPENMP_INCLUDES}")
     #include_directories("/usr/local/include" "/usr/local/opt/llvm/include")
     link_directories("${OPENMP_LIBRARIES}")
     #link_directories("/usr/local/lib" "/usr/local/opt/llvm/lib")
