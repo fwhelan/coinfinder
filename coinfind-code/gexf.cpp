@@ -98,7 +98,7 @@ void Gexf::run( DataSet& dataset, const std::string& prefix )
         gexf << "<attribute id=\"D-value\" title=\"D-value\" type=\"double\"/>" << std::endl;
         gexf << "</attributes>" << std::endl;
 	gexf << "<attributes class=\"edge\">" << std::endl;
-	gexf << "<attribute id=\"p-value\" title=\"p-value\" type=\"double\"/>" << std::endl;
+	//gexf << "<attribute id=\"p-value\" title=\"p-value\" type=\"double\"/>" << std::endl;
 	gexf << "</attributes>" << std::endl;
         gexf << "<nodes>" << std::endl;
     	gexf << node_attr_xml;
