@@ -56,6 +56,41 @@ The phylogeny should be Newick-formatted with no zero-length branches. We sugges
 
 Lastly, the user must decide between running Coinfinder to find associations (gene pairs present together) or dissociations (gene pairs which are present apart, or avoid each other).
 
+For more information on usage, please see `coinfinder -h`:
+
+```
+File input- specify either: 
+    -i or --input          The path to the gene_presence_absence.csv output from Roary
+                           -or-
+                           The path of the Alpha-to-Beta file with (alpha)(TAB)(beta)
+    -I or --inputroary     Set if -i is in the gene_presence_absence.csv format from Roary
+    -p or --phylogeny      Phylogeny of Betas in Newick format (required)
+Max mode (mandatory for coincidence analysis):
+    -a or --associate      Overlap; identify groups that tend to associate/co-occur.
+    -d or --dissociate     Separation; identify groups that tend to dissociate/avoid.
+Significance- specify: 
+    -L or --level          Specify the significnace level cutoff (default: 0.05)
+Significance correction- specify: 
+    -m or --bonferroni     Bonferroni correction multiple correction (recommeneded)
+    -n or --nocorrection   No correction, use value as-is
+    -c or --fraction       (Connectivity analysis only) Use fraction rather than p-value
+Alternative hypothesis- specify: 
+    -g or --greater        Greater (recommended)
+    -l or --less           Less
+    -t or --twotailed      Two-tailed
+Miscellaneous:
+    -x or --num_cores      The number of cores to use (default: 2)
+    -v or --verbose        Verbose output.
+    -r or --filter         Permit filtering of saturated and low-abundance data.
+    -U or --upfilthreshold Upper filter threshold for high-abundance data filtering (default: 1.0 i.e. any alpha in >=100/% of betas.
+    -F or --filthreshold   Threshold for low-abundance data filtering (default: 0.05 i.e. any alpha in <=5% of betas.
+    -q or --query          Query a specific gene.
+    -T or --test           Runs the test cases and exits.
+    -E or --all            Outputs all results, regardless of significance.
+Output:
+    -o or --output         The prefix of all output files (default: coincident).
+```
+
 ### Example output: ###
 <div align="center">
 <p align="center">
