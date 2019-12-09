@@ -287,16 +287,21 @@ int main( int argc, const char** argv )
 	    }
 	    Gexf::run( dataset, options.prefix );
 	    //Remove intermediate files
-	    const int result = remove( "coincident-input-edges.csv" );
-	    if (result != 0) {
-    		    printf( "%s\n", strerror( errno ) ); // No such file or directory
-	    }
-	    const char* nodename = (options.prefix + "_nodes_in.csv").c_str();
-	    const int result2 = remove( nodename );
-	    if (result2 != 0) {
-		    printf( "%s\n", strerror( errno ) ); // No such file or directory
-	    }
+	    //This file is only created if Roary input is used; don't error if it can't be removed.
+	    //if (boost::filesystem::exists("coincident-input-edges.csv")) {
+	    //	const int result = remove( "coincident-input-edges.csv" );
+	    	//if (result != 0) {
+    	    	//	    printf( "%s\n", strerror( errno ) ); // No such file or directory
+	    	//}
+	    //}
+	    //const char* nodename = (options.prefix + "_nodes_in.csv").c_str();
+	    //if (boost::filesystem::exists( std::string(nodename) )) {
+	    //const int result2 = remove( nodename );
+	    //if (result2 != 0) {
+	    //	    printf( "%s\n", strerror( errno ) ); // No such file or directory
+	    //}
             break;
+	    //}
 	}
 
         default:

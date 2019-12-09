@@ -13,8 +13,8 @@ spec <- matrix(c('path', 'p', 1, "character",
                  'gene_pa', 'g', 1, "character",
                  'output', 'o', 1, "character"), byrow=TRUE, ncol=4)
 opt <- getopt(spec)
-
 setwd(opt$path)
+
 #Read in
 nodstr <- paste(opt$output, "_nodes.tsv", sep="")
 nodes  <- read.table(nodstr, header=TRUE, sep="\t")
