@@ -106,6 +106,9 @@ int main( int argc, const char** argv )
 		std::cerr << "    -E or --all            Outputs all results, regardless of significance." << std::endl;
 		std::cerr << "Output:" << std::endl;
 		std::cerr << "    -o or --output         The prefix of all output files (default: coincident)." << std::endl;
+		std::cerr << std::endl << std::endl << "If you use Coinfinder, please cite:" << std::endl << std::endl;
+		std::cerr << "FJ Whelan, M Rusilowicz, & JO McInerney. \"Coinfinder: Detecting Significant Associations and Dissociations in Pangenomes.\" doi: https://doi.org/10.1101/859371" << std::endl;
+		std::cerr << std::endl << std::endl;
 		return 1;
 	}
     }
