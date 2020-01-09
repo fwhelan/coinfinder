@@ -17,10 +17,10 @@ setwd(opt$path)
 
 #Read in
 nodstr <- paste(opt$output, "_nodes.tsv", sep="")
-nodes  <- read.table(nodstr, header=TRUE, sep="\t")
+nodes  <- read.table(nodstr, header=TRUE, sep="\t", quote=NULL)
 colnames(nodes) <- c("alphas", "D")
 edgstr <- paste(opt$output, "_edges.tsv", sep="")
-edges <- read.table(edgstr, header=TRUE, sep="\t")
+edges <- read.table(edgstr, header=TRUE, sep="\t", quote=NULL)
 colnames(edges) <- c("alpha1", "alpha2", "p")
 edges$alpha1 <- make.names(edges$alpha1)
 edges$alpha2 <- make.names(edges$alpha2)
