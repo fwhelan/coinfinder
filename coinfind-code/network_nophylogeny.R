@@ -59,15 +59,16 @@ tmp <- tmp %>% arrange(min_ord)
 tmp2 <- setDT(tmp)[, unique(n), by = CC]
 CC.size <- tmp2$V1
 #Define colour array based on the size of the components
-colour.array <- c("#7bb4ff","#7c0051","#76c3ff","#001106","#01ca10","#e56800","#0005a7","#0a3700","#0245ec","#e3db00","#671a00","#00bf72","#ff9dd6","#f386ff","#d57600","#20000a","#ace967","#840019","#0094f7","#006695","#ff5bf7","#b9007e","#ff89c7","#360093","#001733","#005a69","#d5dca2","#61cb00","#00338b","#26a600","#fdd268","#ffbdca","#b9e590","#ff711b","#8ce9c7","#331300","#a40053","#02d6cf","#640015","#c90039","#fecdb7","#230025","#008c51","#ea21dd","#7a63ff","#b43b00","#0068a7","#01cf41","#f6d633","#93a200","#61f0b9","#ffbf91","#990015","#c4a8ff","#02d9b8","#f2007e","#ac8b00","#d0e072","#ffa368","#02b096","#02c1cc","#ff8de1","#fc0072","#dea3ff","#c37d00","#03c4f4","#ff5dad","#8990ff","#d2d9d9","#b744f6","#380006","#5a3700","#002a23","#392ad1","#238100","#ff673c","#9bddff","#b2e3c0","#89ef68","#00726c","#004376","#5d9fff","#210052","#009e40","#ffac48","#9d1fd7","#d7d5ef","#7cf22c","#b7ddef","#a8a7ff","#008634","#8c3300","#8400a7","#783900","#0099b3","#ff3628","#386700","#003c45","#7f7100","#001f5c","#b4a200","#272200","#ff9ea3","#ff325c","#e19100","#c80024","#ff6a61","#3c5300","#b9d400","#fc2109","#3a3b00","#024fd6","#5d7b00","#a90009","#006027","#6ab200","#016989","#4f005e","#016dbf","#29000b","#002700","#659700","#ffc545","#d7d0ff","#910085","#0064db","#ffa9c8","#dc0034","#620028","#ff5664","#006842","#441500","#ff7588","#9ce5da","#ff55cd","#c27fff","#004f31","#e2da91","#7bb4ff","#7c0051","#76c3ff","#001106","#01ca10","#e56800","#0005a7","#0a3700","#0245ec","#e3db00","#671a00","#00bf72","#ff9dd6","#f386ff","#d57600","#20000a","#ace967","#840019","#0094f7","#006695","#ff5bf7","#b9007e","#ff89c7","#360093","#001733","#005a69","#d5dca2","#61cb00","#00338b","#26a600","#fdd268","#ffbdca","#b9e590","#ff711b","#8ce9c7","#331300","#a40053","#02d6cf","#640015","#c90039","#fecdb7","#230025","#008c51","#ea21dd","#7a63ff","#b43b00","#0068a7","#01cf41","#f6d633","#93a200","#61f0b9","#ffbf91","#990015","#c4a8ff","#02d9b8","#f2007e","#ac8b00","#d0e072","#ffa368","#02b096","#02c1cc","#ff8de1","#fc0072","#dea3ff","#c37d00","#03c4f4","#ff5dad","#8990ff","#d2d9d9","#b744f6","#380006","#5a3700","#002a23","#392ad1","#238100","#ff673c","#9bddff","#b2e3c0","#89ef68","#00726c","#004376","#5d9fff","#210052","#009e40","#ffac48","#9d1fd7","#d7d5ef","#7cf22c","#b7ddef","#a8a7ff","#008634","#8c3300","#8400a7","#783900","#0099b3","#ff3628","#386700","#003c45","#7f7100","#001f5c","#b4a200","#272200","#ff9ea3","#ff325c","#e19100","#c80024","#ff6a61","#3c5300","#b9d400","#fc2109","#3a3b00","#024fd6","#5d7b00","#a90009","#006027","#6ab200","#016989","#4f005e","#016dbf","#29000b","#002700","#659700","#ffc545","#d7d0ff","#910085","#0064db","#ffa9c8","#dc0034","#620028","#ff5664","#006842","#441500","#ff7588","#9ce5da","#ff55cd","#c27fff","#004f31","#e2da91");#,"#7bb4ff");
+colour.array <- c("#7c0051","#76c3ff","#001106","#01ca10","#e56800","#0005a7","#0a3700","#0245ec","#e3db00","#671a00","#00bf72","#ff9dd6","#f386ff","#d57600","#20000a","#ace967","#840019","#0094f7","#006695","#ff5bf7","#b9007e","#ff89c7","#360093","#001733","#005a69","#d5dca2","#61cb00","#00338b","#26a600","#fdd268","#ffbdca","#b9e590","#ff711b","#8ce9c7","#331300","#a40053","#02d6cf","#640015","#c90039","#fecdb7","#230025","#008c51","#ea21dd","#7a63ff","#b43b00","#0068a7","#01cf41","#f6d633","#93a200","#61f0b9","#ffbf91","#990015","#c4a8ff","#02d9b8","#f2007e","#ac8b00","#d0e072","#ffa368","#02b096","#02c1cc","#ff8de1","#fc0072","#dea3ff","#c37d00","#03c4f4","#ff5dad","#8990ff","#d2d9d9","#b744f6","#380006","#5a3700","#002a23","#392ad1","#238100","#ff673c","#9bddff","#b2e3c0","#89ef68","#00726c","#004376","#5d9fff","#210052","#009e40","#ffac48","#9d1fd7","#d7d5ef","#7cf22c","#b7ddef","#a8a7ff","#008634","#8c3300","#8400a7","#783900","#0099b3","#ff3628","#386700","#003c45","#7f7100","#001f5c","#b4a200","#272200","#ff9ea3","#ff325c","#e19100","#c80024","#ff6a61","#3c5300","#b9d400","#fc2109","#3a3b00","#024fd6","#5d7b00","#a90009","#006027","#6ab200","#016989","#4f005e","#016dbf","#29000b","#002700","#659700","#ffc545","#d7d0ff","#910085","#0064db","#ffa9c8","#dc0034","#620028","#ff5664","#006842","#441500","#ff7588","#9ce5da","#ff55cd","#c27fff","#004f31","#e2da91","#7bb4ff","#7c0051","#76c3ff","#001106","#01ca10","#e56800","#0005a7","#0a3700","#0245ec","#e3db00","#671a00","#00bf72","#ff9dd6","#f386ff","#d57600","#20000a","#ace967","#840019","#0094f7","#006695","#ff5bf7","#b9007e","#ff89c7","#360093","#001733","#005a69","#d5dca2","#61cb00","#00338b","#26a600","#fdd268","#ffbdca","#b9e590","#ff711b","#8ce9c7","#331300","#a40053","#02d6cf","#640015","#c90039","#fecdb7","#230025","#008c51","#ea21dd","#7a63ff","#b43b00","#0068a7","#01cf41","#f6d633","#93a200","#61f0b9","#ffbf91","#990015","#c4a8ff","#02d9b8","#f2007e","#ac8b00","#d0e072","#ffa368","#02b096","#02c1cc","#ff8de1","#fc0072","#dea3ff","#c37d00","#03c4f4","#ff5dad","#8990ff","#d2d9d9","#b744f6","#380006","#5a3700","#002a23","#392ad1","#238100","#ff673c","#9bddff","#b2e3c0","#89ef68","#00726c","#004376","#5d9fff","#210052","#009e40","#ffac48","#9d1fd7","#d7d5ef","#7cf22c","#b7ddef","#a8a7ff","#008634","#8c3300","#8400a7","#783900","#0099b3","#ff3628","#386700","#003c45","#7f7100","#001f5c","#b4a200","#272200","#ff9ea3","#ff325c","#e19100","#c80024","#ff6a61","#3c5300","#b9d400","#fc2109","#3a3b00","#024fd6","#5d7b00","#a90009","#006027","#6ab200","#016989","#4f005e","#016dbf","#29000b","#002700","#659700","#ffc545","#d7d0ff","#910085","#0064db","#ffa9c8","#dc0034","#620028","#ff5664","#006842","#441500","#ff7588","#9ce5da","#ff55cd","#c27fff","#004f31","#e2da91","#7bb4ff");
 node.colour <- NULL
 for(i in c(1:length(CC.size))){
-  if(i > length(colour.array)) {
-    colour.array <- c(colour.array,colour.array)
+  #if(i > length(colour.array)) {
+    #colour.array <- c(colour.array,colour.array)
     #print("Error: Add more colours to colour.array")
     #quit()
-  }
-  node.colour <- c(node.colour,rep(colour.array[i],CC.size[i]))
+  #}
+  #node.colour <- c(node.colour,rep(colour.array[i],CC.size[i]))
+  node.colour <- c(node.colour,rep(colour.array[(i%%length(colour.array))],times=CC.size[i]))
 }
 node.order <- unique(ord.CC$alphas)
 names(node.colour) <- node.order
@@ -75,21 +76,12 @@ node.order <- factor(node.order, levels=node.order)
 
 #Write CCs to coincident_components.csv
 CC_out <- data.frame(id = character(0), stringsAsFactors = FALSE)
-#CCs$alpha <- make.names(CCs$alpha)
-#for(i in c(1:nrow(CCs))) {
-#  if (is.na(CC_out[CCs$CC[i],1])) {
-#    CC_out[CCs$CC[i],1] <- CCs$alphas[i]
-#  } else {
-#    CC_out[CCs$CC[i],1] <- paste(CC_out[CCs$CC[i],1], ",", CCs$alphas[i], sep="")
-#  }
-#}
-ord.CC$alphas <- make.names(ord.CC$alphas)
-for(i in c(1:nrow(ord.CC))) {
-  curCC <- which(tmp2$CC == ord.CC$CC[i])
-  if (is.na(CC_out[curCC,1])) {
-    CC_out[curCC,1] <- ord.CC$alphas[i]
+CCs$alpha <- make.names(CCs$alpha)
+for(i in c(1:nrow(CCs))) {
+  if (is.na(CC_out[CCs$CC[i],1])) {
+    CC_out[CCs$CC[i],1] <- CCs$alphas[i]
   } else {
-    CC_out[curCC,1] <- paste(CC_out[curCC,1], ",", ord.CC$alphas[i], sep="")
+    CC_out[CCs$CC[i],1] <- paste(CC_out[CCs$CC[i],1], ",", CCs$alphas[i], sep="")
   }
 }
 outstr <- paste(opt$output, "_components.tsv", sep="")
