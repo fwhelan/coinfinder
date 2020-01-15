@@ -155,7 +155,7 @@ while (countie < length(colnames(annot))) {
 		j <- CC.cumsum[j.loc+1]
 	}
   	countie <- j+1
-	p.heat <- gheatmap(p.tree, annot[i:j], offset=1, width=8, font.size=2, colnames_angle=-90, hjust=0) + #offset=0.009
+	p.heat <- gheatmap(p.tree, annot[i:j], offset=0, width=8, font.size=2, colnames_angle=-90, hjust=0) +
 	  guides(fill=FALSE) +
 	  scale_fill_manual(breaks=heatmap.breaks, values=node.colour) +
 	  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
