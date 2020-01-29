@@ -48,6 +48,9 @@ cmake --build .
 ./coinfinder
 ```
 
+On macOS, the default compiler may be `clang` instead of `g++`. If so, you may need to point the compiler to gcc; for example:
+`export CC=/usr/local/bin/gcc-6; CXX=/usr/local/bin/g++-6; MPICXX=/usr/local/bin/mpic++`
+
 ------
 
 ### Usage: ###
