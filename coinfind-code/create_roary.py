@@ -2,6 +2,7 @@ import csv
 import subprocess
 import argparse
 import os
+import sys
 
 #Motive: take an input file of the format geneFamily \t genome and output a roary style gene_presence_absence.csv.
 
@@ -26,6 +27,7 @@ ret = subprocess.Popen('cut -f 2 sorted.tmp | sort | uniq', stdout=subprocess.PI
 (uniq_gens, err) = ret.communicate()
 uniq_gens = uniq_gens.decode('ascii').strip()
 gen_list = uniq_gens.split("\n")
+gen_list = [ i.strip() for i in gen_list ]
 loc_len = len(gen_list)
 #Make and populate genome->location hash
 hash_count = 0
