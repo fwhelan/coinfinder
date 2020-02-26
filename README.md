@@ -119,7 +119,7 @@ An example association network in which each gene (node) is connected to another
 
 ### Example usage: ###
 
-The example dataset, including input and expected output files using the associated manuscript can be found <a href="https://sanger-pathogens.github.io/Roary/">Roary</a>, <a href="https://github.com/fwhelan/coinfinder-manuscript">here</a> 
+The example dataset, including input and expected output files using the associated manuscript can be found <a href="https://github.com/fwhelan/coinfinder-manuscript">here</a> 
 
 ### Citation information: ###
 @article{mbs:/content/journal/mgen/10.1099/mgen.0.000338,
