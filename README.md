@@ -17,8 +17,8 @@ Coinfinder uses a Bonferroni-corrected Binomial exact test statistic of the expe
 ### When and why should I use it? ###
 Coinfinder is designed to take as input a dataset of pangenomes and their genes. Ideally, genes will clustered into homologous gene clusters using a pangenomic tool such as <a href="https://sanger-pathogens.github.io/Roary/">Roary</a>, <a href="https://github.com/SionBayliss/PIRATE">PIRATE</a>, or <a href="https://github.com/rmcolq/pandora">Pandora</a>. Coinfinder should be used to identify coincident gene sets within a given pangenomic dataset. Coinfinder was written to identify coincident genes among strains of prokaryote species (i.e. a species pangenome) but can be extended to other pangenomic datasets.
 
-### *NEW:* Manuscript up on bioRxiv ###
-Fiona Jane Whelan, Martin Rusilowicz, & James Oscar McInerney. "<b>Coinfinder: Detecting Significant Associations and Dissociations in Pangenomes</b>." <a href="https://www.biorxiv.org/content/10.1101/859371v1">doi: https://doi.org/10.1101/859371</a>
+### *NEW:* Manuscript published in Microbial Genomics ###
+Fiona J. Whelan, Martin Rusilowicz, & James O. McInerney. "<b>Coinfinder: detecting significant associations and dissociations in pangenomes</b>." <a href="https://www.microbiologyresearch.org/content/journal/mgen/10.1099/mgen.0.000338?originator=authorOffprint&identity=174020&timestamp=20210225172138&signature=1155c94b880e4257e2c7bf8f543b7d1c#header">doi: https://doi.org/10.1099/mgen.0.000338</a>
 
 ------
 
@@ -119,10 +119,22 @@ An example association network in which each gene (node) is connected to another
 
 ### Example usage: ###
 
-Coming soon...
+The example dataset, including input and expected output files using the associated manuscript can be found <a href="https://sanger-pathogens.github.io/Roary/">Roary</a>, <a href="https://github.com/fwhelan/coinfinder-manuscript">here</a> 
 
-<!--### Citation information (pre-print): ###
-@article {}-->
+### Citation information: ###
+@article{mbs:/content/journal/mgen/10.1099/mgen.0.000338,
+   author = "Whelan, Fiona Jane and Rusilowicz, Martin and McInerney, James Oscar",
+   title = "Coinfinder: detecting significant associations and dissociations in pangenomes",
+   year = "2020",
+   publisher = "Microbiology Society",
+   url = "https://www.microbiologyresearch.org/content/journal/mgen/10.1099/mgen.0.000338",
+   doi = "https://doi.org/10.1099/mgen.0.000338",
+   keywords = "pangenome",
+   keywords = "gene association networks",
+   keywords = "gene co-occurrence",
+   abstract = "The accessory genes of prokaryote and eukaryote pangenomes accumulate by horizontal gene transfer, differential gene loss, and the effects of selection and drift. We have developed Coinfinder, a software program that assesses whether sets of homologous genes (gene families) in pangenomes associate or dissociate with each other (i.e. are ‘coincident’) more often than would be expected by chance. Coinfinder employs a user-supplied phylogenetic tree in order to assess the lineage-dependence (i.e. the phylogenetic distribution) of each accessory gene, allowing Coinfinder to focus on coincident gene pairs whose joint presence is not simply because they happened to appear in the same clade, but rather that they tend to appear together more often than expected across the phylogeny. Coinfinder is implemented in C++, Python3 and R and is freely available under the GNU license from <a href="https://github.com/fwhelan/coinfinder" target="xrefwindow">https://github.com/fwhelan/coinfinder.</a>
+            "
+}
 
 
 ### What if I find a bug or have an issue running coinfinder? ###
