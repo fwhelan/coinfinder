@@ -17,6 +17,15 @@ args = parser.parse_args()
 #    print("gene_presence_absence.csv already exists; I don't want to overwrite it.")
 #    print("Exiting...")
 #    quit()
+#Ensure input file is of the format geneFamily \t genome \n
+infile = open(args.input, 'r')
+line = infile.readline()
+linearr = line.split("\t")
+if len(linearr) != 2:
+    print("Error: input file "+args.input+" does not appear to be in the format geneFamily<tab>genome")
+    print("Did you mean to include the -I flag to indicate a Roary formatted input file?")
+    print("Exiting...")
+    quit()
 #Open roary-style output file
 roary = open('gene_presence_absence.csv', "w")
 #Sort input file by gene ID
