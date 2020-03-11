@@ -73,7 +73,7 @@ int main( int argc, const char** argv )
 		std::cerr << "    -I or --inputroary     Set if -i is in the gene_presence_absence.csv format from Roary" << std::endl;
                 std::cerr << "    -p or --phylogeny      Phylogeny of Betas in Newick format (required)" << std::endl;
                 std::cerr << "Max mode (mandatory for coincidence analysis):" << std::endl;
-                std::cerr << "    -a or --associate      Overlap; identify groups that tend to associate/co-occur." << std::endl;
+                std::cerr << "    -a or --associate      Overlap; identify groups that tend to associate/co-occur (default)." << std::endl;
                 std::cerr << "    -d or --dissociate     Separation; identify groups that tend to dissociate/avoid." << std::endl;
 		std::cerr << "Significance- specify: " << std::endl;
 		std::cerr << "    -L or --level          Specify the significnace level cutoff (default: 0.05)" << std::endl;
@@ -81,11 +81,11 @@ int main( int argc, const char** argv )
 		//std::cerr << "    -e or --connectivity   Connectivity analysis" << std::endl;
 		//std::cerr << "    -c or --coincidence    Coincidence analysis" << std::endl;
 		std::cerr << "Significance correction- specify: " << std::endl;
-                std::cerr << "    -m or --bonferroni     Bonferroni correction multiple correction (recommeneded)" << std::endl;
+                std::cerr << "    -m or --bonferroni     Bonferroni correction multiple correction (recommended & default)" << std::endl;
 		std::cerr << "    -n or --nocorrection   No correction, use value as-is" << std::endl;
 		std::cerr << "    -c or --fraction       (Connectivity analysis only) Use fraction rather than p-value" << std::endl;
 		std::cerr << "Alternative hypothesis- specify: " << std::endl;
-		std::cerr << "    -g or --greater        Greater (recommended)" << std::endl;
+		std::cerr << "    -g or --greater        Greater (recommended & default)" << std::endl;
 		std::cerr << "    -l or --less           Less" << std::endl;
 		std::cerr << "    -t or --twotailed      Two-tailed" << std::endl;
 		//std::cerr << "Set mode (mandatory for coincidence analysis):" << std::endl;
