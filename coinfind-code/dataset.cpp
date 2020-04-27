@@ -72,7 +72,7 @@ DataSet::~DataSet()
  */
 void DataSet::_read_beta_file( const std::string& file_name )
 {
-    std::cerr << "Reading beta groupings..." << std::endl;
+    std::cerr << "Reading genome groups..." << std::endl;
 
     std::ifstream file_in;
     file_in.open( file_name );
@@ -119,7 +119,7 @@ void DataSet::_read_beta_file( const std::string& file_name )
  */
 void DataSet::_read_alpha_file( const std::string& file_name )
 {
-    std::cerr << "Reading alpha groupings..." << std::endl;
+    std::cerr << "Reading gene groups..." << std::endl;
 
     std::ifstream file_in;
     file_in.open( file_name );
@@ -192,7 +192,7 @@ void DataSet::_read_alpha_file( const std::string& file_name )
 void DataSet::_read_combined_file( const std::string& file_name )
 {
     //add a bit to this about reading in a separate bit of information, a middle column, that contains the edge information
-    std::cerr << "Reading alpha-beta edges..." << std::endl;
+    std::cerr << "Reading gene-genome edges..." << std::endl;
 
     std::ifstream file_in;
     file_in.open( file_name );
@@ -652,9 +652,9 @@ const id_lookup<Alpha>& DataSet::get_alphas() const
 
 void DataSet::_dump_sizes() const
 {
-    std::cerr << "- n.ALPHA = " << this->_alphas.size() << std::endl;
-    std::cerr << "- n.BETA  = " << this->_betas.size() << std::endl;
-    std::cerr << "- n.GAMMA = " << this->_gammas.size() << std::endl;
+    std::cerr << "- n.GENES = " << this->_alphas.size() << std::endl;
+    std::cerr << "- n.GENOMES  = " << this->_betas.size() << std::endl;
+    //std::cerr << "- n.GAMMA = " << this->_gammas.size() << std::endl;
     std::cerr << "- n.EDGES = " << this->_num_edges << std::endl;
 }
 
@@ -687,9 +687,9 @@ void DataSet::_drop_empty()
     if (alpha_dropped || beta_dropped || gamma_dropped)
     {
         std::cerr << "Warning: Superfluous data has been dropped!" << std::endl;
-        std::cerr << "- d.ALPHA = " << -alpha_dropped << std::endl;
-        std::cerr << "- d.BETA  = " << -beta_dropped << std::endl;
-        std::cerr << "- d.GAMMA = " << -gamma_dropped << std::endl;
+        std::cerr << "- d.GNEES = " << -alpha_dropped << std::endl;
+        std::cerr << "- d.GENOMES  = " << -beta_dropped << std::endl;
+        //std::cerr << "- d.GAMMA = " << -gamma_dropped << std::endl;
         this->_dump_sizes();
     }
     else
@@ -709,8 +709,8 @@ void DataSet::_phylo_check( const std::string& phylogeny_file_name )
 		const std::string& name = kvp.first;
                 if (phylo.find(name) == std::string::npos ) {
                 	std::stringstream ss;
-        		ss << std::endl << "The beta group called '" << name << "' is not in your phylogeny input file. Please correct this error and try using coinfinder again." << std::endl
-		           << "Note that there may also be additional betas following '" << name << "' in the input but I am stopping here." << std::endl << std::endl
+        		ss << std::endl << "The genome '" << name << "' is not in your phylogeny input file. Please correct this error and try using coinfinder again." << std::endl
+		           << "Note that there may also be additional genomes following '" << name << "' in the input but I am stopping here." << std::endl << std::endl
 			   << "It's possible you're seeing this error if you provided data in Roary format, but forgot to include the -I flag." << std::endl
 			   << "Exiting..." << std::endl;
         		throw std::logic_error( ss.str().c_str());
@@ -729,7 +729,7 @@ void DataSet::_drop_saturated(const double upper_filt_thres)
 
 	if (alpha_dropped) {
 		std::cerr << "**Warning**: Saturated data has been dropped!" << std::endl;
-		std::cerr << "- d.ALPHA = " << -alpha_dropped << std::endl;
+		std::cerr << "- d.GENES = " << -alpha_dropped << std::endl;
 		this->_dump_sizes();
 	} else {
 		std::cerr << "Nothing dropped due to node saturation, your data is good to go. :)" << std::endl;
@@ -747,7 +747,7 @@ void DataSet::_drop_rare(const double filt_thres)
 
 	if (alpha_dropped) {
 		std::cerr << "**Warning**: Rare elements have been dropped!" << std::endl;
-		std::cerr << "- d.ALPHA = " << -alpha_dropped << std::endl;
+		std::cerr << "- d.GENES = " << -alpha_dropped << std::endl;
 		this->_dump_sizes();
 	} else {
 		std::cerr << "Nothing dropped due to rare elements in collection, your data is good to go. :)" << std::endl;

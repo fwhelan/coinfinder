@@ -25,8 +25,8 @@ TParameters::TParameters()
           , coin_max_mode( EMaxMode::ACCOMPANY ) //ESetMode::_INVALID )
           , verbose( false )
           , permit_filter( false )
-          , alpha_name( "Alpha" )
-          , beta_name( "Beta" )
+          , alpha_name( "Genes" )
+          , beta_name( "Genomes" )
           , gamma_name( "Gamma" )
           , alpha_file_name( "" )
           , beta_file_name( "" )
@@ -498,8 +498,8 @@ void TParameters::print_and_assert() const
             throw std::logic_error( "Beta file is missing." );
         }
         
-        std::cerr << "> ALPHA_FILE ······· = " << this->alpha_file_name << std::endl;
-        std::cerr << "> BETA_FILE ········ = " << this->beta_file_name << std::endl;
+        std::cerr << "> GENE_FILE ······· = " << this->alpha_file_name << std::endl;
+        std::cerr << "> GENOME_FILE ········ = " << this->beta_file_name << std::endl;
     }
     else
     {
@@ -522,12 +522,12 @@ void TParameters::print_and_assert() const
     }
 
     
-    std::cerr << "> ALPHA_NAME ······· = " << this->alpha_name << std::endl;
-    std::cerr << "> BETA_NAME ········ = " << this->beta_name << std::endl;
+    std::cerr << "> GENE_NAME ······· = " << this->alpha_name << std::endl;
+    std::cerr << "> GENOME_NAME ········ = " << this->beta_name << std::endl;
     
     if (this->combined_file_name.empty())
     {
-        std::cerr << "> GAMMA_NAME ······· = " << this->gamma_name << std::endl;
+        //std::cerr << "> GAMMA_NAME ······· = " << this->gamma_name << std::endl;
     }
     
 }

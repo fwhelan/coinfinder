@@ -69,7 +69,7 @@ int main( int argc, const char** argv )
 		//std::cerr << "    -d or --d              The path of the Alpha-to-Beta file with (alpha)(TAB)(beta)" << std::endl;
 		std::cerr << "    -i or --input          The path to the gene_presence_absence.csv output from Roary" << std::endl;
 		std::cerr << "                           -or-" << std::endl;
-		std::cerr << "                           The path of the Alpha-to-Beta file with (alpha)(TAB)(beta)" << std::endl;
+		std::cerr << "                           The path of the Gene-to-Genome file with (gene)(TAB)(genome)" << std::endl;
 		std::cerr << "    -I or --inputroary     Set if -i is in the gene_presence_absence.csv format from Roary" << std::endl;
                 std::cerr << "    -p or --phylogeny      Phylogeny of Betas in Newick format (required)" << std::endl;
                 std::cerr << "Max mode (mandatory for coincidence analysis):" << std::endl;
@@ -99,8 +99,8 @@ int main( int argc, const char** argv )
 		std::cerr << "    -x or --num_cores      The number of cores to use (default: 2)" << std::endl;
 		std::cerr << "    -v or --verbose        Verbose output." << std::endl;
 		std::cerr << "    -r or --filter         Permit filtering of saturated and low-abundance data." << std::endl;
-		std::cerr << "    -U or --upfilthreshold Upper filter threshold for high-abundance data filtering (default: 1.0 i.e. any alpha in >=100/% of betas." << std::endl;
-		std::cerr << "    -F or --filthreshold   Threshold for low-abundance data filtering (default: 0.05 i.e. any alpha in <=5\% of betas." << std::endl;
+		std::cerr << "    -U or --upfilthreshold Upper filter threshold for high-abundance data filtering (default: 1.0 i.e. any gene in >=100/% of genomes." << std::endl;
+		std::cerr << "    -F or --filthreshold   Threshold for low-abundance data filtering (default: 0.05 i.e. any gene in <=5\% of genomes." << std::endl;
 		std::cerr << "    -q or --query          Query a specific gene." << std::endl;
 		std::cerr << "    -T or --test           Runs the test cases and exits." << std::endl;
 		std::cerr << "    -E or --all            Outputs all results, regardless of significance." << std::endl;
