@@ -99,6 +99,12 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
                 continue;
             }
 
+	    // Test to see if a query was set; if so, only do the test if one
+	    // of the alphas matches the query
+	    if (!dataset.get_options().deep_query_alpha.empty() && alpha_yain.get_name() != dataset.get_options().deep_query_alpha && alpha_tain.get_name() != dataset.get_options().deep_query_alpha) {
+		continue;
+	    }
+
             const std::map<const Beta*, int>& edges_tain = alpha_tain.get_edges();
             int num_edges_tain = static_cast<int>(edges_tain.size());
 
@@ -128,7 +134,7 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
 		}
 	    }
 
-	    //Controversial new code addition: only test those pairs which have at least 1 overlap
+	    //Only test those pairs which have at least 1 overlap
 	    if (overlaps <= 0) {
 		continue;
 	    } 
