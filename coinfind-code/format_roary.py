@@ -8,12 +8,21 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--input", "-i", type=str, required=True)
 args = parser.parse_args()
 
+#Check to be sure input file is formatted as a gene_p_a file
+with open(args.input, 'r') as f:
+    first_line = f.readline()
+    r = re.compile('^(".*?",".*?")+$')
+    if r.match(first_line) is None:
+        print("Error: Input is not formatted as Roary gene_presence_absence file.")
+        exit()
+f.close()
+
 #Open edge output files
 edge = open('coincident-input-edges.csv', "w")
 #Coinfinder won't like to see a header in the edges file
 #Open roary output/coinfinder input file for reading
 with open(args.input) as genefile:
-    genereader = csv.reader(genefile)
+    genereader = csv.reader(genefile, delimiter = ',', quotechar = '"', doublequote = True, lineterminator = '\n', skipinitialspace = True)
     #Use header to define genome to column # dictionary
     gendict = dict()
     genome = 0

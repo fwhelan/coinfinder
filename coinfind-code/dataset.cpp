@@ -687,7 +687,7 @@ void DataSet::_drop_empty()
     if (alpha_dropped || beta_dropped || gamma_dropped)
     {
         std::cerr << "Warning: Superfluous data has been dropped!" << std::endl;
-        std::cerr << "- d.GNEES = " << -alpha_dropped << std::endl;
+        std::cerr << "- d.GENES = " << -alpha_dropped << std::endl;
         std::cerr << "- d.GENOMES  = " << -beta_dropped << std::endl;
         //std::cerr << "- d.GAMMA = " << -gamma_dropped << std::endl;
         this->_dump_sizes();

@@ -133,7 +133,8 @@ setcolorder(annot, as.character(names(node.colour)))
 #Draw heatmap
 heatmap.breaks <- colnames(annot)
 heatmap.breaks <- factor(heatmap.breaks, levels=node.order)
-node.colour[length(node.colour)+1] <- paste0("name", "black")
+#node.colour[length(node.colour)+1] <- paste0("name", "black")
+node.colour  <- setNames(c(node.colour, "white"), c(names(node.colour), "name"))
 tree <- rtree(nrow(annot), tip.label=rownames(annot))
 p.tree <- ggtree(tree) + geom_tiplab(size=7, hjust=0) #hjust=0.1
 arc.breaks = as.numeric(c(0, 0.005, 1))
