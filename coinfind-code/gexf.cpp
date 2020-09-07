@@ -10,7 +10,7 @@
  */
 
 bool Gexf::isForbidden( char c ) {
-        static std::string illegals = "\\/:?\",.|-()'";
+        static std::string illegals = "\\/:?\",.|-()'~";
         return std::string::npos != illegals.find( c );
 }
 
