@@ -19,6 +19,7 @@ setwd(opt$path)
 nodstr <- paste(opt$output, "_nodes.tsv", sep="")
 nodes  <- read.table(nodstr, header=TRUE, sep="\t", quote=NULL)
 colnames(nodes) <- c("alphas", "D")
+nodes$alphas <- make.names(nodes$alphas)
 edgstr <- paste(opt$output, "_edges.tsv", sep="")
 edges <- read.table(edgstr, header=TRUE, sep="\t", quote=NULL)
 colnames(edges) <- c("alpha1", "alpha2", "p")
@@ -138,7 +139,7 @@ heatmap.breaks <- factor(heatmap.breaks, levels=node.order)
 #node.colour[length(node.colour)+1] <- paste0("name", "black")
 node.colour  <- setNames(c(node.colour, "white"), c(names(node.colour), "name"))
 
-tree$tip.labels <- make.names(tree$tip.labels)
+tree$tip.label <- make.names(tree$tip.label)
 p.tree <- ggtree(tree) + geom_tiplab(size=7, hjust=0) #hjust=0.1
 arc.breaks = as.numeric(c(0, 0.005, 1))
 #Split the heatmap into sections that equal roughly 500 genes each;
