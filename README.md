@@ -72,7 +72,7 @@ gene_3	genome_2
 Note: the `gene_presence_absence.csv` output from Panaroo appears to differ from Roary in that fields are not surrounded by double-quotes. Coinfinder assumes this double-quote format; you could use something like the following to correct for this:
 
 ```
-sed -e 's/^\|$/"/g' -e 's/,/","/g' gene_presence_absence.csv > gene_presence_absence-withquotes.csv
+sed -e 's/^/"/g' -e 's/$/"/g' -e 's/,/","/g' gene_presence_absence.csv > gene_presence_absence-withquotes.csv
 ```
 
 The phylogeny should be Newick-formatted with no zero-length branches. We suggest that this phylogeny be constructed using the core gene information (for example, as suggested in the Roary pipeline https://sanger-pathogens.github.io/Roary/).
