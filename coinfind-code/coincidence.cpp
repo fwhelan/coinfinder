@@ -344,11 +344,11 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
 				{
     					analysis << alpha_yain.get_name()
         	      			<< "\t" << alpha_tain.get_name()
-        	      			<< "\t" << p_value
+        	      			//<< "\t" << p_value
 		      			<< "\t" << avg_syndist
         	      			<< "\t" << successes
         	      			<< "\t" << num_observations
-        	      			<< "\t" << rate
+        	      			//<< "\t" << rate
         	      			<< "\t" << static_cast<int>(rate * num_observations + 0.5)
         	      			<< "\t" << num_edges_yain
         	      			<< "\t" << num_edges_tain
@@ -456,11 +456,11 @@ void Coincidence::_write_header(const DataSet& dataset, std::ofstream& analysis)
     		analysis << "Source"
         		<< "\t" << "Target"
         	      	<< "\t" << "p"
-		      	<< "\t" << "Avg synthetic distance"
-        	      	<< "\t" << "successes"
+		      	//<< "\t" << "Avg synthetic distance"
+        	      	<< "\t" << "successes (OA(ij))"
         	      	<< "\t" << "observations"
-        	      	<< "\t" << "rate"
-        	      	<< "\t" << "expected"
+        	      	//<< "\t" << "rate"
+        	      	<< "\t" << "expected (EA(ij))"
         	      	<< "\t" << "total source"
         	      	<< "\t" << "total target"
         	      	<< "\t" << "fraction source"
