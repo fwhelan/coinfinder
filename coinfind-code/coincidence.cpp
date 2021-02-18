@@ -344,8 +344,8 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
 				{
     					analysis << alpha_yain.get_name()
         	      			<< "\t" << alpha_tain.get_name()
-        	      			//<< "\t" << p_value
-		      			<< "\t" << avg_syndist
+        	      			<< "\t" << p_value
+		      			//<< "\t" << avg_syndist
         	      			<< "\t" << successes
         	      			<< "\t" << num_observations
         	      			//<< "\t" << rate
