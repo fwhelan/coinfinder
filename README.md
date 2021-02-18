@@ -17,7 +17,7 @@ Coinfinder uses a Bonferroni-corrected Binomial exact test statistic of the expe
 ### When and why should I use it? ###
 Coinfinder is designed to take as input a dataset of pangenomes and their genes. Ideally, genes will clustered into homologous gene clusters using a pangenomic tool such as <a href="https://github.com/gtonkinhill/panaroo">Panaroo</a>, <a href="https://sanger-pathogens.github.io/Roary/">Roary</a>, <a href="https://github.com/SionBayliss/PIRATE">PIRATE</a>, or <a href="https://github.com/rmcolq/pandora">Pandora</a>. Coinfinder should be used to identify coincident gene sets within a given pangenomic dataset. Coinfinder was written to identify coincident genes among strains of prokaryote species (i.e. a species pangenome) but can be extended to other pangenomic datasets.
 
-### How can I cite it? ###
+### Where can I read more about it? ###
 Fiona J. Whelan, Martin Rusilowicz, & James O. McInerney. "<b>Coinfinder: detecting significant associations and dissociations in pangenomes</b>." <a href="https://www.microbiologyresearch.org/content/journal/mgen/10.1099/mgen.0.000338?originator=authorOffprint&identity=174020&timestamp=20210225172138&signature=1155c94b880e4257e2c7bf8f543b7d1c#header">doi: https://doi.org/10.1099/mgen.0.000338</a>
 
 ------
