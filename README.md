@@ -27,6 +27,7 @@ Fiona J. Whelan, Martin Rusilowicz, & James O. McInerney. "<b>Coinfinder: detect
 #### Bioconda ####
 
 If you use Conda: `conda install -c defaults -c bioconda -c conda-forge coinfinder`
+
 (If the installation gets stuck on solving the environment, please see issue <a href="https://github.com/fwhelan/coinfinder/issues/36">36</a>.)
 
 #### Native install ####
