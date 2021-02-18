@@ -17,7 +17,7 @@ Coinfinder uses a Bonferroni-corrected Binomial exact test statistic of the expe
 ### When and why should I use it? ###
 Coinfinder is designed to take as input a dataset of pangenomes and their genes. Ideally, genes will clustered into homologous gene clusters using a pangenomic tool such as <a href="https://github.com/gtonkinhill/panaroo">Panaroo</a>, <a href="https://sanger-pathogens.github.io/Roary/">Roary</a>, <a href="https://github.com/SionBayliss/PIRATE">PIRATE</a>, or <a href="https://github.com/rmcolq/pandora">Pandora</a>. Coinfinder should be used to identify coincident gene sets within a given pangenomic dataset. Coinfinder was written to identify coincident genes among strains of prokaryote species (i.e. a species pangenome) but can be extended to other pangenomic datasets.
 
-### *NEW:* Manuscript published in Microbial Genomics ###
+### How can I cite it? ###
 Fiona J. Whelan, Martin Rusilowicz, & James O. McInerney. "<b>Coinfinder: detecting significant associations and dissociations in pangenomes</b>." <a href="https://www.microbiologyresearch.org/content/journal/mgen/10.1099/mgen.0.000338?originator=authorOffprint&identity=174020&timestamp=20210225172138&signature=1155c94b880e4257e2c7bf8f543b7d1c#header">doi: https://doi.org/10.1099/mgen.0.000338</a>
 
 ------
@@ -26,14 +26,15 @@ Fiona J. Whelan, Martin Rusilowicz, & James O. McInerney. "<b>Coinfinder: detect
 
 #### Bioconda ####
 
-If you use Conda: `conda install -c conda-forge -c bioconda -c defaults coinfinder`
+If you use Conda: `conda install -c defaults -c bioconda -c conda-forge coinfinder`
+(If the installation gets stuck on solving the environment, please see issue <a href="https://github.com/fwhelan/coinfinder/issues/36">36</a>.)
 
 #### Native install ####
 
 ##### Dependencies: #####
 
 * `Cmake3.6` or greater https://cmake.org/download/ (`brew install cmake` on a Mac)
-* `Python3.6` or greater https://www.python.org/downloads/
+* `Python>3.6;<3.8` https://www.python.org/downloads/
 * `Boost1.66` or greater https://www.boost.org/users/download/ (`brew install boost` on a Mac)<!-- If there are any issues with Boost, on my new Macbook, I found I had to do brew install boost-python via the below post to get cmake to recognize Boost properly. https://stackoverflow.com/questions/26024878/cmake-cannot-find-boost-on-os-x-with-brew-->
 * `OpenMP` (`brew install llvm` on a Mac)<!--Mac: brew install libomp; brew install llvm; -->
 * `gcc 5` or greater (default on most new-ish machines)
