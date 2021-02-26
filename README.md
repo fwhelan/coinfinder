@@ -7,6 +7,7 @@
 <h1>Coinfinder</h1>
 <h3>A tool for the identification of coincident (associating and dissociating) genes in pangenomes.</h3>
 Written in collaboration with <a href="https://github.com/mjr129">Martin Rusilowicz</a>.
+    Coinfinder was developed in the <a href="https://mcinerneylab.com">McInerney laboratory</a>.
 </div>
 
 ### What is it? ###
