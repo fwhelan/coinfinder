@@ -58,7 +58,7 @@ On macOS, the default compiler may be `clang` instead of `g++`. If so, you may n
 ### Methodology: ###
 <div align="center">
 <p align="center">
-    <img src="Figure-method.png?raw=true?" alt="example-output" width="900">
+    <img src="Figure-methodology.png?raw=true?" alt="example-output" width="900">
 </p>
 </div>
 
