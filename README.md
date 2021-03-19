@@ -55,6 +55,13 @@ On macOS, the default compiler may be `clang` instead of `g++`. If so, you may n
 `export CC=/usr/local/bin/gcc-6; CXX=/usr/local/bin/g++-6; MPICXX=/usr/local/bin/mpic++`
 
 ------
+### Methodology: ###
+<div align="center">
+<p align="center">
+    <img src="Figure-method.png?raw=true?" alt="example-output" width="900">
+</p>
+</div>
+
 
 ### Usage: ###
 
