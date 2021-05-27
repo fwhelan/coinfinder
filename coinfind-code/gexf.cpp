@@ -6,7 +6,7 @@
 #include "elements.h"
 #include "parameters.h"
 /**
- * Calculates the level of lineage-dependence per gene in the output gene_list
+ * Generate gexf formatted network output
  */
 
 bool Gexf::isForbidden( char c ) {
@@ -16,7 +16,7 @@ bool Gexf::isForbidden( char c ) {
 
 void Gexf::run( DataSet& dataset, const std::string& prefix )
 {
-	std::cerr << "Generate network..." << std::endl;
+	std::cerr << "Generate gexf formatted network..." << std::endl;
 	std::ofstream gexf;
 	std::string gexfname = prefix + "_network.gexf";
         gexf.open(gexfname);

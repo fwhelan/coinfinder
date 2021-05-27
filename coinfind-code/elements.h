@@ -28,6 +28,8 @@ class Gamma;
  */
 class Alpha
 {
+    protected:
+	static int nextIndex;
     private:
         const std::string _name;
         int               _index;
@@ -46,6 +48,7 @@ class Alpha
         explicit Alpha( const std::string& name );
 
         const std::string& get_name() const;
+	const int get_index() const;
 
         bool register_edge( const Gamma* gamma, const Beta& beta );
 	bool register_coincident_edge( const Alpha& alpha, double p_value );
@@ -61,6 +64,7 @@ class Alpha
         const std::map<const Beta*, int>& get_edges() const;
 	const std::map<const Alpha*, double>& get_coincident_edges() const;
 };
+//int Alpha::nextIndex = 0;
 
 
 /**

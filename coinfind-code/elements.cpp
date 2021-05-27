@@ -11,9 +11,11 @@
  * Constructor
  * @param name 
  */
+int Alpha::nextIndex = 0;
+
 Alpha::Alpha( const std::string& name )
         : _name( name )
-          , _index( -1 )
+          , _index( ++nextIndex )
 	  ,D()
 #ifndef  NDEBUG
         , _gammas()
@@ -120,6 +122,10 @@ const std::map<const Alpha*, double>& Alpha::get_coincident_edges() const
 const std::string& Alpha::get_name() const
 {
     return _name;
+}
+const int Alpha::get_index() const
+{
+    return _index;
 }
 
 

@@ -3,6 +3,7 @@
 #include "coincidence.h"
 #include "lineage.h"
 #include "gexf.h"
+#include "gml.h"
 #include "network.h"
 #include "constants.h"
 #include "parameters.h"
@@ -289,6 +290,7 @@ int main( int argc, const char** argv )
 		return(-1);
 	    }
 	    Gexf::run( dataset, options.prefix );
+	    Gml::run( dataset, options.prefix );
 	    //Remove intermediate files
 	    //This file is only created if Roary input is used; don't error if it can't be removed.
 	    //if (boost::filesystem::exists("coincident-input-edges.csv")) {
