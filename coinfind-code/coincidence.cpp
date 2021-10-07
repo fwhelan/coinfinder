@@ -39,7 +39,7 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
     const id_lookup<Edge>& edge_table = dataset.get_edges();
 
     int size_alpha_table = alpha_table.get_table().size();
-    const double cor_sig = Significance::correct( dataset.get_options().sig_level, dataset.get_options().correction, (((size_alpha_table)*(size_alpha_table+1))/2));
+    const double cor_sig = Significance::correct( dataset.get_options().sig_level, dataset.get_options().correction, (((size_alpha_table)*(size_alpha_table-1))/2));
 
     //
     // Create matrix
