@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <sstream>
 
 #include "coincidence.h"
 #include "dataset.h"
@@ -72,6 +73,31 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
     int returnflag = -1;
 
     //
+    // Determine if deep_alpha file name variable was set; if so, read in deep query alphas into a list
+    //
+    std::map<double, std::string> deep_alphas;
+    if (!dataset.get_options().deep_query_alpha_file_name.empty())
+    {
+	std::cerr << "Reading deep query alpha file..." << std::endl;
+	std::ifstream file_in;
+	file_in.open( dataset.get_options().deep_query_alpha_file_name );
+	std::string cell;
+
+        if (!file_in)
+        {
+	        std::stringstream ss;
+	        ss << "Failed to open file: " << dataset.get_options().deep_query_alpha_file_name;
+	        throw std::logic_error(ss.str());
+ 	}
+	int n=0;
+        while (getline( file_in, cell))
+        {
+	        deep_alphas[n] = cell;
+	}
+	n+=1;
+    }
+
+    //
     // *** Parallelize ***
     //
     //int size_alpha_table = alpha_table.get_table().size();
@@ -101,8 +127,20 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
 
 	    // Test to see if a query was set; if so, only do the test if one
 	    // of the alphas matches the query
-	    if (!dataset.get_options().deep_query_alpha.empty() && alpha_yain.get_name() != dataset.get_options().deep_query_alpha && alpha_tain.get_name() != dataset.get_options().deep_query_alpha) {
-		continue;
+	    if (!dataset.get_options().deep_query_alpha_file_name.empty())
+	    {
+		bool cont = false;
+		for (const auto& [key, value] : deep_alphas) {
+			if (value == alpha_yain.get_name()) {
+				cont = true;
+			}
+			if (value == alpha_tain.get_name()) {
+				cont = true;
+			}
+		}
+		if (!cont) {
+			continue;
+		}
 	    }
 
             const std::map<const Beta*, int>& edges_tain = alpha_tain.get_edges();

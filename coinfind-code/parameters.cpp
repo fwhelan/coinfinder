@@ -314,7 +314,7 @@ TParameters TParameters::parse( int arg_count, const char** arg_vals )
                 std::cerr << "command-parser: Query ID '" << arg << "' specified." << std::endl;
 #endif
 
-                result.deep_query_alpha = arg;
+                result.deep_query_alpha_file_name = arg;
                 next_command = ECommand::FLAGS;
                 break;
         }

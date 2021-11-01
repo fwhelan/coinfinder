@@ -102,7 +102,7 @@ int main( int argc, const char** argv )
 		std::cerr << "    -r or --filter         Permit filtering of saturated and low-abundance data." << std::endl;
 		std::cerr << "    -U or --upfilthreshold Upper filter threshold for high-abundance data filtering (default: 1.0 i.e. any gene in >=100/% of genomes." << std::endl;
 		std::cerr << "    -F or --filthreshold   Threshold for low-abundance data filtering (default: 0.05 i.e. any gene in <=5\% of genomes." << std::endl;
-		std::cerr << "    -q or --query          Query a specific gene." << std::endl;
+		std::cerr << "    -q or --query          The path to a file containing a list of genes to specificcally query, one per line (optional)." << std::endl;
 		std::cerr << "    -T or --test           Runs the test cases and exits." << std::endl;
 		std::cerr << "    -E or --all            Outputs all results, regardless of significance." << std::endl;
 		std::cerr << "Output:" << std::endl;
@@ -177,14 +177,24 @@ int main( int argc, const char** argv )
     //}
 
     //
-    // If phylogeny is provided, ensure that there are no zero length branches
+    // If phylogeny is provided, ensure that there are no zero length branches and that it is in newick format
     //
     if (!options.phylogeny.empty()) {
-	std::string syscall = "Rscript " + source_path + "/coinfind-code/check_zeroes.R -a " + call_path + " -t " + options.phylogeny;
+	std::string syscall = "Rscript " + source_path + "/coinfind-code/check_newick.R -a " + call_path + " -t " + options.phylogeny;
+	if (options.Rmsgs) {
+		system(syscall.c_str());
+	}
+	std::string out = Lineage::systemSTDOUT(syscall);
+	if (out.find("Error") != std::string::npos) {
+		std::cerr << "Error: Input phylogeny does not appear to be in newick format." << std::endl;
+		std::cerr << "Exiting..." << std::endl;
+		return(-1);
+	}
+	syscall = "Rscript " + source_path + "/coinfind-code/check_zeroes.R -a " + call_path + " -t " + options.phylogeny;
         if (options.Rmsgs) {
         	system(syscall.c_str());
         }
-        std::string out = Lineage::systemSTDOUT(syscall);
+        out = Lineage::systemSTDOUT(syscall);
         if (out.find("TRUE") != std::string::npos) {
                	std::cerr << "Error: Input phylogeny contains branch lengths which equal zero." << std::endl;
                 std::cerr << "The R function caper::phylo.d, which coinfinder uses to define lineage dependence, cannot handle zero length branches." << std::endl;

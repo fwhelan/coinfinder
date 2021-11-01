@@ -32,7 +32,7 @@ struct TParameters
     int num_cores;
     double upper_filt_thres;
     double filt_thres;
-    std::string deep_query_alpha;
+    std::string deep_query_alpha_file_name;
     bool output_all;
     bool roary;
     

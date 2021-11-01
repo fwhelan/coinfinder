@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <fstream>
 #include <sstream>
 #include "connectivity.h"
 #include "binomial_test.h"
@@ -104,9 +105,26 @@ bool Connectivity::_test_connectivity( const DataSet& dataset, const Alpha& alph
 
     bool filter = dataset.get_options().output_all || is_significant;
 
-    if (!dataset.get_options().deep_query_alpha.empty() && alpha.get_name() != dataset.get_options().deep_query_alpha)
+    if (!dataset.get_options().deep_query_alpha_file_name.empty())
     {
-        filter = false;
+	filter = false;
+    	std::cerr << "Reading deep query alpha file..." << std::endl;
+	std::ifstream file_in;
+	file_in.open( dataset.get_options().deep_query_alpha_file_name );
+	std::string cell;
+        if (!file_in)
+        {
+	        std::stringstream ss;
+	        ss << "Failed to open file: " << dataset.get_options().deep_query_alpha_file_name;
+	        throw std::logic_error(ss.str());
+	}
+	int n=0;
+	while (getline( file_in, cell))
+	{
+		if (alpha.get_name() == cell) {
+			filter = true;
+		}
+	}
     }
 
     if (dataset.get_options().verbose)
