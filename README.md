@@ -117,7 +117,7 @@ Miscellaneous:
     -r or --filter         Permit filtering of saturated and low-abundance data.
     -U or --upfilthreshold Upper filter threshold for high-abundance data filtering (default: 1.0 i.e. any alpha in >=100/% of betas.
     -F or --filthreshold   Threshold for low-abundance data filtering (default: 0.05 i.e. any alpha in <=5% of betas.
-    -q or --query          Query a specific gene.
+    -q or --query          The path to a file containing a list of genes to specificcally query, one per line (optional).
     -T or --test           Runs the test cases and exits.
     -E or --all            Outputs all results, regardless of significance.
 Output:
