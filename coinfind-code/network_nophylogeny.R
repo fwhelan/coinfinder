@@ -34,6 +34,7 @@ nodes <- nodes[complete.cases(nodes),]
 edges <- edges[complete.cases(edges),]
 edges <- subset(edges, (edges$alpha1 %in% nodes$alphas == TRUE) & (edges$alpha2 %in% nodes$alphas == TRUE))
 
+nodes$alphas <- make.names(nodes$alphas)
 edges$alpha1 <- make.names(edges$alpha1)
 edges$alpha2 <- make.names(edges$alpha2)
 
@@ -68,7 +69,7 @@ for(i in c(1:length(CC.size))){
     #quit()
   #}
   #node.colour <- c(node.colour,rep(colour.array[i],CC.size[i]))
-  node.colour <- c(node.colour,rep(colour.array[(i%%length(colour.array))],times=CC.size[i]))
+  node.colour <- c(node.colour,rep(colour.array[(i%%length(colour.array)+1)],times=CC.size[i]))
 }
 node.order <- unique(ord.CC$alphas)
 names(node.colour) <- node.order
