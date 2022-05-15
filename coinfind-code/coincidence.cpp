@@ -173,9 +173,15 @@ int Coincidence::run( DataSet& dataset, /**< Dataset */
 	    }
 
 	    //Only test those pairs which have at least 1 overlap
-	    if (overlaps <= 0) {
-		continue;
-	    } 
+	    switch (options.coin_max_mode)
+	    {
+		    case EMaxMode::ACCOMPANY:
+			    {
+	    			if (overlaps <= 0) {
+					continue;
+	  			}
+			    }
+	    }	    
 
 	    // Count number of total tests: number of distinct alpha pairs with overlapping betas
 	    #pragma omp critical
