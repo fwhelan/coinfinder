@@ -127,11 +127,17 @@ rownames(annot) <- annot[,1]
 annot[,1:14] <- NULL
 
 annot <- as.data.frame(t(annot), stringsAsFactors = FALSE)
+annot.cp <- annot
 for(a in 1:ncol(annot)) {
   annot[,a][annot[,a]!="X"] <- as.character(colnames(annot)[a])
+  annot.cp[,a][annot[,a]!="X"] <- as.character(node.colour[a])
 }
 setcolorder(annot, as.character(names(node.colour)))
+setcolorder(annot.cp, as.character(names(node.colour)))
 #setcolorder(annot, as.character(node.order))
+
+#Output annot as a csv file
+write.table(annot.cp, file=paste(opt$output, "_heatmap-raw-data.csv", sep=""), sep=",", quote=FALSE, row.names=FALSE)
 
 #Draw heatmap
 heatmap.breaks <- colnames(annot)
