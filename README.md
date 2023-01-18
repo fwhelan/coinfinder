@@ -11,7 +11,7 @@ Written in collaboration with <a href="https://github.com/mjr129">Martin Rusilow
 </div>
 
 ### What is it? ###
-Coinfinder is an algorithm and software tool that detects genes which associate and dissociate with other genes more often than expected by chance in pangenomes. Coinfinder is written primarily in C++ and is a command line tool which generates text, gexf, and pdf outputs for the user.
+Coinfinder (pronounced "coin-finder") is an algorithm and software tool that detects genes which associate and dissociate with other genes more often than expected by chance in pangenomes. Coinfinder is written primarily in C++ and is a command line tool which generates text, gexf, and pdf outputs for the user.
 
 Coinfinder uses a Bonferroni-corrected Binomial exact test statistic of the expected and observed rates of gene-gene association to evaluate whether a given gene pair is coincident.
 
