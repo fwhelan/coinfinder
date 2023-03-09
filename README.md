@@ -25,6 +25,8 @@ Fiona J. Whelan, Martin Rusilowicz, & James O. McInerney. "<b>Coinfinder: detect
 
 ### Installation: ###
 
+Coinfinder is available on Linux or macOS; it has not been developed for Windows.
+
 #### Bioconda ####
 
 If you use Conda: `conda install -c defaults -c bioconda -c conda-forge coinfinder`
