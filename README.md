@@ -30,6 +30,7 @@ Coinfinder is available on Linux or macOS; it has not been developed for Windows
 #### Bioconda ####
 
 If you use Conda: `conda install -c defaults -c bioconda -c conda-forge coinfinder`
+If you use Mamba: `mamba install -c defaults -c bioconda -c conda-forge coinfinder`
 
 (If the installation gets stuck on solving the environment, please see issue <a href="https://github.com/fwhelan/coinfinder/issues/36">36</a>.)
 
