@@ -127,6 +127,7 @@ Miscellaneous:
 Output:
     -o or --output         The prefix of all output files (default: coincident).
 ```
+To get the version of coinfinder, simply type `coinfinder` without any flag optoins.
 
 ### Example output: ###
 <div align="center">
