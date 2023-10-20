@@ -134,7 +134,7 @@ Output:
     <img src="Figure1.png?raw=true?" alt="example-output" width="900">
 </p>
 </div>
-An example association network in which each gene (node) is connected to another gene with a line (edge) iff they statistically co-occur with each other. Nodes are weighted by lineage-independence in the phylogeny (i.e. the larger the node, the more phylogenetically independent the gene). Nodes are coloured by connected component, or the set of genes with associative relationships with each other. This data can also be shown as a presence/absence heatmap in relation to the phylogeny (note: this heatmap is a subset of all results; in particular, the large wine coloured gene set has been removed for ease of visibility).
+An example association network in which each gene (node) is connected to another gene with a line (edge) iff they statistically co-occur with each other. Nodes are weighted by lineage-independence in the phylogeny (i.e. the larger the node, the more phylogenetically independent the gene). Nodes are coloured by connected component, or the set of genes with associative relationships with each other. This data can also be shown as a presence/absence heatmap in relation to the phylogeny (note: this heatmap is a subset of all results; in particular, the large wine coloured gene set has been removed for ease of visibility). The association network displayed in part A was made by inputting the coinfinder output .gephi file into the Gephi software (https://gephi.org/). The heatmap displayed in part B is part of the coinfinder default output.
 
 
 ### Example usage: ###
